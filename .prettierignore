@@ -1,0 +1,6 @@
+app.json
+.env*.local
+.cursor/
+docs/
+mockups/
+package-lock.json
