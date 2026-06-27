@@ -14,3 +14,7 @@ export function getJson<T>(key: string): T | null {
 
   return JSON.parse(raw) as T;
 }
+
+export function clearJson(key: string): void {
+  mmkv.delete(key);
+}

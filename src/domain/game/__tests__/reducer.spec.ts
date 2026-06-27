@@ -157,9 +157,9 @@ describe('domain/game/reducer', () => {
 
     state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
     expect(state.status).toBe('stat_carousel');
-    expect(state.statCardsRemaining).toBe(5);
+    expect(state.statCardsRemaining).toBe(3);
 
-    for (let index = 0; index < 4; index += 1) {
+    for (let index = 0; index < 2; index += 1) {
       state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME + index });
       expect(state.status).toBe('stat_carousel');
     }
@@ -173,7 +173,7 @@ describe('domain/game/reducer', () => {
     state = beginTurn(state);
     state = guessCurrentWord(state);
     state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
-    for (let index = 0; index < 5; index += 1) {
+    for (let index = 0; index < 3; index += 1) {
       state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME + index });
     }
 

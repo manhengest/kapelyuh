@@ -13,7 +13,7 @@ import type {
 } from './types';
 import { DEFAULT_MATCH_SETTINGS, ROUND_TYPES, SCORE } from './types';
 
-const STAT_CARD_COUNT = 5;
+const STAT_CARD_COUNT = 3;
 
 export function createInitialState(now = 0): GameState {
   return {

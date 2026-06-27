@@ -10,22 +10,22 @@ todos:
     status: completed
   - id: phase-2-ui
     content: "Phase 2 (Weeks 4-7): All gameplay screens wired to gameReducer via Zustand; absolute-time timer with AppState pause; review screen; round/final results; design tokens applied."
-    status: pending
+    status: completed
   - id: phase-3-persistence
     content: "Phase 3 (Weeks 8-10): SQLite migration + bundled kapelyukh.db with ~100 curated UA words (V1.0 launch set); MMKV autosave after every transition; cold-start resume flow; history writes."
-    status: pending
+    status: completed
   - id: phase-4-polish
     content: "Phase 4 (Weeks 11-13): Reanimated animations, 3 SFX, haptic mapping, VoiceOver/Dynamic Type/reduced-motion pass, dark-mode polish, Settings + About + Privacy Policy + app icon/splash."
-    status: pending
+    status: completed
   - id: phase-5-beta
     content: "Phase 5 (Weeks 14-16): TestFlight beta with 20-50 testers, 2-3 patch builds/wk, editorial sign-off on word list, Maestro happy-path E2E green, Sentry dashboard clean."
-    status: pending
+    status: in_progress
   - id: phase-6-release
     content: "Phase 6 (Weeks 17-19): App Store screenshots, 15s preview video, Privacy Manifest, Review Notes emphasizing offline pass-and-play, staged submission, landing page."
     status: pending
   - id: content-pipeline
     content: "Parallel from Week 1: Curate ~100 UA words for V1.0 launch with native-speaker review; words.csv → scripts/build-words-db.ts → bundled SQLite asset. Grow list post-launch via EAS Update patches."
-    status: pending
+    status: in_progress
   - id: v1.1-pro-followup
     content: "V1.1 (6 weeks after V1.0): Add expo-iap, single $4.99 lifetime Pro SKU, Custom Packs Studio (create/edit/import/export private packs), 2-3 hand-curated thematic packs, custom themes, extended stats."
     status: pending
@@ -793,12 +793,16 @@ Six phases over ~16–20 weeks (4–5 months) with 1 dev + 0.3 designer.
 
 ## Phase 3 — Persistence + content (Weeks 8–10)
 
+**Status: completed (2026-06-26).** See [phase_3_persistence plan](phase_3_persistence_adbdad19.plan.md) for deliverable checklist. Device QA on physical iPhone and native-speaker word review remain follow-ups.
+
 - **Objectives:** Real dictionary, autosave, resume.
 - **Deliverables:** SQLite migration + bundled `kapelyukh.db` asset with **~100 curated UA words** (launch set; expanded post-launch), MMKV active-match persistence after every reducer transition, cold-start resume flow, history table writes on match end, last-3-sessions exclusion wired into selector.
 - **Dependencies:** Phase 2; **content pipeline must start at Phase 0** in parallel (see §11).
 - **Risks:** Word list quality even at ~100 words (offensive, ambiguous, culturally unclear) — needs a native-speaker review pass. SQLite asset bundling on iOS (well-trodden but verify on physical device).
 
 ## Phase 4 — Polish (Weeks 11–13)
+
+**Status: completed (2026-06-26).** See [phase_4_polish plan](phase_4_polish_1ec7d4c7.plan.md) for deliverable checklist. Physical iPhone device QA and final designer icon/splash remain follow-ups before Phase 5 beta.
 
 - **Objectives:** App feels premium.
 - **Deliverables:** Animations (Reanimated), 3 SFX (guess/skip/end), haptic mapping, keep-awake during turn, VoiceOver pass, Dynamic Type pass, reduced motion, dark-mode polish, Privacy Policy + Terms pages (Ukrainian only), Settings screen complete, About screen, app icon + splash, Ukrainian App Store metadata (single locale: `uk`).
@@ -807,8 +811,12 @@ Six phases over ~16–20 weeks (4–5 months) with 1 dev + 0.3 designer.
 
 ## Phase 5 — Beta + content QA (Weeks 14–16)
 
+**Status: in progress (2026-06-26).** Repo infra complete; manual beta ops pending. See [phase_5_beta plan](phase_5_beta_qa_e4aa1259.plan.md) for deliverable checklist.
+
 - **Objectives:** Closed beta with 20–50 testers; no P0/P1 bugs.
-- **Deliverables:** TestFlight build distributed, feedback channel (Google Form), 2–3 patch builds per week, word-list editorial sign-off, manual test matrix (10 device states) passed, Sentry dashboard clean, Maestro E2E green on CI.
+- **Deliverables:** TestFlight build distributed, feedback channel (Google Form), 2–3 patch builds per week, word-list editorial sign-off, manual test matrix (10 device states) passed, Sentry dashboard clean, Maestro happy-path green (local gate before upload; CI stays unit tests only).
+- **Done in repo:** `eas.json` + TestFlight docs, Sentry `release`/`dist`, `maestro/happy-path.yaml`, beta QA/sign-off/feedback docs, README pre-upload checklist (61 Jest tests green).
+- **Pending manual:** ASC credentials, first TestFlight build, Maestro run on device, Sentry alert, 2× native UA word review, physical QA matrix, tester recruitment.
 - **Dependencies:** Phase 4.
 - **Risks:** Beta surfaces edge cases in timer pause across iOS minor versions; insufficient tester pool — start recruiting at Phase 3.
 

@@ -25,6 +25,9 @@
     },
     "production": {
       "autoIncrement": true,
+      "ios": {
+        "simulator": false
+      },
       "env": {
         "APP_VARIANT": "production"
       }
@@ -35,7 +38,8 @@
       "ios": {
         "appleId": "REPLACE_WITH_APPLE_ID",
         "ascAppId": "REPLACE_WITH_ASC_APP_ID",
-        "appleTeamId": "REPLACE_WITH_APPLE_TEAM_ID"
+        "appleTeamId": "REPLACE_WITH_APPLE_TEAM_ID",
+        "groups": ["Internal"]
       }
     }
   }

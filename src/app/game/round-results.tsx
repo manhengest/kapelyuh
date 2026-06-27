@@ -1,10 +1,9 @@
-import { PlaceholderScreen } from '@ui/components/PlaceholderScreen';
+import { Redirect } from 'expo-router';
 
+import { useGameRouteSync } from '@features/game/navigation';
+
+/** Legacy route — round results are shown inside review. */
 export default function RoundResultsScreen() {
-  return (
-    <PlaceholderScreen
-      title="Результати туру"
-      links={[{ href: '/game/results', label: 'Результати гри' }]}
-    />
-  );
+  useGameRouteSync();
+  return <Redirect href="/game/review" />;
 }

@@ -1,2 +1,32 @@
-# Maestro happy-path E2E — implemented in Phase 5.
-# appId: com.kapelyukh.app
+# Smoke E2E: Home → setup → round 1 turn → pause/resume → exit to Home.
+# Run: maestro test maestro/happy-path.yaml
+# Requires production or preview build installed (not dev client).
+appId: com.kapelyukh.app
+name: Happy path smoke
+---
+- launchApp:
+    clearState: true
+- assertVisible: "Нова гра"
+- tapOn: "Нова гра"
+- assertVisible: "Налаштування"
+- tapOn: "Далі"
+- assertVisible: "Команди"
+- tapOn: "Далі"
+- extendedWaitUntil:
+    visible: "ЕЛІАС"
+    timeout: 15000
+- tapOn: "Далі"
+- assertVisible: "Поїхали!"
+- tapOn: "Поїхали!"
+- extendedWaitUntil:
+    visible: "Пропустити"
+    timeout: 8000
+- assertVisible: "Вгадав"
+- tapOn: "Вгадав"
+- tapOn: "Пауза"
+- assertVisible: "Гру зупинено"
+- tapOn: "Продовжити"
+- tapOn: "На головну"
+- assertVisible: "Гру зупинено"
+- tapOn: "Так, вийти"
+- assertVisible: "Нова гра"

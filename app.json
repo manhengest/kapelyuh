@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Капелюх",
-    "slug": "kapelyukh",
+    "slug": "kapelyuh",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -43,7 +43,9 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200
         }
-      ]
+      ],
+      "expo-sqlite",
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true
@@ -56,6 +58,6 @@
         "projectId": "2c087e96-1a06-4239-bf7f-60ca619d0781"
       }
     },
-    "owner": "kapelyukh"
+    "owner": "khodzinskyi-vv"
   }
 }
