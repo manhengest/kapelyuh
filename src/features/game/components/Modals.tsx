@@ -1,7 +1,8 @@
-import { Modal, Pressable, Text, View } from 'react-native';
+import { Modal, Pressable, View } from 'react-native';
 
 import { strings } from '@content/strings';
 import { Button } from '@ui/components/Button';
+import { Text } from '@ui/components/Text';
 
 type PauseModalProps = {
   visible: boolean;
@@ -21,14 +22,14 @@ export function PauseModal({
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View className="flex-1 justify-end bg-black/50">
-        <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6 dark:bg-slate-900">
-          <Text className="mb-2 text-center text-2xl font-bold text-slate-900 dark:text-white">
+        <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6">
+          <Text className="mb-2 text-center text-2xl font-bold text-slate-900">
             {strings.pause.title}
           </Text>
-          <Text className="mb-1 text-center text-base text-slate-600 dark:text-slate-300">
+          <Text className="mb-1 text-center text-base text-slate-600">
             {strings.pause.round(roundNumber)}
           </Text>
-          <Text className="mb-6 text-center text-base text-slate-600 dark:text-slate-300">
+          <Text className="mb-6 text-center text-base text-slate-600">
             {strings.pause.team(teamName)}
           </Text>
           <View className="gap-3">
@@ -61,8 +62,8 @@ export function AwardModal({
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View className="flex-1 justify-end bg-black/50">
-        <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6 dark:bg-slate-900">
-          <Text className="mb-4 text-center text-xl font-bold text-slate-900 dark:text-white">
+        <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6">
+          <Text className="mb-4 text-center text-xl font-bold text-slate-900">
             {strings.award.title}
           </Text>
           <View className="mb-4 gap-2">
@@ -72,7 +73,7 @@ export function AwardModal({
                 accessibilityRole="radio"
                 accessibilityState={{ selected: selectedTeamId === team.id }}
                 onPress={() => onSelect(team.id)}
-                className={`rounded-xl border px-4 py-3 ${selectedTeamId === team.id ? 'border-blue-500 bg-blue-50' : 'border-slate-200'}`}
+                className={`award-option ${selectedTeamId === team.id ? 'award-option--selected' : ''}`}
               >
                 <Text className="text-base font-medium text-slate-900">{team.name}</Text>
               </Pressable>
@@ -81,7 +82,7 @@ export function AwardModal({
               accessibilityRole="radio"
               accessibilityState={{ selected: selectedTeamId === null }}
               onPress={() => onSelect(null)}
-              className={`rounded-xl border px-4 py-3 ${selectedTeamId === null ? 'border-blue-500 bg-blue-50' : 'border-slate-200'}`}
+              className={`award-option ${selectedTeamId === null ? 'award-option--selected' : ''}`}
             >
               <Text className="text-base font-medium text-slate-900">{strings.award.nobody}</Text>
             </Pressable>

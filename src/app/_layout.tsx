@@ -11,12 +11,13 @@ import { useSettingsStore } from '@features/settings/store';
 import { initSentry } from '@infrastructure/analytics/sentry';
 import { initSounds } from '@infrastructure/audio/sounds';
 import { migrateDbIfNeeded } from '@infrastructure/db/migrate';
-import { ThemeSync } from '@shared/hooks/ThemeSync';
+import { useAppFonts } from '@ui/hooks/useAppFonts';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 export default function RootLayout() {
   useHydrateGameStore();
+  const fontsLoaded = useAppFonts();
   const hydrateSettings = useSettingsStore((store) => store.hydrate);
   const settingsHydrated = useSettingsStore((store) => store.hydrated);
 
@@ -25,13 +26,17 @@ export default function RootLayout() {
   }, [hydrateSettings]);
 
   useEffect(() => {
-    if (!settingsHydrated) {
+    if (!settingsHydrated || !fontsLoaded) {
       return;
     }
     initSentry();
     void initSounds();
     void SplashScreen.hideAsync();
-  }, [settingsHydrated]);
+  }, [settingsHydrated, fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
     <SQLiteProvider
@@ -40,8 +45,7 @@ export default function RootLayout() {
       onInit={migrateDbIfNeeded}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeSync />
-        <GameRouteSync />
+<GameRouteSync />
         <Stack screenOptions={{ headerShown: false }} />
       </GestureHandlerRootView>
     </SQLiteProvider>

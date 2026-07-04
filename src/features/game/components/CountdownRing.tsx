@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Text, View } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -7,10 +6,10 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import Svg, { Circle } from 'react-native-svg';
 
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
 import { formatTimer } from '@shared/lib/format';
+import { Text } from '@ui/components/Text';
 
 type CountdownRingProps = {
   remainingMs: number;
@@ -19,31 +18,15 @@ type CountdownRingProps = {
   locked?: boolean;
 };
 
-const SIZE = 176;
-const STROKE = 10;
-const RADIUS = (SIZE - STROKE) / 2;
-const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
-
-function getRingColor(remainingMs: number, locked: boolean, textColor: string): string {
-  if (locked || remainingMs <= 5_000) {
-    return '#EF4444';
-  }
-  if (remainingMs <= 15_000) {
-    return '#F59E0B';
-  }
-  return textColor;
+function getTimerColor(remainingMs: number, locked: boolean): string {
+  if (locked || remainingMs <= 5_000) return '#EF4444';
+  if (remainingMs <= 15_000) return '#F59E0B';
+  return '#1A1A1A';
 }
 
-export function CountdownRing({
-  remainingMs,
-  totalMs,
-  textColor = '#1A1A1A',
-  locked = false,
-}: CountdownRingProps) {
+export function CountdownRing({ remainingMs, locked = false }: CountdownRingProps) {
   const reducedMotion = useReducedMotion();
-  const progress = totalMs > 0 ? remainingMs / totalMs : 0;
-  const ringColor = getRingColor(remainingMs, locked, textColor);
-  const dashOffset = CIRCUMFERENCE * (1 - progress);
+  const timerColor = getTimerColor(remainingMs, locked);
   const pulse = useSharedValue(1);
 
   useEffect(() => {
@@ -52,60 +35,40 @@ export function CountdownRing({
       return;
     }
     pulse.value = withRepeat(
-      withTiming(1.12, { duration: 350, easing: Easing.inOut(Easing.ease) }),
+      withTiming(1.06, { duration: 350, easing: Easing.inOut(Easing.ease) }),
       -1,
       true,
     );
   }, [locked, pulse, reducedMotion, remainingMs]);
 
-  const dotStyle = useAnimatedStyle(() => ({
+  const pillStyle = useAnimatedStyle(() => ({
     transform: [{ scale: pulse.value }],
-    opacity: locked || remainingMs > 3_000 ? 0 : 1,
   }));
 
   return (
-    <View className="items-center justify-center" style={{ width: SIZE, height: SIZE }}>
-      <Svg width={SIZE} height={SIZE} style={{ position: 'absolute' }}>
-        <Circle
-          cx={SIZE / 2}
-          cy={SIZE / 2}
-          r={RADIUS}
-          stroke={ringColor}
-          strokeWidth={STROKE}
-          fill="none"
-          opacity={0.2}
-        />
-        <Circle
-          cx={SIZE / 2}
-          cy={SIZE / 2}
-          r={RADIUS}
-          stroke={ringColor}
-          strokeWidth={STROKE}
-          fill="none"
-          strokeDasharray={`${CIRCUMFERENCE} ${CIRCUMFERENCE}`}
-          strokeDashoffset={dashOffset}
-          strokeLinecap="round"
-          rotation="-90"
-          origin={`${SIZE / 2}, ${SIZE / 2}`}
-        />
-      </Svg>
-      <Text style={{ color: textColor }} className="text-4xl font-bold tabular-nums">
+    <Animated.View
+      style={[
+        pillStyle,
+        {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+          backgroundColor: '#FFFFFF',
+          borderRadius: 999,
+          paddingHorizontal: 24,
+          paddingVertical: 12,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.08,
+          shadowRadius: 6,
+          elevation: 3,
+        },
+      ]}
+    >
+      <Text style={{ fontSize: 20 }}>⏱</Text>
+      <Text style={{ color: timerColor, fontSize: 24, fontWeight: '700', fontVariant: ['tabular-nums'] }}>
         {locked ? '00:00' : formatTimer(remainingMs)}
       </Text>
-      <Animated.View
-        style={[
-          dotStyle,
-          {
-            position: 'absolute',
-            top: STROKE / 2,
-            left: SIZE / 2 - 6,
-            width: 12,
-            height: 12,
-            borderRadius: 6,
-            backgroundColor: ringColor,
-          },
-        ]}
-      />
-    </View>
+    </Animated.View>
   );
 }

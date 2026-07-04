@@ -1,0 +1,16 @@
+@layer components {
+  .award-option {
+    border-radius: 12px;
+    border-width: 1px;
+    border-color: #e2e8f0;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .award-option--selected {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+  }
+}

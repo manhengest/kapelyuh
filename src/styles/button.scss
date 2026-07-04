@@ -1,0 +1,25 @@
+@use 'tokens' as *;
+
+@layer components {
+  .btn {
+    min-height: 60px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  .btn--primary {
+    background-color: $primary-btn;
+  }
+
+  .btn-text {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: $primary-text;
+  }
+}

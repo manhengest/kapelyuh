@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import { strings } from '@content/strings';
 import { ActionButtons } from '@features/game/components/ActionButtons';
@@ -9,6 +9,7 @@ import { GameScreenShell } from '@features/game/components/GameScreenShell';
 import { AwardModal, PauseModal } from '@features/game/components/Modals';
 import { WordCard } from '@features/game/components/WordCard';
 import {
+  getRoundMeta,
   useGameActions,
   useGameSelectors,
   useGameState,
@@ -19,6 +20,7 @@ import {
 import { playGuess, playSkip } from '@infrastructure/audio/sounds';
 import { triggerHaptic } from '@infrastructure/haptics';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
+import { Text } from '@ui/components/Text';
 import { getRoundPalette } from '@ui/theme/roundPalette';
 
 export default function TurnScreen() {
@@ -34,6 +36,7 @@ export default function TurnScreen() {
   const { guesses, skips } = useTurnLiveCounts();
   const word = useWordText(turn?.currentWordId);
   const palette = getRoundPalette(currentRound?.type);
+  const roundMeta = getRoundMeta(currentRound?.type);
 
   const [awardSelection, setAwardSelection] = useState<string | null | undefined>(undefined);
   const [wordFeedback, setWordFeedback] = useState<'guess' | 'skip' | null>(null);
@@ -84,42 +87,54 @@ export default function TurnScreen() {
 
   return (
     <GameScreenShell roundType={currentRound?.type}>
-      <ScreenHeader showHome onHomePress={onPausePress} textColor={palette.text} />
-      <View className="items-center px-4 pt-2">
-        <Text style={{ color: palette.text }} className="text-lg font-semibold">
-          — {teamName} —
+      <ScreenHeader showHome onHomePress={onPausePress} />
+
+      {/* Team name + round info */}
+      <View className="items-center px-4 pb-2 pt-1">
+        <Text
+          className="text-3xl font-bold"
+          style={{ color: palette.text }}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+        >
+          {teamName}
         </Text>
+        <Text className="mt-0.5 text-sm font-semibold" style={{ color: palette.wordText }}>
+          {strings.rounds.roundLabel(roundIndex + 1, 3)}
+        </Text>
+        <View
+          className="mt-1 rounded-full px-4 py-0.5"
+          style={{ backgroundColor: 'rgba(255,255,255,0.55)' }}
+        >
+          <Text className="text-xs font-bold tracking-widest" style={{ color: palette.text }}>
+            {roundMeta.name}
+          </Text>
+        </View>
       </View>
 
-      <View className="flex-1 items-center justify-center gap-6">
-        <WordCard
-          word={word}
-          backgroundColor={palette.card}
-          textColor={palette.text}
-          label={isAwaitingAward ? strings.turn.wordForAll : undefined}
-          hideFromAccessibility={!isAwaitingAward}
-          feedback={wordFeedback}
-        />
+      {/* Timer pill */}
+      <View className="items-center pb-3">
         <CountdownRing
           remainingMs={isAwaitingAward ? 0 : remainingMs}
           totalMs={settings.turnDurationMs}
           textColor={palette.text}
           locked={isAwaitingAward}
         />
-        {!isAwaitingAward ? (
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={strings.turn.pause}
-            onPress={onPausePress}
-            className="h-10 w-10 items-center justify-center"
-          >
-            <Text style={{ color: palette.text }} className="text-2xl">
-              ‖
-            </Text>
-          </Pressable>
-        ) : null}
       </View>
 
+      {/* Word card */}
+      <View className="flex-1 items-center justify-center">
+        <WordCard
+          word={word}
+          backgroundColor={palette.card}
+          textColor={palette.wordText}
+          label={isAwaitingAward ? strings.turn.wordForAll : undefined}
+          hideFromAccessibility={!isAwaitingAward}
+          feedback={wordFeedback}
+        />
+      </View>
+
+      {/* Action buttons */}
       <View className="pb-8" style={{ opacity: isAwaitingAward ? 0.3 : 1 }}>
         <ActionButtons
           guessCount={guesses}

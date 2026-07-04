@@ -1,66 +1,141 @@
 import { useRouter } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+import { Image, ImageBackground, Pressable, View, type ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from '@content/strings';
-import { STATUS_ROUTE } from '@features/game/hooks';
-import { useHydrateGameStore } from '@features/game/navigation';
-import { hasResumableMatch, useGameStore } from '@features/game/store';
-import { Button } from '@ui/components/Button';
+import { useGameStore } from '@features/game/store';
+import { Text } from '@ui/components/Text';
+
+const aboutIcon = require('../../assets/images/icons/landing/about.png');
+const chevronIcon = require('../../assets/images/icons/landing/chevron-arrow-right.png');
+const hatIcon = require('../../assets/images/icons/landing/hat.png');
+const heartSubtitleIcon = require('../../assets/images/icons/landing/heart-subtitle.png');
+const howToPlayIcon = require('../../assets/images/icons/landing/how-to-play.png');
+const newGameFragmentIcon = require('../../assets/images/icons/landing/new-game-fragment.png');
+const newGameIcon = require('../../assets/images/icons/landing/new-game.png');
+const settingsIcon = require('../../assets/images/icons/landing/settings.png');
+const textIcon = require('../../assets/images/icons/landing/text.png');
+const mainBg = require('../../assets/images/main-bg.png');
+
+type LandingMenuButtonProps = {
+  label: string;
+  icon: ImageSourcePropType;
+  onPress: () => void;
+};
+
+function LandingMenuButton({ label, icon, onPress }: Readonly<LandingMenuButtonProps>) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      onPress={onPress}
+      className="landing-menu-btn"
+      style={{
+        shadowColor: '#f2f2f2',
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.8,
+        shadowRadius: 0,
+        elevation: 10, // Android
+      }}
+    >
+      <Image
+        source={icon}
+        style={{ width: 40, height: 40, position: 'absolute', left: 20, top: 10 }}
+        resizeMode="contain"
+      />
+      <Text className="landing-menu-btn-text">{label}</Text>
+      <Image
+        source={chevronIcon}
+        style={{ width: 12, height: 20, position: 'absolute', right: 24, top: 20 }}
+        resizeMode="contain"
+      />
+    </Pressable>
+  );
+}
 
 export default function HomeScreen() {
   const router = useRouter();
-  const hydrated = useHydrateGameStore();
-  const state = useGameStore((store) => store.state);
   const dispatch = useGameStore((store) => store.dispatch);
-  const canResume = hydrated && hasResumableMatch(state);
 
   const startNewGame = () => {
     dispatch({ type: 'START_SETUP' });
     router.push('/game/setup');
   };
 
-  const resumeGame = () => {
-    const target = STATUS_ROUTE[state.status] ?? '/game/setup';
-    router.push(target);
-  };
-
-  if (!hydrated) {
-    return (
-      <SafeAreaView className="flex-1 items-center justify-center bg-white dark:bg-slate-900">
-        <Text className="text-base text-slate-600 dark:text-slate-300">Завантаження…</Text>
-      </SafeAreaView>
-    );
-  }
-
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
-      <View className="flex-row justify-end px-5 pt-2">
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={strings.home.openSettings}
-          onPress={() => router.push('/settings')}
-          className="h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800"
-        >
-          <Text className="text-xl">⚙️</Text>
-        </Pressable>
-      </View>
-      <View className="flex-1 items-center justify-center gap-3 px-6">
-        <Text className="text-5xl">🎩</Text>
-        <Text className="text-center text-4xl font-bold text-slate-900 dark:text-white">
-          {strings.appName}
-        </Text>
-        <Text className="text-center text-base text-slate-600 dark:text-slate-300">
-          {strings.home.tagline}
-        </Text>
-      </View>
-      <View className="gap-3 px-5 pb-8">
-        {canResume ? (
-          <Button label={strings.home.resumeGame} onPress={resumeGame} />
-        ) : null}
-        <Button label={strings.home.newGame} onPress={startNewGame} variant={canResume ? 'outline' : 'primary'} />
-        <Button label={strings.home.rules} variant="outline" onPress={() => router.push('/rules')} />
-      </View>
-    </SafeAreaView>
+    <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
+      <SafeAreaView className="flex-1 justify-between">
+        <View className="items-center px-6 pt-16">
+          <Image
+            source={hatIcon}
+            accessibilityRole="image"
+            accessibilityLabel={strings.appName}
+            style={{ width: 240, height: 132 }}
+            resizeMode="contain"
+          />
+          <Image
+            source={textIcon}
+            accessibilityRole="image"
+            accessibilityLabel={strings.appName}
+            style={{ width: 320, height: 96, marginTop: 4 }}
+            resizeMode="contain"
+          />
+          <View className="mt-2 flex-row items-center justify-center gap-2">
+            <Text className="text-lg font-bold text-[#3D2B56]">{strings.home.tagline}</Text>
+            <Image
+              source={heartSubtitleIcon}
+              accessibilityRole="image"
+              accessibilityLabel=""
+              style={{ width: 18, height: 18 }}
+              resizeMode="contain"
+            />
+          </View>
+        </View>
+
+        <View className="gap-5 px-14 pb-20">
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={strings.home.newGame}
+            onPress={startNewGame}
+            style={{
+              shadowColor: '#FEA41E',
+              shadowOffset: { width: 0, height: 5 },
+              shadowOpacity: 0.5,
+              shadowRadius: 0,
+              elevation: 10, // Android
+            }}
+            className="landing-new-game-btn"
+          >
+            <Image
+              source={newGameIcon}
+              style={{ width: 48, height: 48, position: 'absolute', left: 24, top: 17 }}
+              resizeMode="contain"
+            />
+            <Text className="landing-new-game-btn-text">{strings.home.newGame}</Text>
+            <Image
+              source={newGameFragmentIcon}
+              style={{ width: 32, height: 42, position: 'absolute', right: 24, top: 12 }}
+              resizeMode="contain"
+            />
+          </Pressable>
+
+          <LandingMenuButton
+            label={strings.home.rules}
+            icon={howToPlayIcon}
+            onPress={() => router.push('/rules')}
+          />
+          <LandingMenuButton
+            label={strings.home.settings}
+            icon={settingsIcon}
+            onPress={() => router.push('/settings')}
+          />
+          <LandingMenuButton
+            label={strings.home.about}
+            icon={aboutIcon}
+            onPress={() => router.push('/about')}
+          />
+        </View>
+      </SafeAreaView>
+    </ImageBackground>
   );
 }

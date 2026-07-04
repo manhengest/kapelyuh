@@ -1,4 +1,6 @@
-import { ScrollView, Pressable, Text, View } from 'react-native';
+import { ScrollView, Pressable, View } from 'react-native';
+
+import { Text } from '@ui/components/Text';
 
 type HorizontalPickerProps<T extends string | number> = {
   label: string;
@@ -16,10 +18,10 @@ export function HorizontalPicker<T extends string | number>({
   formatOption = (option) => String(option),
 }: HorizontalPickerProps<T>) {
   return (
-    <View className="mb-6">
-      <Text className="mb-3 text-base font-semibold text-slate-900 dark:text-white">{label}</Text>
+    <View>
+      <Text className="picker-title">{label}</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} className="flex-row">
-        <View className="flex-row gap-2 px-1">
+        <View className="flex-row gap-2">
           {options.map((option) => {
             const selected = option === value;
             return (
@@ -28,11 +30,9 @@ export function HorizontalPicker<T extends string | number>({
                 accessibilityRole="button"
                 accessibilityState={{ selected }}
                 onPress={() => onChange(option)}
-                className={`rounded-2xl px-5 py-3 ${selected ? 'bg-blue-500' : 'bg-slate-100 dark:bg-slate-800'}`}
+                className={`picker-option ${selected ? 'picker-option--selected' : ''}`}
               >
-                <Text
-                  className={`text-base font-semibold ${selected ? 'text-white' : 'text-slate-700 dark:text-slate-200'}`}
-                >
+                <Text className={`picker-option-text ${selected ? 'picker-option-text--selected' : ''}`}>
                   {formatOption(option)}
                 </Text>
               </Pressable>
@@ -40,46 +40,6 @@ export function HorizontalPicker<T extends string | number>({
           })}
         </View>
       </ScrollView>
-    </View>
-  );
-}
-
-type MultiPickerProps<T extends string> = {
-  label: string;
-  options: { value: T; label: string }[];
-  values: T[];
-  onToggle: (value: T) => void;
-};
-
-export function MultiPicker<T extends string>({
-  label,
-  options,
-  values,
-  onToggle,
-}: MultiPickerProps<T>) {
-  return (
-    <View className="mb-6">
-      <Text className="mb-3 text-base font-semibold text-slate-900 dark:text-white">{label}</Text>
-      <View className="flex-row flex-wrap gap-2">
-        {options.map((option) => {
-          const selected = values.includes(option.value);
-          return (
-            <Pressable
-              key={option.value}
-              accessibilityRole="checkbox"
-              accessibilityState={{ checked: selected }}
-              onPress={() => onToggle(option.value)}
-              className={`rounded-2xl px-4 py-3 ${selected ? 'bg-blue-500' : 'bg-slate-100 dark:bg-slate-800'}`}
-            >
-              <Text
-                className={`text-sm font-semibold ${selected ? 'text-white' : 'text-slate-700 dark:text-slate-200'}`}
-              >
-                {option.label}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </View>
     </View>
   );
 }

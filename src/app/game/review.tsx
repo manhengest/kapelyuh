@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Pressable, ScrollView, Text, View } from 'react-native';
+import { Pressable, ScrollView, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { strings } from '@content/strings';
@@ -14,6 +14,7 @@ import {
 import { triggerHaptic } from '@infrastructure/haptics';
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
 import { Button } from '@ui/components/Button';
+import { Text } from '@ui/components/Text';
 import { getRoundPalette } from '@ui/theme/roundPalette';
 
 export default function ReviewScreen() {
@@ -120,7 +121,7 @@ export default function ReviewScreen() {
                     className="flex-row items-center gap-3 rounded-xl bg-white/70 px-4 py-3"
                   >
                     <View
-                      className={`h-6 w-6 items-center justify-center rounded-md border ${entry.checked ? 'border-green-500 bg-green-500' : 'border-slate-400'}`}
+                      className={`review-checkbox ${entry.checked ? 'review-checkbox--checked' : ''}`}
                     >
                       {entry.checked ? <Text className="text-white">✓</Text> : null}
                     </View>

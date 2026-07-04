@@ -18,9 +18,9 @@ npm start
 Для нативних модулів (MMKV, Sentry) потрібен **Development Build**, не Expo Go:
 
 ```bash
-npx eas login
-npx eas build:configure   # якщо ще не налаштовано
-npx eas build --profile development --platform ios
+npx eas-cli login
+npx eas-cli build:configure   # якщо ще не налаштовано
+npx eas-cli build --profile development --platform ios
 ```
 
 Після встановлення dev build на iPhone:
@@ -46,8 +46,8 @@ npx expo start --dev-client
 ```bash
 npm run typecheck && npm run lint && npm test
 maestro test maestro/happy-path.yaml   # production/preview build на симуляторі або пристрої
-eas build --profile production --platform ios
-eas submit --platform ios --latest --profile production --groups "Internal"
+npx eas-cli build --profile production --platform ios
+npx eas-cli submit --platform ios --latest --profile production --groups "Internal"
 ```
 
 Maestro CLI: `curl -fsSL "https://get.maestro.mobile.dev" | bash`
@@ -60,9 +60,9 @@ Maestro CLI: `curl -fsSL "https://get.maestro.mobile.dev" | bash`
 
 1. **Apple Developer** — підтвердити enrollment ($99/рік).
 2. **Bundle ID** — зареєструвати `com.kapelyukh.app` в [Apple Developer → Identifiers](https://developer.apple.com/account/resources/identifiers/list).
-3. **EAS** — `npx eas init`, оновити `app.json` → `extra.eas.projectId`.
+3. **EAS** — `npx eas-cli init`, оновити `app.json` → `extra.eas.projectId`.
 4. **Sentry** — створити проєкт, DSN у `.env.local` як `EXPO_PUBLIC_SENTRY_DSN=...`; для EAS Build — secrets + [docs/sentry-beta.md](docs/sentry-beta.md).
-5. **Dev Build** — `eas build --profile development --platform ios`, встановити на фізичний iPhone, перевірити запуск.
+5. **Dev Build** — `npx eas-cli build --profile development --platform ios`, встановити на фізичний iPhone, перевірити запуск.
 
 ## Структура
 

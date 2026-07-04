@@ -42,11 +42,6 @@ export function startMatch(
   return state;
 }
 
-export function beginTurn(state: GameState, now = BASE_TIME): GameState {
-  state = gameReducer(state, { type: 'START_TURN', now });
-  return state;
-}
-
 export function guessCurrentWord(state: GameState, now = BASE_TIME): GameState {
   return gameReducer(state, { type: 'GUESS_WORD', now });
 }

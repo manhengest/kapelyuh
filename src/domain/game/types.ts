@@ -7,7 +7,6 @@ export type GameStatus =
   | 'setup_settings'
   | 'setup_teams'
   | 'round_intro'
-  | 'pre_turn'
   | 'in_turn'
   | 'awaiting_award'
   | 'review'
@@ -25,9 +24,9 @@ export const ROUND_TYPES: readonly RoundType[] = ['elias', 'crocodile', 'associa
 
 export const DEFAULT_MATCH_SETTINGS: MatchSettings = {
   teamCount: 2,
-  turnDurationMs: 90_000,
-  wordCount: 45,
-  difficulties: ['easy', 'medium'],
+  turnDurationMs: 60_000,
+  wordCount: 30,
+  difficulties: ['easy'],
   enabledPackIds: ['bundled-default'],
   skipPenalty: 0,
 };
@@ -122,8 +121,6 @@ export interface SessionHistoryEntry {
 export interface AppSettings {
   soundEnabled: boolean;
   hapticsEnabled: boolean;
-  theme: 'system' | 'light' | 'dark';
-  reduceMotion: 'system' | 'on';
   sentryEnabled: boolean;
   hasSeenRules: boolean;
 }

@@ -1,18 +1,12 @@
-export const lightColors = {
+export const colors = {
   background: '#FFFFFF',
   foreground: '#111827',
   muted: '#6B7280',
   primary: '#208AEF',
-  round1: '#FF6B9D',
-  round2: '#2EC4B6',
-  round3: '#C8E62E',
-} as const;
-
-export const darkColors = {
-  background: '#0F172A',
-  foreground: '#F8FAFC',
-  muted: '#94A3B8',
-  primary: '#38BDF8',
+  primaryText: '#401947',
+  highlightText: '#960856',
+  primaryBtn: '#FDC82B',
+  pink: '#FB6694',
   round1: '#FF6B9D',
   round2: '#2EC4B6',
   round3: '#C8E62E',

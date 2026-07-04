@@ -7,8 +7,6 @@ export const SETTINGS_STORAGE_KEY = 'kapelyukh.settings';
 export const DEFAULT_SETTINGS: AppSettings = {
   soundEnabled: true,
   hapticsEnabled: true,
-  theme: 'system',
-  reduceMotion: 'system',
   sentryEnabled: true,
   hasSeenRules: false,
 };

@@ -1,0 +1,17 @@
+@layer components {
+  .screen-header-action-btn {
+    height: 44px;
+    width: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+  }
+
+  .screen-header-action-btn--back {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+
+  .screen-header-action-btn--home {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}

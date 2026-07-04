@@ -1,7 +1,8 @@
 import { useEffect, useMemo } from 'react';
-import { Animated, Text, View } from 'react-native';
+import { Animated, View } from 'react-native';
 
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
+import { Text } from '@ui/components/Text';
 
 type WordCardProps = {
   word: string;

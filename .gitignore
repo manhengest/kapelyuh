@@ -46,4 +46,10 @@ example
 /docs
 /.cursor/plans
 /coverage
-/mockups
+/design
+
+# generated from src/styles/*.scss
+src/styles/.generated/
+
+# IDE
+.idea/

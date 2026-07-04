@@ -1,0 +1,33 @@
+@use 'tokens' as *;
+
+@layer components {
+  .picker-option {
+    border-radius: 16px;
+    padding: 14px 17px;
+    background-color: #f6efe8;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cdb7b7;
+  }
+
+  .picker-option--selected {
+    background-color: $pink;
+    border-color: $pink;
+  }
+
+  .picker-option-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #401947;
+  }
+
+  .picker-option-text--selected {
+    color: #fefbf8;
+  }
+
+  .picker-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+}

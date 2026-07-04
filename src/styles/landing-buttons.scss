@@ -1,0 +1,39 @@
+@use 'tokens' as *;
+
+@layer components {
+  .landing-new-game-btn {
+    position: relative;
+    min-height: 88px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 35px;
+    padding-left: 35px;
+    padding-right: 24px;
+    background-color: $primary-btn;
+  }
+
+  .landing-new-game-btn-text {
+    flex: 1;
+    text-align: center;
+    font-size: 42px;
+    font-weight: 800;
+    color: $primary-text;
+  }
+
+  .landing-menu-btn {
+    min-height: 64px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 9999px;
+    padding-left: 80px;
+    padding-right: 20px;
+    background-color: $white;
+  }
+
+  .landing-menu-btn-text {
+    flex: 1;
+    font-size: 24px;
+    font-weight: 700;
+    color: $primary-text;
+  }
+}

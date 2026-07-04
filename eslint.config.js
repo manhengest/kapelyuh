@@ -9,7 +9,7 @@ module.exports = [
   ...expoConfig,
   eslintConfigPrettier,
   {
-    ignores: ['node_modules/', 'dist/', '.expo/', 'coverage/'],
+    ignores: ['node_modules/', 'dist/', '.expo/', 'coverage/', 'scripts/'],
   },
   {
     files: ['**/*.{ts,tsx}'],

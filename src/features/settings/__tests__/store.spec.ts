@@ -20,10 +20,9 @@ describe('settings storage', () => {
 
   it('persists partial updates through the store', () => {
     useSettingsStore.getState().hydrate();
-    useSettingsStore.getState().updateSettings({ soundEnabled: false, theme: 'dark' });
+    useSettingsStore.getState().updateSettings({ soundEnabled: false });
 
     expect(getSettings().soundEnabled).toBe(false);
-    expect(getSettings().theme).toBe('dark');
     expect(getSettings().hapticsEnabled).toBe(true);
   });
 

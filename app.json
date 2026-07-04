@@ -4,7 +4,7 @@
     "slug": "kapelyuh",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "scheme": "kapelyukh",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -12,7 +12,7 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.kapelyukh.app",
       "buildNumber": "1",
-      "deploymentTarget": "16.0",
+      "deploymentTarget": "17.6.1",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -20,10 +20,8 @@
     "android": {
       "package": "com.kapelyukh.app",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "backgroundColor": "#F5E0C8",
+        "foregroundImage": "./assets/images/logo.png"
       }
     },
     "plugins": [
@@ -39,8 +37,8 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
+          "backgroundColor": "#F5E0C8",
+          "image": "./assets/images/logo.png",
           "imageWidth": 200
         }
       ],

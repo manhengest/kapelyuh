@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
-import { View, type ViewProps } from 'react-native';
+import { ImageBackground, type ViewProps } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -12,6 +12,8 @@ import type { RoundType } from '@domain/game/types';
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
 import { getRoundPalette } from '@ui/theme/roundPalette';
 
+const mainBg = require('../../../../assets/images/main-bg.png');
+
 type GameScreenShellProps = ViewProps & {
   roundType?: RoundType;
   children: ReactNode;
@@ -20,28 +22,28 @@ type GameScreenShellProps = ViewProps & {
 export function GameScreenShell({ roundType, children, className = '', ...props }: GameScreenShellProps) {
   const palette = getRoundPalette(roundType);
   const reducedMotion = useReducedMotion();
-  const bgProgress = useSharedValue(0);
-  const targetColor = palette.bg;
+  const tintOpacity = useSharedValue(0);
 
   useEffect(() => {
     if (reducedMotion) {
-      bgProgress.value = 1;
+      tintOpacity.value = roundType === 'elias' || roundType == null ? 0 : 0.35;
       return;
     }
-    bgProgress.value = 0;
-    bgProgress.value = withTiming(1, { duration: 400 });
-  }, [bgProgress, reducedMotion, targetColor]);
+    tintOpacity.value = withTiming(roundType === 'elias' || roundType == null ? 0 : 0.35, { duration: 400 });
+  }, [tintOpacity, reducedMotion, roundType]);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    backgroundColor: targetColor,
-    opacity: reducedMotion ? 1 : 0.85 + bgProgress.value * 0.15,
+  const tintStyle = useAnimatedStyle(() => ({
+    ...{ position: 'absolute' as const, top: 0, left: 0, right: 0, bottom: 0 },
+    backgroundColor: palette.bg,
+    opacity: tintOpacity.value,
   }));
 
   return (
-    <SafeAreaView className={`flex-1 ${className}`} {...props}>
-      <Animated.View className="flex-1" style={animatedStyle}>
-        <View className="flex-1">{children}</View>
-      </Animated.View>
-    </SafeAreaView>
+    <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
+      <Animated.View style={tintStyle} />
+      <SafeAreaView className={`flex-1 ${className}`} {...props}>
+        {children}
+      </SafeAreaView>
+    </ImageBackground>
   );
 }

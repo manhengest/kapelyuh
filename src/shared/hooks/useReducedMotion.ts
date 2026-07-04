@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
-import { useAppSettings } from '@features/settings/store';
-
 export function useReducedMotion(): boolean {
-  const reduceMotionSetting = useAppSettings().reduceMotion;
   const [systemReduced, setSystemReduced] = useState(false);
 
   useEffect(() => {
@@ -25,10 +22,6 @@ export function useReducedMotion(): boolean {
       subscription.remove();
     };
   }, []);
-
-  if (reduceMotionSetting === 'on') {
-    return true;
-  }
 
   return systemReduced;
 }

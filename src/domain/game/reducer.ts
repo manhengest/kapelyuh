@@ -362,6 +362,12 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
         event.now,
       );
 
+    case 'BACK_TO_SETTINGS':
+      if (state.status !== 'setup_teams') {
+        return state;
+      }
+      return touch({ ...state, status: 'setup_settings' }, event.now);
+
     case 'TEAMS_COMPLETED': {
       assertStatus(state, ['setup_teams']);
       const teams = initTeams(event.teams);
@@ -386,10 +392,6 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
 
     case 'ROUND_INTRO_ACK':
       assertStatus(state, ['round_intro']);
-      return touch({ ...state, status: 'pre_turn' }, event.now);
-
-    case 'START_TURN':
-      assertStatus(state, ['pre_turn']);
       return startTurnState(state, event.now);
 
     case 'GUESS_WORD':
@@ -477,10 +479,9 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
       assertStatus(state, ['review']);
       const round = getCurrentRound(state);
       const withHistory = appendTurnHistory(state, event.now);
-      return touch(
+      const advanced = touch(
         {
           ...withHistory,
-          status: 'pre_turn',
           currentTeamIndex: (withHistory.currentTeamIndex + 1) % withHistory.teams.length,
           turn: null,
           rounds: withHistory.rounds.map((entry, index) =>
@@ -491,6 +492,7 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
         },
         event.now,
       );
+      return startTurnState(advanced, event.now);
     }
 
     case 'NEXT_ROUND': {

@@ -12,7 +12,7 @@ import {
 import type { Word } from '@domain/game/types';
 import { selectSessionWordsWithHistory } from '@domain/game/wordSelector';
 
-import { beginTurn, awardWord, expireTimer, guessCurrentWord, makeTeam, startMatch } from './helpers';
+import { awardWord, expireTimer, guessCurrentWord, makeTeam, startMatch } from './helpers';
 
 describe('domain/game/selectors integration', () => {
   it('selectCurrentTeam returns the active team', () => {
@@ -22,7 +22,7 @@ describe('domain/game/selectors integration', () => {
 
   it('selectRemainingWords includes the active card and queued words', () => {
     let state = startMatch(['w1', 'w2', 'w3']);
-    state = beginTurn(state);
+
     const remaining = selectRemainingWords(state, { w1: 'один', w2: 'два', w3: 'три' });
 
     expect(remaining).toHaveLength(3);
@@ -31,7 +31,7 @@ describe('domain/game/selectors integration', () => {
 
   it('selectRemainingWordCount tracks queue plus active card', () => {
     let state = startMatch(['w1', 'w2']);
-    state = beginTurn(state);
+
     expect(selectRemainingWordCount(state)).toBe(2);
   });
 
@@ -40,7 +40,7 @@ describe('domain/game/selectors integration', () => {
       makeTeam('t1', 'А'),
       makeTeam('t2', 'Б'),
     ]);
-    state = beginTurn(state);
+
     state = guessCurrentWord(state);
 
     const board = selectScoreboard(state);
@@ -50,7 +50,7 @@ describe('domain/game/selectors integration', () => {
 
   it('selectReviewCta returns next_turn while words remain', () => {
     let state = startMatch(['w1', 'w2', 'w3']);
-    state = beginTurn(state);
+
     state = guessCurrentWord(state);
     state = expireTimer(state);
     state = awardWord(state, null);

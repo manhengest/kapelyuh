@@ -1,8 +1,9 @@
 import { Link } from 'expo-router';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from '@content/strings';
+import { Text } from '@ui/components/Text';
 
 type NavLink = {
   href: string;
@@ -17,12 +18,12 @@ type PlaceholderScreenProps = {
 
 export function PlaceholderScreen({ title, description, links = [] }: PlaceholderScreenProps) {
   return (
-    <SafeAreaView className="flex-1 bg-white dark:bg-slate-900">
+    <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 justify-center gap-4 px-6">
-        <Text className="text-center text-3xl font-bold text-slate-900 dark:text-white">
+        <Text className="text-center text-3xl font-bold text-slate-900">
           {title}
         </Text>
-        <Text className="text-center text-base text-slate-600 dark:text-slate-300">
+        <Text className="text-center text-base text-slate-600">
           {description ?? strings.common.placeholder}
         </Text>
         <View className="mt-4 gap-3">

@@ -1,3 +1,136 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .btn {
+    min-height: 60px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .btn--primary {
+    background-color: #FDC82B;
+  }
+  .btn-text {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    color: #401947;
+  }
+}
+
+@layer components {
+  .award-option {
+    border-radius: 12px;
+    border-width: 1px;
+    border-color: #e2e8f0;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .award-option--selected {
+    border-color: #3b82f6;
+    background-color: #eff6ff;
+  }
+}
+
+@layer components {
+  .review-checkbox {
+    height: 24px;
+    width: 24px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: #94a3b8;
+  }
+  .review-checkbox--checked {
+    border-color: #22c55e;
+    background-color: #22c55e;
+  }
+}
+
+@layer components {
+  .picker-option {
+    border-radius: 16px;
+    padding: 14px 17px;
+    background-color: #f6efe8;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #cdb7b7;
+  }
+  .picker-option--selected {
+    background-color: #FB6694;
+    border-color: #FB6694;
+  }
+  .picker-option-text {
+    font-size: 16px;
+    font-weight: 700;
+    color: #401947;
+  }
+  .picker-option-text--selected {
+    color: #fefbf8;
+  }
+  .picker-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 14px;
+  }
+}
+
+@layer components {
+  .landing-new-game-btn {
+    position: relative;
+    min-height: 88px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 35px;
+    padding-left: 35px;
+    padding-right: 24px;
+    background-color: #FDC82B;
+  }
+  .landing-new-game-btn-text {
+    flex: 1;
+    text-align: center;
+    font-size: 42px;
+    font-weight: 800;
+    color: #401947;
+  }
+  .landing-menu-btn {
+    min-height: 64px;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 9999px;
+    padding-left: 80px;
+    padding-right: 20px;
+    background-color: #FEFAF7;
+  }
+  .landing-menu-btn-text {
+    flex: 1;
+    font-size: 24px;
+    font-weight: 700;
+    color: #401947;
+  }
+}
+
+@layer components {
+  .screen-header-action-btn {
+    height: 44px;
+    width: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+  }
+  .screen-header-action-btn--back {
+    background-color: rgba(255, 255, 255, 0.6);
+  }
+  .screen-header-action-btn--home {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}

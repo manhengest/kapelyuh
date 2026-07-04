@@ -17,7 +17,6 @@ import {
 import {
   BASE_TIME,
   awardWord,
-  beginTurn,
   expireTimer,
   getCurrentRoundScore,
   guessCurrentWord,
@@ -31,9 +30,9 @@ import {
 } from './helpers';
 
 describe('domain/game/reducer', () => {
-  it('walks through setup into round intro', () => {
+  it('walks through setup into first turn', () => {
     const state = startMatch(['w1', 'w2', 'w3']);
-    expect(state.status).toBe('pre_turn');
+    expect(state.status).toBe('in_turn');
     expect(state.rounds).toHaveLength(1);
     expect(state.rounds[0]?.type).toBe('elias');
     expect(state.rounds[0]?.sessionWordIds).toEqual(['w1', 'w2', 'w3']);
@@ -41,7 +40,6 @@ describe('domain/game/reducer', () => {
 
   it('timer-expiry-mid-word enters awaiting_award then resolves to review', () => {
     let state = startMatch(['w1', 'w2']);
-    state = beginTurn(state);
     expect(state.turn?.currentWordId).toBeTruthy();
 
     state = expireTimer(state);
@@ -55,7 +53,6 @@ describe('domain/game/reducer', () => {
 
   it('skip-FIFO recycling returns skipped words to the queue tail', () => {
     let state = startMatch(['w1', 'w2', 'w3']);
-    state = beginTurn(state);
     const firstWord = state.turn?.currentWordId;
 
     state = skipCurrentWord(state);
@@ -66,7 +63,6 @@ describe('domain/game/reducer', () => {
 
   it('applies skip penalty when configured', () => {
     let state = startMatch(['w1', 'w2', 'w3'], undefined, makeSettings({ skipPenalty: -1 }));
-    state = beginTurn(state);
     state = guessCurrentWord(state);
     state = skipCurrentWord(state);
 
@@ -75,7 +71,6 @@ describe('domain/game/reducer', () => {
 
   it('review-toggle applies -2 when skip penalty is enabled', () => {
     let state = startMatch(['w1', 'w2'], undefined, makeSettings({ skipPenalty: -1 }));
-    state = beginTurn(state);
     state = guessCurrentWord(state);
     const guessedWordId = state.turn?.events.find((event) => event.kind === 'guessed')?.wordId;
     expect(getCurrentRoundScore(state, 't1')).toBe(1);
@@ -88,7 +83,6 @@ describe('domain/game/reducer', () => {
 
   it('hat-empty round transition offers next round CTA', () => {
     let state = startMatch(['w1']);
-    state = beginTurn(state);
     state = guessCurrentWord(state);
 
     expect(state.status).toBe('review');
@@ -98,7 +92,6 @@ describe('domain/game/reducer', () => {
 
   it('moves to the next round with reshuffled words from the same session pool', () => {
     let state = startMatch(['w1', 'w2']);
-    state = beginTurn(state);
     state = guessCurrentWord(state);
     state = guessCurrentWord(state);
     state = nextRound(state);
@@ -112,19 +105,17 @@ describe('domain/game/reducer', () => {
 
   it('continues the round with the next team when the hat is not empty', () => {
     let state = startMatch(['w1', 'w2', 'w3']);
-    state = beginTurn(state);
     state = expireTimer(state);
     state = awardWord(state, null);
     state = nextTurn(state);
 
-    expect(state.status).toBe('pre_turn');
+    expect(state.status).toBe('in_turn');
     expect(state.currentTeamIndex).toBe(1);
     expect(selectIsHatEmpty(state)).toBe(false);
   });
 
   it('clamps stored team scores at zero', () => {
     let state = startMatch(['w1', 'w2', 'w3'], undefined, makeSettings({ skipPenalty: -1 }));
-    state = beginTurn(state);
     state = skipCurrentWord(state);
     state = skipCurrentWord(state);
     state = skipCurrentWord(state);
@@ -137,7 +128,6 @@ describe('domain/game/reducer', () => {
 
   it('pauses and resumes by shifting turn end time', () => {
     let state = startMatch(['w1', 'w2']);
-    state = beginTurn(state, BASE_TIME);
     const endsAt = state.turn?.endsAt ?? 0;
 
     state = gameReducer(state, { type: 'PAUSE', now: BASE_TIME + 10_000 });
@@ -152,7 +142,6 @@ describe('domain/game/reducer', () => {
 
   it('opens stat carousel after final round and dismisses into end_of_match', () => {
     let state = startMatch(['w1']);
-    state = beginTurn(state);
     state = guessCurrentWord(state);
 
     state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
@@ -170,7 +159,6 @@ describe('domain/game/reducer', () => {
 
   it('replays with the same teams and settings after match end', () => {
     let state = startMatch(['w1']);
-    state = beginTurn(state);
     state = guessCurrentWord(state);
     state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
     for (let index = 0; index < 3; index += 1) {
@@ -192,14 +180,13 @@ describe('domain/game/reducer', () => {
 
   it('rejects invalid transitions', () => {
     const state = createInitialState();
-    expect(() => gameReducer(state, { type: 'START_TURN', now: BASE_TIME })).toThrow(
+    expect(() => gameReducer(state, { type: 'GUESS_WORD', now: BASE_TIME })).toThrow(
       /Invalid transition/,
     );
   });
 
   it('awards «Слово для всіх» to any team and removes the word from the hat', () => {
     let state = startMatch(['w1', 'w2']);
-    state = beginTurn(state);
     const awardedWordId = state.turn?.currentWordId;
     state = expireTimer(state);
     state = awardWord(state, 't2');
@@ -210,8 +197,7 @@ describe('domain/game/reducer', () => {
   });
 
   it('records turn history when advancing from review', () => {
-    let state = startMatch(['w1', 'w2']);
-    state = beginTurn(state);
+    let state = startMatch(['w1', 'w2', 'w3']);
     state = guessCurrentWord(state);
     state = expireTimer(state);
     state = awardWord(state, null);
@@ -224,7 +210,6 @@ describe('domain/game/reducer', () => {
 
   it('ignores pause when already paused', () => {
     let state = startMatch(['w1', 'w2']);
-    state = beginTurn(state, BASE_TIME);
     state = gameReducer(state, { type: 'PAUSE', now: BASE_TIME + 1_000 });
     const paused = state.turn?.pausedAt;
     state = gameReducer(state, { type: 'PAUSE', now: BASE_TIME + 2_000 });
@@ -249,24 +234,9 @@ describe('domain/game/reducer', () => {
   });
 
   it('throws when attempting to start a turn with an empty hat', () => {
-    const prepared = startMatch(['w1', 'w2']);
-    const round = prepared.rounds[0]!;
-    const state = {
-      ...prepared,
-      status: 'pre_turn' as const,
-      turn: null,
-      rounds: [
-        {
-          ...round,
-          remainingWordIds: [],
-          guessedWordIds: [...round.sessionWordIds],
-        },
-      ],
-    };
-
-    expect(() => gameReducer(state, { type: 'START_TURN', now: BASE_TIME })).toThrow(
-      /empty hat/,
-    );
+    let state = startMatch(['w1']);
+    state = guessCurrentWord(state); // empties the hat → review
+    expect(() => nextTurn(state)).toThrow(/empty hat/);
   });
 
   it('ignores duplicate START_SETUP when a match is already being configured', () => {
