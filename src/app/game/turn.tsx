@@ -87,33 +87,32 @@ export default function TurnScreen() {
 
   return (
     <GameScreenShell roundType={currentRound?.type}>
-      <ScreenHeader showHome onHomePress={onPausePress} />
+      <ScreenHeader onBack={onPausePress} />
 
       {/* Team name + round info */}
-      <View className="items-center px-4 pb-2 pt-1">
+      <View className="items-center pb-4">
+        <Text className="text-base font-semibold" style={{ color: palette.wordText }}>
+          {strings.rounds.roundLabel(roundIndex + 1, 3)}
+        </Text>
         <Text
-          className="text-3xl font-bold"
+          className="text-2xl font-bold"
           style={{ color: palette.text }}
           numberOfLines={1}
           adjustsFontSizeToFit
         >
           {teamName}
         </Text>
-        <Text className="mt-0.5 text-sm font-semibold" style={{ color: palette.wordText }}>
-          {strings.rounds.roundLabel(roundIndex + 1, 3)}
-        </Text>
         <View
-          className="mt-1 rounded-full px-4 py-0.5"
-          style={{ backgroundColor: 'rgba(255,255,255,0.55)' }}
+          className="mt-1 rounded-full px-4 py-1 bg-white"
         >
-          <Text className="text-xs font-bold tracking-widest" style={{ color: palette.text }}>
+          <Text className="text-base font-bold tracking-widest" style={{ color: palette.text }}>
             {roundMeta.name}
           </Text>
         </View>
       </View>
 
       {/* Timer pill */}
-      <View className="items-center pb-3">
+      <View className="items-center">
         <CountdownRing
           remainingMs={isAwaitingAward ? 0 : remainingMs}
           totalMs={settings.turnDurationMs}
@@ -123,7 +122,7 @@ export default function TurnScreen() {
       </View>
 
       {/* Word card */}
-      <View className="flex-1 items-center justify-center">
+      <View className="flex-1 items-center justify-center pb-16">
         <WordCard
           word={word}
           backgroundColor={palette.card}
@@ -137,8 +136,6 @@ export default function TurnScreen() {
       {/* Action buttons */}
       <View className="pb-8" style={{ opacity: isAwaitingAward ? 0.3 : 1 }}>
         <ActionButtons
-          guessCount={guesses}
-          skipCount={skips}
           onGuess={onGuess}
           onSkip={onSkip}
           disabled={isAwaitingAward}

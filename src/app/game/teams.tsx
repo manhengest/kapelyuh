@@ -12,7 +12,7 @@ import { createId } from '@shared/lib/id';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
 
-const mainBg = require('../../../assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.png');
 
 function pickRandomName(exclude: string): string {
   const pool = TEAM_NAME_SUGGESTIONS.filter((n) => n !== exclude);

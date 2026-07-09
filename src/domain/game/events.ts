@@ -4,6 +4,7 @@ export type GameEvent =
   | { type: 'START_SETUP'; now: number }
   | { type: 'SETTINGS_COMPLETED'; settings: MatchSettings; now: number }
   | { type: 'BACK_TO_SETTINGS'; now: number }
+  | { type: 'BACK_TO_TEAMS'; now: number }
   | { type: 'TEAMS_COMPLETED'; teams: Team[]; sessionWordIds: string[]; now: number }
   | { type: 'ROUND_INTRO_ACK'; now: number }
   | { type: 'GUESS_WORD'; now: number }

@@ -1,97 +1,67 @@
-import { useEffect } from 'react';
-import { Image, Pressable, View } from 'react-native';
-import {
-  useAnimatedStyle,
-  useSharedValue,
-  withSequence,
-  withTiming,
-} from 'react-native-reanimated';
+import { Image, ImageSourcePropType, Pressable, View } from 'react-native';
 
-import { useReducedMotion } from '@shared/hooks/useReducedMotion';
-import { AnimatedText, Text } from '@ui/components/Text';
+import { Text } from '@ui/components/Text';
 
-const guessedIcon = require('../../../../assets/images/icons/turn/guessed.png');
-const skipIcon = require('../../../../assets/images/icons/turn/skip.png');
+const guessedIcon = require('@assets/images/icons/turn/guessed.png');
+const skipIcon = require('@assets/images/icons/turn/skip.png');
+
+type ActionButtonProps = {
+  label: string;
+  icon: ImageSourcePropType;
+  backgroundColor: string;
+  onPress: () => void;
+  disabled: boolean;
+};
+
+function ActionButton({ label, icon, backgroundColor, onPress, disabled }: ActionButtonProps) {
+  return (
+    <View className="items-center gap-2">
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        disabled={disabled}
+        onPress={onPress}
+        className="h-44 w-44 items-center justify-center rounded-3xl"
+        style={{
+          backgroundColor,
+          opacity: disabled ? 0.3 : 1,
+          shadowColor: '#000',
+          shadowOffset: { width: 5, height: 5 },
+          shadowOpacity: 0.15,
+          shadowRadius: 3,
+          elevation: 10,
+        }}
+      >
+        <Image source={icon} style={{ width: 60, height: 60 }} resizeMode="contain" />
+        <Text className="mt-5 text-2xl font-bold text-primaryText">{label}</Text>
+      </Pressable>
+    </View>
+  );
+}
 
 type ActionButtonsProps = {
   onGuess: () => void;
   onSkip: () => void;
-  guessCount: number;
-  skipCount: number;
   disabled?: boolean;
 };
 
-function BounceCounter({ value }: { value: number }) {
-  const reducedMotion = useReducedMotion();
-  const scale = useSharedValue(1);
-
-  useEffect(() => {
-    if (reducedMotion) return;
-    scale.value = withSequence(
-      withTiming(1.25, { duration: 40 }),
-      withTiming(1, { duration: 40 }),
-    );
-  }, [reducedMotion, scale, value]);
-
-  const style = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
-
+export function ActionButtons({ onGuess, onSkip, disabled = false }: ActionButtonsProps) {
   return (
-    <AnimatedText style={style} className="text-sm font-bold text-[#1A1A1A]">
-      {value}
-    </AnimatedText>
-  );
-}
-
-export function ActionButtons({
-  onGuess,
-  onSkip,
-  guessCount,
-  skipCount,
-  disabled = false,
-}: ActionButtonsProps) {
-  return (
-    <View className="flex-row items-end justify-center gap-6 px-8">
-      {/* Guess — left, yellow */}
-      <View className="items-center gap-2">
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Відгадано"
-          disabled={disabled}
-          onPress={onGuess}
-          className="h-28 w-28 items-center justify-center rounded-3xl bg-[#FDC82B]"
-          style={{ opacity: disabled ? 0.3 : 1 }}
-        >
-          <Image source={guessedIcon} style={{ width: 60, height: 60 }} resizeMode="contain" />
-        </Pressable>
-        <View className="flex-row items-center gap-1">
-          <Text className="text-base font-semibold text-[#1A1A1A]">Відгадано</Text>
-          <BounceCounter value={guessCount} />
-        </View>
-      </View>
-
-      {/* Skip — right, white outlined */}
-      <View className="items-center gap-2">
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel="Пропустити"
-          disabled={disabled}
-          onPress={onSkip}
-          className="h-28 w-28 items-center justify-center rounded-3xl bg-white"
-          style={{
-            opacity: disabled ? 0.3 : 1,
-            borderWidth: 2,
-            borderColor: '#E5E7EB',
-          }}
-        >
-          <Image source={skipIcon} style={{ width: 60, height: 60 }} resizeMode="contain" />
-        </Pressable>
-        <View className="flex-row items-center gap-1">
-          <Text className="text-base font-semibold text-[#1A1A1A]">Пропустити</Text>
-          <BounceCounter value={skipCount} />
-        </View>
-      </View>
+    <View className="flex-row items-end justify-center gap-6">
+      <ActionButton
+        label="Пропустити"
+        icon={skipIcon}
+        backgroundColor="#FEFAF7"
+        onPress={onSkip}
+        disabled={disabled}
+      />
+      <ActionButton
+        label="Відгадано"
+        icon={guessedIcon}
+        backgroundColor="#FDC82B"
+        onPress={onGuess}
+        disabled={disabled}
+      />
     </View>
   );
 }

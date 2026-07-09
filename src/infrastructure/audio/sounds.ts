@@ -2,9 +2,9 @@ import { createAudioPlayer, setAudioModeAsync, type AudioPlayer } from 'expo-aud
 
 import { useSettingsStore } from '@features/settings/store';
 
-const END_SOURCE = require('../../../assets/sounds/end.wav');
-const GUESS_SOURCE = require('../../../assets/sounds/guess.wav');
-const SKIP_SOURCE = require('../../../assets/sounds/skip.wav');
+const END_SOURCE = require('@assets/sounds/end.wav');
+const GUESS_SOURCE = require('@assets/sounds/guess.wav');
+const SKIP_SOURCE = require('@assets/sounds/skip.wav');
 
 let initialized = false;
 let guessPlayer: AudioPlayer | null = null;

@@ -11,7 +11,7 @@ import { useGameActions, useGameState } from '@features/game/hooks';
 import { HorizontalPicker } from '@ui/components/HorizontalPicker';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 
-const mainBg = require('../../../assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.png');
 
 const WORD_COUNTS = [30, 60, 90] as const;
 const TURN_DURATIONS_SEC = [60, 90, 120] as const;

@@ -6,16 +6,16 @@ import { strings } from '@content/strings';
 import { useGameStore } from '@features/game/store';
 import { Text } from '@ui/components/Text';
 
-const aboutIcon = require('../../assets/images/icons/landing/about.png');
-const chevronIcon = require('../../assets/images/icons/landing/chevron-arrow-right.png');
-const hatIcon = require('../../assets/images/icons/landing/hat.png');
-const heartSubtitleIcon = require('../../assets/images/icons/landing/heart-subtitle.png');
-const howToPlayIcon = require('../../assets/images/icons/landing/how-to-play.png');
-const newGameFragmentIcon = require('../../assets/images/icons/landing/new-game-fragment.png');
-const newGameIcon = require('../../assets/images/icons/landing/new-game.png');
-const settingsIcon = require('../../assets/images/icons/landing/settings.png');
-const textIcon = require('../../assets/images/icons/landing/text.png');
-const mainBg = require('../../assets/images/main-bg.png');
+const aboutIcon = require('@assets/images/icons/landing/about.png');
+const chevronIcon = require('@assets/images/icons/landing/chevron-arrow-right.png');
+const hatIcon = require('@assets/images/icons/landing/hat.png');
+const heartSubtitleIcon = require('@assets/images/icons/landing/heart-subtitle.png');
+const howToPlayIcon = require('@assets/images/icons/landing/how-to-play.png');
+const newGameFragmentIcon = require('@assets/images/icons/landing/new-game-fragment.png');
+const newGameIcon = require('@assets/images/icons/landing/new-game.png');
+const settingsIcon = require('@assets/images/icons/landing/settings.png');
+const textIcon = require('@assets/images/icons/landing/text.png');
+const mainBg = require('@assets/images/main-bg.png');
 
 type LandingMenuButtonProps = {
   label: string;

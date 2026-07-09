@@ -41,7 +41,7 @@ export default function RootLayout() {
   return (
     <SQLiteProvider
       databaseName="kapelyukh.db"
-      assetSource={{ assetId: require('../../assets/data/kapelyukh.db') }}
+      assetSource={{ assetId: require('@assets/data/kapelyukh.db') }}
       onInit={migrateDbIfNeeded}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>

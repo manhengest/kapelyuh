@@ -1,35 +1,23 @@
-import { useRouter } from 'expo-router';
 import { Image, Pressable, View } from 'react-native';
 
 import { Text } from '@ui/components/Text';
 
-const backArrowIcon = require('../../../assets/images/icons/back-arrow.png');
+const backArrowIcon = require('@assets/images/icons/back-arrow.png');
 
 type ScreenHeaderProps = {
   title?: string;
-  showHome?: boolean;
-  onHomePress?: () => void;
   onBack?: () => void;
 };
 
-export function ScreenHeader({
-  title,
-  showHome = false,
-  onHomePress,
-  onBack,
-}: ScreenHeaderProps) {
-  const router = useRouter();
-
-  const leftAction = onBack ?? (showHome ? (onHomePress ?? (() => router.replace('/'))) : undefined);
-
+export function ScreenHeader({ title, onBack }: ScreenHeaderProps) {
   return (
     <View className="flex-row items-center justify-between px-4 pt-3">
-      {leftAction ? (
+      {onBack ? (
         <Pressable
           accessibilityRole="button"
-          accessibilityLabel={onBack ? 'Назад' : 'На головну'}
-          onPress={leftAction}
-          className={`screen-header-action-btn ${onBack ? 'screen-header-action-btn--back' : 'screen-header-action-btn--home'}`}
+          accessibilityLabel="Назад"
+          onPress={onBack}
+          className="screen-header-action-btn screen-header-action-btn--back"
         >
           <Image source={backArrowIcon} style={{ width: 22, height: 18 }} resizeMode="contain" />
         </Pressable>

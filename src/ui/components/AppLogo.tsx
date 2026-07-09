@@ -2,7 +2,7 @@ import { Image } from 'react-native';
 
 import { strings } from '@content/strings';
 
-const logo = require('../../../assets/images/logo.png');
+const logo = require('@assets/images/logo.png');
 
 type AppLogoSize = 'sm' | 'md' | 'lg';
 

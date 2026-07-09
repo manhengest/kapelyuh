@@ -368,6 +368,12 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
       }
       return touch({ ...state, status: 'setup_settings' }, event.now);
 
+    case 'BACK_TO_TEAMS':
+      if (state.status !== 'round_intro') {
+        return state;
+      }
+      return touch({ ...state, status: 'setup_teams' }, event.now);
+
     case 'TEAMS_COMPLETED': {
       assertStatus(state, ['setup_teams']);
       const teams = initTeams(event.teams);

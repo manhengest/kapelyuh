@@ -12,7 +12,7 @@ import type { RoundType } from '@domain/game/types';
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
 import { getRoundPalette } from '@ui/theme/roundPalette';
 
-const mainBg = require('../../../../assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.png');
 
 type GameScreenShellProps = ViewProps & {
   roundType?: RoundType;

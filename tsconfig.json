@@ -11,7 +11,8 @@
       "@infrastructure/*": ["./src/infrastructure/*"],
       "@ui/*": ["./src/ui/*"],
       "@shared/*": ["./src/shared/*"],
-      "@content/*": ["./src/content/*"]
+      "@content/*": ["./src/content/*"],
+      "@assets/*": ["./assets/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "nativewind-env.d.ts"],

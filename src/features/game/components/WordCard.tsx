@@ -57,14 +57,24 @@ export function WordCard({
   }, [feedback, reducedMotion, scale, translateX]);
 
   return (
-    <View className="w-full items-center gap-2 px-4">
-      {label ? (
-        <Text style={{ color: textColor }} className="text-sm font-bold uppercase tracking-widest">
-          {label}
-        </Text>
-      ) : null}
+    <View
+      style={{
+        shadowColor: '#000',
+        shadowOffset: { width: 5, height: 5 },
+        shadowOpacity: 0.15,
+        shadowRadius: 3,
+        elevation: 10,
+      }}
+      className="w-full items-center gap-2 px-4"
+    >
+      <Text
+        className="text-2xl font-bold uppercase tracking-widest text-primaryText"
+        style={{ opacity: label ? 1 : 0 }}
+      >
+        {label ?? ' '}
+      </Text>
       <Animated.View
-        className="min-h-[160px] w-full items-center justify-center rounded-3xl px-4 py-8"
+        className="min-h-[200px] w-full items-center justify-center rounded-3xl px-4 py-8"
         style={{
           backgroundColor,
           opacity,
@@ -76,8 +86,8 @@ export function WordCard({
         <Text
           accessibilityLabel={hideFromAccessibility ? undefined : `Слово: ${word}`}
           accessibilityElementsHidden={hideFromAccessibility}
-          style={{ color: textColor, fontSize: 48, lineHeight: 56 }}
-          className="text-center font-bold"
+          style={{ color: textColor, fontSize: 80, lineHeight: 90 }}
+          className="text-center font-bold uppercase"
           adjustsFontSizeToFit
           minimumFontScale={0.5}
           numberOfLines={2}
