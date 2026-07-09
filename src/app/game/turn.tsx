@@ -14,7 +14,6 @@ import {
   useGameSelectors,
   useGameState,
   useTimer,
-  useTurnLiveCounts,
   useWordText,
 } from '@features/game/hooks';
 import { playGuess, playSkip } from '@infrastructure/audio/sounds';
@@ -33,7 +32,6 @@ export default function TurnScreen() {
   const { currentTeam, currentRound } = useGameSelectors();
   const { dispatch, abandonMatch } = useGameActions();
   const { remainingMs, pause, resume, pauseModalVisible, setPauseModalVisible } = useTimer();
-  useTurnLiveCounts();
   const word = useWordText(turn?.currentWordId);
   const palette = getRoundPalette(currentRound?.type);
   const roundMeta = getRoundMeta(currentRound?.type);

@@ -57,19 +57,6 @@ export function useWordText(wordId: string | null | undefined): string {
   return lookupWordText(wordId, wordTexts);
 }
 
-export function useTurnLiveCounts() {
-  const turn = useGameStore((store) => store.state.turn);
-  return useMemo(() => {
-    if (!turn) {
-      return { guesses: 0, skips: 0 };
-    }
-    return {
-      guesses: turn.events.filter((event) => event.kind === 'guessed').length,
-      skips: turn.events.filter((event) => event.kind === 'skipped').length,
-    };
-  }, [turn]);
-}
-
 export function useReviewWords() {
   const state = useGameState();
   const turn = state.turn;
