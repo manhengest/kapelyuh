@@ -6,9 +6,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { strings } from '@content/strings';
 import type { Difficulty, MatchSettings } from '@domain/game/types';
 import { DEFAULT_MATCH_SETTINGS } from '@domain/game/types';
-import { SettingsFooter } from '@features/game/components/SettingsFooter';
 import { useGameActions, useGameState } from '@features/game/hooks';
 import { HorizontalPicker } from '@ui/components/HorizontalPicker';
+import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 
 const mainBg = require('@assets/images/main-bg.png');
@@ -97,11 +97,7 @@ export default function SetupScreen() {
             </SettingsCard>
           </View>
         </ScrollView>
-        <SettingsFooter
-          hint={strings.setup.wordSetNote}
-          label={strings.common.next}
-          onPress={onNext}
-        />
+        <ScreenFooter hint={strings.setup.wordSetNote} label={strings.common.next} onPress={onNext} />
       </SafeAreaView>
     </ImageBackground>
   );

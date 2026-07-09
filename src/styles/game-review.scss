@@ -1,3 +1,5 @@
+@use 'tokens' as *;
+
 @layer components {
   .review-checkbox {
     height: 24px;
@@ -10,7 +12,7 @@
   }
 
   .review-checkbox--checked {
-    border-color: #22c55e;
-    background-color: #22c55e;
+    border-color: $pink;
+    background-color: $pink;
   }
 }

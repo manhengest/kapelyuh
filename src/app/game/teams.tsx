@@ -5,10 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { TEAM_NAME_SUGGESTIONS } from '@content/randomNames';
 import { strings } from '@content/strings';
 import type { Team } from '@domain/game/types';
-import { SettingsFooter } from '@features/game/components/SettingsFooter';
 import { useGameActions, useGameState } from '@features/game/hooks';
 import { selectSessionWordIds } from '@features/game/words';
 import { createId } from '@shared/lib/id';
+import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
 
@@ -97,7 +97,7 @@ export default function TeamsScreen() {
             ))}
           </View>
         </ScrollView>
-        <SettingsFooter
+        <ScreenFooter
           hint={strings.setup.teamHint}
           label={strings.common.next}
           disabled={teams.length < 2 || isSelectingWords}

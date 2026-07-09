@@ -15,7 +15,7 @@ import { useGameActions, useGameSelectors, useGameState } from '@features/game/h
 import { useGameStore } from '@features/game/store';
 import { playEnd } from '@infrastructure/audio/sounds';
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
-import { Button } from '@ui/components/Button';
+import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { AnimatedText, Text } from '@ui/components/Text';
 
 function WinnerMedal({ children }: { children: ReactNode }) {
@@ -126,10 +126,12 @@ export default function ResultsScreen() {
             {statCards[Math.min(statIndex, totalCards - 1)]}
           </AnimatedText>
         </View>
-        <View className="gap-3 px-5 pb-6">
-          <Button label={strings.results.statNext} onPress={dismissStat} />
-          <Button label={strings.results.statSkip} variant="outline" onPress={skipToPodium} />
-        </View>
+        <ScreenFooter
+          label={strings.results.statNext}
+          onPress={dismissStat}
+          secondaryLabel={strings.results.statSkip}
+          secondaryOnPress={skipToPodium}
+        />
       </SafeAreaView>
     );
   }
@@ -178,10 +180,12 @@ export default function ResultsScreen() {
           ))}
         </View>
       </ScrollView>
-      <View className="gap-3 px-5 pb-6">
-        <Button label={strings.results.playAgain} onPress={replay} />
-        <Button label={strings.home.newGame} variant="outline" onPress={() => router.replace('/')} />
-      </View>
+      <ScreenFooter
+        label={strings.results.playAgain}
+        onPress={replay}
+        secondaryLabel={strings.home.newGame}
+        secondaryOnPress={() => router.replace('/')}
+      />
     </SafeAreaView>
   );
 }

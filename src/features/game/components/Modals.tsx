@@ -98,6 +98,30 @@ export function AwardModal({
   );
 }
 
+type ConfirmExitModalProps = {
+  visible: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
+};
+
+export function ConfirmExitModal({ visible, onConfirm, onCancel }: ConfirmExitModalProps) {
+  return (
+    <Modal visible={visible} transparent animationType="fade">
+      <View className="flex-1 justify-end bg-black/50">
+        <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6">
+          <Text className="mb-6 text-center text-2xl font-bold text-slate-900">
+            {strings.review.confirmStop}
+          </Text>
+          <View className="gap-3">
+            <Button label={strings.pause.exit} onPress={onConfirm} />
+            <Button label={strings.common.back} variant="outline" onPress={onCancel} />
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
 type PenaltyModalProps = {
   visible: boolean;
   onClose: () => void;

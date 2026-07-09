@@ -86,11 +86,11 @@ export function WordCard({
         <Text
           accessibilityLabel={hideFromAccessibility ? undefined : `Слово: ${word}`}
           accessibilityElementsHidden={hideFromAccessibility}
-          style={{ color: textColor, fontSize: 80, lineHeight: 90 }}
+          style={{ color: textColor, fontSize: 80 }}
           className="text-center font-bold uppercase"
           adjustsFontSizeToFit
-          minimumFontScale={0.5}
-          numberOfLines={2}
+          minimumFontScale={0.25}
+          numberOfLines={1}
         >
           {word}
         </Text>

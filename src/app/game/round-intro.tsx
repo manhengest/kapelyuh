@@ -2,18 +2,18 @@ import { useRouter } from 'expo-router';
 import { Image, ImageBackground, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { ROUND_TYPES } from '@domain/game/types';
 import { strings } from '@content/strings';
+import { ROUND_TYPES } from '@domain/game/types';
 import { useGameActions, useGameSelectors, useGameState } from '@features/game/hooks';
-import { SettingsFooter } from '@features/game/components/SettingsFooter';
+import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
 
 const clockIcon = require('@assets/images/icons/round-intro/clock.png');
+const dividerIcon = require('@assets/images/icons/round-intro/devider.png');
 const dialogIcon = require('@assets/images/icons/round-intro/dialog.png');
 const hatIcon = require('@assets/images/icons/round-intro/hat.png');
 const roundNameBgImage = require('@assets/images/icons/round-intro/round-name-bg.png');
-const dividerIcon = require('@assets/images/icons/round-intro/devider.png');
 const starIcon = require('@assets/images/icons/round-intro/star.png');
 const mainBg = require('@assets/images/main-bg.png');
 
@@ -162,7 +162,7 @@ export default function RoundIntroScreen() {
           </View>
         </View>
 
-        <SettingsFooter
+        <ScreenFooter
           hint={getRoundHint(roundType)}
           label={strings.common.start}
           onPress={() => dispatch({ type: 'ROUND_INTRO_ACK' })}

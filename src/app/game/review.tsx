@@ -1,11 +1,12 @@
 
-import { useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'expo-router';
+import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+
 
 import { strings } from '@content/strings';
 import { GameScreenShell } from '@features/game/components/GameScreenShell';
-import { PenaltyModal } from '@features/game/components/Modals';
+import { ConfirmExitModal, PenaltyModal } from '@features/game/components/Modals';
 import {
   useGameActions,
   useGameSelectors,
@@ -13,35 +14,22 @@ import {
   useTurnNetScore,
 } from '@features/game/hooks';
 import { triggerHaptic } from '@infrastructure/haptics';
-import { useReducedMotion } from '@shared/hooks/useReducedMotion';
-import { Button } from '@ui/components/Button';
+import { ScreenFooter } from '@ui/components/ScreenFooter';
+import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
 import { getRoundPalette } from '@ui/theme/roundPalette';
 
 export default function ReviewScreen() {
   const { currentTeam, currentRound, reviewBanner, reviewCta } = useGameSelectors();
-  const { dispatch } = useGameActions();
+  const { dispatch, abandonMatch } = useGameActions();
   const reviewWords = useReviewWords();
   const netScore = useTurnNetScore();
   const palette = getRoundPalette(currentRound?.type);
-  const reducedMotion = useReducedMotion();
+  const router = useRouter();
 
   const [overrides, setOverrides] = useState<Record<string, 'guessed' | 'skipped'>>({});
   const [penaltyVisible, setPenaltyVisible] = useState(false);
-  const bannerOffset = useSharedValue(reducedMotion ? 0 : -80);
-
-  useEffect(() => {
-    if (reducedMotion) {
-      bannerOffset.value = 0;
-      return;
-    }
-    bannerOffset.value = -80;
-    bannerOffset.value = withTiming(0, { duration: 250 });
-  }, [bannerOffset, reducedMotion, reviewBanner]);
-
-  const bannerStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: bannerOffset.value }],
-  }));
+  const [confirmVisible, setConfirmVisible] = useState(false);
 
   const words = useMemo(() => {
     return reviewWords.map((entry) => {
@@ -73,6 +61,11 @@ export default function ReviewScreen() {
     dispatch({ type: 'OPEN_STAT_CAROUSEL' });
   };
 
+  const onConfirmExit = () => {
+    abandonMatch();
+    router.replace('/');
+  };
+
   let ctaLabel: string = strings.review.nextTeam;
   if (reviewCta === 'next_round') {
     ctaLabel = strings.review.nextRound;
@@ -82,22 +75,22 @@ export default function ReviewScreen() {
 
   const bannerText =
     reviewBanner === 'hat_empty' ? strings.review.hatEmpty : strings.review.timeUp;
-  const bannerColor = reviewBanner === 'hat_empty' ? '#E8F36C' : '#F4A6C8';
 
   return (
     <GameScreenShell roundType={currentRound?.type}>
-      <Animated.View style={[{ backgroundColor: bannerColor }, bannerStyle]} className="px-4 py-3">
-        <Text className="text-center text-base font-bold text-slate-900">{bannerText}</Text>
-      </Animated.View>
+      <ScreenHeader title={bannerText} onBack={() => setConfirmVisible(true)} />
 
       <ScrollView className="flex-1 px-5" contentContainerClassName="py-6">
-        <Text style={{ color: palette.text }} className="mb-1 text-center text-xl font-semibold">
+        <Text style={{ color: palette.text }} className="mb-1 text-center text-2xl font-semibold">
           {currentTeam?.name}
         </Text>
         <Text style={{ color: palette.text }} className="mb-1 text-center text-base">
           {strings.review.pointsAwarded}
         </Text>
-        <Text style={{ color: palette.text }} className="mb-4 text-center text-5xl font-bold">
+        <Text
+          style={{ color: palette.text }}
+          className="mb-4 text-center text-6xl font-bold leading-normal"
+        >
           {netScore}
         </Text>
 
@@ -108,7 +101,9 @@ export default function ReviewScreen() {
         ) : (
           <>
             <Pressable onPress={() => setPenaltyVisible(true)} className="mb-4">
-              <Text className="text-sm text-blue-700">{strings.review.penaltyInfo}</Text>
+              <Text className="text-center text-base text-primaryText">
+                {strings.review.penaltyInfo}
+              </Text>
             </Pressable>
             <View className="gap-2">
               {words
@@ -126,7 +121,9 @@ export default function ReviewScreen() {
                     >
                       {entry.checked ? <Text className="text-white">✓</Text> : null}
                     </View>
-                    <Text className="flex-1 text-base text-slate-900">{entry.text}</Text>
+                    <Text className="flex-1 text-xl font-semibold text-primaryText">
+                      {entry.text}
+                    </Text>
                   </Pressable>
                 ))}
             </View>
@@ -134,11 +131,14 @@ export default function ReviewScreen() {
         )}
       </ScrollView>
 
-      <View className="px-5 pb-6">
-        <Button label={ctaLabel} onPress={onContinue} />
-      </View>
-
       <PenaltyModal visible={penaltyVisible} onClose={() => setPenaltyVisible(false)} />
+      <ConfirmExitModal
+        visible={confirmVisible}
+        onConfirm={onConfirmExit}
+        onCancel={() => setConfirmVisible(false)}
+      />
+
+      <ScreenFooter label={ctaLabel} onPress={onContinue} />
     </GameScreenShell>
   );
 }
