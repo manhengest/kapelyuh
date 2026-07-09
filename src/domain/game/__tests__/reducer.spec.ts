@@ -109,7 +109,7 @@ describe('domain/game/reducer', () => {
     state = awardWord(state, null);
     state = nextTurn(state);
 
-    expect(state.status).toBe('in_turn');
+    expect(state.status).toBe('round_intro');
     expect(state.currentTeamIndex).toBe(1);
     expect(selectIsHatEmpty(state)).toBe(false);
   });
@@ -236,7 +236,8 @@ describe('domain/game/reducer', () => {
   it('throws when attempting to start a turn with an empty hat', () => {
     let state = startMatch(['w1']);
     state = guessCurrentWord(state); // empties the hat → review
-    expect(() => nextTurn(state)).toThrow(/empty hat/);
+    state = nextTurn(state); // transitions to round_intro
+    expect(() => gameReducer(state, { type: 'ROUND_INTRO_ACK', now: BASE_TIME })).toThrow(/empty hat/);
   });
 
   it('ignores duplicate START_SETUP when a match is already being configured', () => {

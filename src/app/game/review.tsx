@@ -5,13 +5,14 @@ import { Pressable, ScrollView, View } from 'react-native';
 
 
 import { strings } from '@content/strings';
+import { applyReviewOverrides, computeTurnScore } from '@domain/game/scoring';
 import { GameScreenShell } from '@features/game/components/GameScreenShell';
 import { ConfirmExitModal, PenaltyModal } from '@features/game/components/Modals';
 import {
   useGameActions,
   useGameSelectors,
+  useGameState,
   useReviewWords,
-  useTurnNetScore,
 } from '@features/game/hooks';
 import { triggerHaptic } from '@infrastructure/haptics';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
@@ -23,11 +24,20 @@ export default function ReviewScreen() {
   const { currentTeam, currentRound, reviewBanner, reviewCta } = useGameSelectors();
   const { dispatch, abandonMatch } = useGameActions();
   const reviewWords = useReviewWords();
-  const netScore = useTurnNetScore();
+  const gameState = useGameState();
   const palette = getRoundPalette(currentRound?.type);
   const router = useRouter();
 
   const [overrides, setOverrides] = useState<Record<string, 'guessed' | 'skipped'>>({});
+
+  const netScore = useMemo(() => {
+    const turn = gameState.turn;
+    if (!turn) return 0;
+    const skipPenalty = gameState.settings.skipPenalty;
+    const base = computeTurnScore(turn.events, skipPenalty);
+    const delta = applyReviewOverrides(turn.events, overrides, skipPenalty);
+    return base + delta;
+  }, [gameState.turn, gameState.settings.skipPenalty, overrides]);
   const [penaltyVisible, setPenaltyVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
 
@@ -80,7 +90,7 @@ export default function ReviewScreen() {
     <GameScreenShell roundType={currentRound?.type}>
       <ScreenHeader title={bannerText} onBack={() => setConfirmVisible(true)} />
 
-      <ScrollView className="flex-1 px-5" contentContainerClassName="py-6">
+      <View className="px-5 pt-6">
         <Text style={{ color: palette.text }} className="mb-1 text-center text-2xl font-semibold">
           {currentTeam?.name}
         </Text>
@@ -93,18 +103,20 @@ export default function ReviewScreen() {
         >
           {netScore}
         </Text>
+        <Pressable onPress={() => setPenaltyVisible(true)} className="mb-4">
+          <Text className="text-center text-base text-primaryText">
+            {strings.review.penaltyInfo}
+          </Text>
+        </Pressable>
+      </View>
 
+      <ScrollView className="flex-1 px-5" contentContainerClassName="pb-6">
         {words.length === 0 ? (
           <Text style={{ color: palette.text }} className="mb-4 text-center text-base">
             {strings.review.emptyTurn}
           </Text>
         ) : (
           <>
-            <Pressable onPress={() => setPenaltyVisible(true)} className="mb-4">
-              <Text className="text-center text-base text-primaryText">
-                {strings.review.penaltyInfo}
-              </Text>
-            </Pressable>
             <View className="gap-2">
               {words
                 .filter((entry) => entry.outcome === 'guessed' || entry.outcome === 'skipped')

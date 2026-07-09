@@ -485,9 +485,10 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
       assertStatus(state, ['review']);
       const round = getCurrentRound(state);
       const withHistory = appendTurnHistory(state, event.now);
-      const advanced = touch(
+      return touch(
         {
           ...withHistory,
+          status: 'round_intro',
           currentTeamIndex: (withHistory.currentTeamIndex + 1) % withHistory.teams.length,
           turn: null,
           rounds: withHistory.rounds.map((entry, index) =>
@@ -498,7 +499,6 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
         },
         event.now,
       );
-      return startTurnState(advanced, event.now);
     }
 
     case 'NEXT_ROUND': {
