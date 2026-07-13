@@ -9,6 +9,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
   hapticsEnabled: true,
   sentryEnabled: true,
   hasSeenRules: false,
+  skipPenaltyEnabled: false,
 };
 
 export function getSettings(): AppSettings {

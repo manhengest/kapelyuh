@@ -42,6 +42,14 @@ export default function TeamsScreen() {
   );
   const [isSelectingWords, setIsSelectingWords] = useState(false);
 
+  const renameTeam = (teamId: string) => {
+    setTeams((current) =>
+      current.map((entry) =>
+        entry.id === teamId ? { ...entry, name: pickRandomName(entry.name) } : entry,
+      ),
+    );
+  };
+
   const onNext = async () => {
     if (!settings) return;
     setIsSelectingWords(true);
@@ -62,9 +70,12 @@ export default function TeamsScreen() {
         />
         <ScrollView className="flex-1 px-8" contentContainerClassName="pt-4">
           <View className="gap-3">
-            {teams.map((team, index) => (
-              <View
+            {teams.map((team) => (
+              <Pressable
                 key={team.id}
+                accessibilityRole="button"
+                accessibilityLabel="Змінити назву команди"
+                onPress={() => renameTeam(team.id)}
                 style={{
                   shadowColor: '#000',
                   shadowOffset: { width: 5, height: 5 },
@@ -72,28 +83,15 @@ export default function TeamsScreen() {
                   shadowRadius: 3,
                   elevation: 10,
                 }}
-                className="flex-row items-center rounded-3xl bg-white px-8 py-6"
+                className="flex-row items-center rounded-3xl bg-white px-8 py-6 transition-transform duration-150 ease-out active:scale-95"
               >
                 <View className="flex-1">
                   <Text className="text-2xl font-bold text-primaryText">{team.name}</Text>
                 </View>
-                <Pressable
-                  accessibilityRole="button"
-                  accessibilityLabel="Випадкова назва"
-                  onPress={() =>
-                    setTeams((current) =>
-                      current.map((entry) =>
-                        entry.id === team.id
-                          ? { ...entry, name: pickRandomName(entry.name) }
-                          : entry,
-                      ),
-                    )
-                  }
-                  className="ml-3 h-10 w-10 items-center justify-center rounded-full bg-pink opacity-80"
-                >
+                <View className="ml-3 h-10 w-10 items-center justify-center rounded-full bg-pink opacity-80">
                   <Text className="text-xl color-white">↺</Text>
-                </Pressable>
-              </View>
+                </View>
+              </Pressable>
             ))}
           </View>
         </ScrollView>

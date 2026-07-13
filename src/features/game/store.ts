@@ -14,10 +14,15 @@ type DispatchEvent = {
   [K in GameEvent as K['type']]: Omit<K, 'now'> & { now?: number };
 }[GameEvent['type']];
 
+export type NavDirection = 'forward' | 'backward';
+
+const BACKWARD_EVENTS = new Set<GameEvent['type']>(['BACK_TO_SETTINGS', 'BACK_TO_TEAMS']);
+
 type GameStore = {
   state: GameState;
   hydrated: boolean;
   pauseModalVisible: boolean;
+  navDirection: NavDirection;
   hydrate: () => void;
   dispatch: (event: DispatchEvent) => GameState;
   setPauseModalVisible: (visible: boolean) => void;
@@ -47,6 +52,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   state: createInitialState(),
   hydrated: false,
   pauseModalVisible: false,
+  navDirection: 'forward',
 
   hydrate: () => {
     const saved = getActiveMatch();
@@ -61,7 +67,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const now = event.now ?? Date.now();
     const next = gameReducer(prev, { ...event, now } as GameEvent);
     handleMatchEnd(prev, next);
-    set({ state: next });
+    set({ state: next, navDirection: BACKWARD_EVENTS.has(event.type) ? 'backward' : 'forward' });
     persistMatch(next);
     return next;
   },

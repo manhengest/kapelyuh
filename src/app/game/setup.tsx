@@ -7,6 +7,7 @@ import { strings } from '@content/strings';
 import type { Difficulty, MatchSettings } from '@domain/game/types';
 import { DEFAULT_MATCH_SETTINGS } from '@domain/game/types';
 import { useGameActions, useGameState } from '@features/game/hooks';
+import { useAppSettings } from '@features/settings/store';
 import { HorizontalPicker } from '@ui/components/HorizontalPicker';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
@@ -38,8 +39,12 @@ export default function SetupScreen() {
   const router = useRouter();
   const settingsFromStore = useGameState().settings;
   const { dispatch } = useGameActions();
+  const appSettings = useAppSettings();
 
-  const [settings, setSettings] = useState<MatchSettings>(settingsFromStore ?? DEFAULT_MATCH_SETTINGS);
+  const [settings, setSettings] = useState<MatchSettings>(() => ({
+    ...(settingsFromStore ?? DEFAULT_MATCH_SETTINGS),
+    skipPenalty: appSettings.skipPenaltyEnabled ? -1 : 0,
+  }));
 
   const difficultyOptions = useMemo<Difficulty[]>(() => ['easy', 'medium', 'hard'], []);
   const difficultyLabels: Record<Difficulty, string> = {

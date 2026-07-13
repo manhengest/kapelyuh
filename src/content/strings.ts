@@ -118,6 +118,8 @@ export const strings = {
     hapticsDescription: 'Тактильний відгук на дії',
 sentry: 'Звіти про збої',
     sentryDescription: 'Анонімні звіти для покращення стабільності',
+    skipPenalty: 'Штраф за пропуск слова',
+    skipPenaltyDescription: '−1 бал команді за кожне пропущене слово',
     about: 'Про гру',
   },
   about: {

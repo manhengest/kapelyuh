@@ -44,7 +44,7 @@ export default function ResultsScreen() {
   const status = useGameState().status;
   const statCardsRemaining = useGameState().statCardsRemaining;
   const { scoreboard, winners, matchStats } = useGameSelectors();
-  const { dispatch } = useGameActions();
+  const { dispatch, abandonMatch } = useGameActions();
   const reducedMotion = useReducedMotion();
   const endSoundPlayed = useRef(false);
   const cardOpacity = useSharedValue(1);
@@ -107,10 +107,6 @@ export default function ResultsScreen() {
     opacity: cardOpacity.value,
     transform: [{ scale: cardOpacity.value }],
   }));
-
-  const replay = () => {
-    dispatch({ type: 'REPLAY_WITH_SAME_TEAMS' });
-  };
 
   if (isCarousel) {
     return (
@@ -181,10 +177,11 @@ export default function ResultsScreen() {
         </View>
       </ScrollView>
       <ScreenFooter
-        label={strings.results.playAgain}
-        onPress={replay}
-        secondaryLabel={strings.home.newGame}
-        secondaryOnPress={() => router.replace('/')}
+        label={strings.home.newGame}
+        onPress={() => {
+          abandonMatch();
+          router.replace('/');
+        }}
       />
     </SafeAreaView>
   );

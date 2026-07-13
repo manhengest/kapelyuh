@@ -45,8 +45,10 @@ export default function RootLayout() {
       onInit={migrateDbIfNeeded}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
-<GameRouteSync />
-        <Stack screenOptions={{ headerShown: false }} />
+        <GameRouteSync />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" options={{ animationTypeForReplace: 'pop' }} />
+        </Stack>
       </GestureHandlerRootView>
     </SQLiteProvider>
   );

@@ -1,4 +1,5 @@
-import { Modal, Pressable, View } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Animated, Modal, Pressable, View } from 'react-native';
 
 import { strings } from '@content/strings';
 import { Button } from '@ui/components/Button';
@@ -58,11 +59,31 @@ export function AwardModal({
   onConfirm,
 }: AwardModalProps) {
   const hasSelection = selectedTeamId !== undefined;
+  const overlayOpacity = useRef(new Animated.Value(0)).current;
+  const contentTranslateY = useRef(new Animated.Value(300)).current;
+
+  useEffect(() => {
+    if (visible) {
+      Animated.parallel([
+        Animated.timing(overlayOpacity, { toValue: 1, duration: 250, useNativeDriver: true }),
+        Animated.timing(contentTranslateY, { toValue: 0, duration: 250, useNativeDriver: true }),
+      ]).start();
+    } else {
+      overlayOpacity.setValue(0);
+      contentTranslateY.setValue(300);
+    }
+  }, [visible, overlayOpacity, contentTranslateY]);
 
   return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View className="flex-1 justify-end bg-black/50">
-        <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6">
+    <Modal visible={visible} transparent animationType="none">
+      <Animated.View
+        style={{ opacity: overlayOpacity }}
+        className="flex-1 justify-end bg-black/50"
+      >
+        <Animated.View
+          style={{ transform: [{ translateY: contentTranslateY }] }}
+          className="rounded-t-3xl bg-white px-6 pb-10 pt-6"
+        >
           <Text className="mb-4 text-center text-xl font-bold text-slate-900">
             {strings.award.title}
           </Text>
@@ -92,8 +113,8 @@ export function AwardModal({
             disabled={!hasSelection}
             onPress={onConfirm}
           />
-        </View>
-      </View>
+        </Animated.View>
+      </Animated.View>
     </Modal>
   );
 }

@@ -39,6 +39,12 @@ export default function SettingsScreen() {
               setSentryEnabled(sentryEnabled);
             }}
           />
+          <SettingsToggleRow
+            label={strings.settings.skipPenalty}
+            description={strings.settings.skipPenaltyDescription}
+            value={settings.skipPenaltyEnabled}
+            onValueChange={(skipPenaltyEnabled) => updateSettings({ skipPenaltyEnabled })}
+          />
         </View>
 
         <View className="mt-4 border-t border-slate-200 pt-4">

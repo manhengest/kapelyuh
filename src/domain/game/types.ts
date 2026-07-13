@@ -123,6 +123,7 @@ export interface AppSettings {
   hapticsEnabled: boolean;
   sentryEnabled: boolean;
   hasSeenRules: boolean;
+  skipPenaltyEnabled: boolean;
 }
 
 export interface MatchStats {

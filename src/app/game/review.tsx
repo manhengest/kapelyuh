@@ -110,7 +110,7 @@ export default function ReviewScreen() {
         </Pressable>
       </View>
 
-      <ScrollView className="flex-1 px-5" contentContainerClassName="pb-6">
+      <ScrollView className="flex-1 px-5 mb-4" contentContainerClassName="pb-6">
         {words.length === 0 ? (
           <Text style={{ color: palette.text }} className="mb-4 text-center text-base">
             {strings.review.emptyTurn}
