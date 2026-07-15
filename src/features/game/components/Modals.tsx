@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Animated, Modal, Pressable, View } from 'react-native';
 
 import { strings } from '@content/strings';
@@ -59,8 +59,8 @@ export function AwardModal({
   onConfirm,
 }: AwardModalProps) {
   const hasSelection = selectedTeamId !== undefined;
-  const overlayOpacity = useRef(new Animated.Value(0)).current;
-  const contentTranslateY = useRef(new Animated.Value(300)).current;
+  const [overlayOpacity] = useState(() => new Animated.Value(0));
+  const [contentTranslateY] = useState(() => new Animated.Value(300));
 
   useEffect(() => {
     if (visible) {
