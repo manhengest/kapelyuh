@@ -131,5 +131,5 @@ export interface MatchStats {
   slowestGuess: { wordText: string; durationMs: number } | null;
   leastSkippedTeam: { teamName: string; skipCount: number } | null;
   mostSkippedWord: { wordText: string; skipCount: number } | null;
-  bestRound: { teamNames: string[]; totalWordsGuessed: number } | null;
+  bestRound: { teamName: string; totalWordsGuessed: number } | null;
 }

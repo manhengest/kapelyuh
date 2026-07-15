@@ -13,9 +13,9 @@ export function SettingsToggleRow({ label, description, value, onValueChange }: 
   return (
     <View className="flex-row items-center justify-between gap-4 py-3">
       <View className="flex-1">
-        <Text className="text-base font-medium text-slate-900">{label}</Text>
+        <Text className="text-2xl font-bold text-highlightText">{label}</Text>
         {description ? (
-          <Text className="mt-1 text-sm text-slate-600">{description}</Text>
+          <Text className="mt-1 text-lg text-slate-600">{description}</Text>
         ) : null}
       </View>
       <Switch

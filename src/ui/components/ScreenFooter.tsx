@@ -30,13 +30,11 @@ export function ScreenFooter({
 }: ScreenFooterProps) {
   return (
     <View className="gap-3 px-5 pb-6">
-      {hint ? (
-        <Text className="text-md text-center text-highlightText">{hint}</Text>
-      ) : null}
-      <Button style={primaryShadow} label={label} onPress={onPress} disabled={disabled} />
+      {hint ? <Text className="text-md text-center text-highlightText">{hint}</Text> : null}
       {secondaryLabel && secondaryOnPress ? (
         <Button label={secondaryLabel} variant="outline" onPress={secondaryOnPress} />
       ) : null}
+      <Button style={primaryShadow} label={label} onPress={onPress} disabled={disabled} />
     </View>
   );
 }

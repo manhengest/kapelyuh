@@ -44,21 +44,13 @@ export const strings = {
     crocodileHint: 'Показуй слово жестами та мімікою',
     associationHint: 'Пояснюй одним асоціативним словом',
     forbidden: 'ЗАБОРОНЕНО',
-    eliasForbidden: [
-      'жести та міміка',
-      'однокореневі слова',
-      'переклад іноземною',
-    ],
+    eliasForbidden: ['жести та міміка', 'однокореневі слова', 'переклад іноземною'],
     crocodileForbidden: [
       'вимовляти слова та будь-які звуки',
       'вказувати на людей та предмети',
       'використовувати предмети',
     ],
-    associationForbidden: [
-      'однокореневі слова',
-      'міміку та жести',
-      'більше одного слова',
-    ],
+    associationForbidden: ['однокореневі слова', 'міміку та жести', 'більше одного слова'],
   },
   turn: {
     guess: 'Вгадав',
@@ -95,6 +87,7 @@ export const strings = {
   },
   results: {
     matchComplete: 'Гру завершено',
+    statisticTitle: 'Статистика гри',
     congrats: 'Вітаємо команди!',
     playAgain: 'Зіграти ще!',
     statSkip: 'Пропустити',
@@ -106,8 +99,8 @@ export const strings = {
         `Найшвидше вгадали «${word}» — лише ${seconds} с`,
       mostSkippedWord: (word: string, count: number) =>
         `«${word}» пропускали найчастіше — ${count} разів`,
-      bestRound: (teams: string, count: number) =>
-        `Найпродуктивніший хід: ${teams} — ${count} слів`,
+      bestRound: (teamName: string, count: number) =>
+        `Найпродуктивніший хід: ${teamName} — ${count} слів`,
     },
   },
   settings: {
@@ -116,11 +109,12 @@ export const strings = {
     soundDescription: 'Звукові ефекти під час гри',
     haptics: 'Вібрація',
     hapticsDescription: 'Тактильний відгук на дії',
-sentry: 'Звіти про збої',
+    sentry: 'Звіти про збої',
     sentryDescription: 'Анонімні звіти для покращення стабільності',
     skipPenalty: 'Штраф за пропуск слова',
     skipPenaltyDescription: '−1 бал команді за кожне пропущене слово',
     about: 'Про гру',
+    play: 'Грати',
   },
   about: {
     title: 'Про гру',

@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from '@content/strings';
 import { useGameStore } from '@features/game/store';
+import { playTap } from '@infrastructure/audio/sounds';
 import { Text } from '@ui/components/Text';
 
 const aboutIcon = require('@assets/images/icons/landing/about.png');
@@ -28,7 +29,10 @@ function LandingMenuButton({ label, icon, onPress }: Readonly<LandingMenuButtonP
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
-      onPress={onPress}
+      onPress={() => {
+        playTap();
+        onPress();
+      }}
       className="landing-menu-btn"
       style={{
         shadowColor: '#f2f2f2',
@@ -58,6 +62,7 @@ export default function HomeScreen() {
   const dispatch = useGameStore((store) => store.dispatch);
 
   const startNewGame = () => {
+    playTap();
     dispatch({ type: 'START_SETUP' });
     router.push('/game/setup');
   };

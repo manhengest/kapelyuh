@@ -1,5 +1,6 @@
 import { Image, Pressable, View } from 'react-native';
 
+import { playTap } from '@infrastructure/audio/sounds';
 import { Text } from '@ui/components/Text';
 
 const backArrowIcon = require('@assets/images/icons/back-arrow.png');
@@ -16,7 +17,10 @@ export function ScreenHeader({ title, onBack }: ScreenHeaderProps) {
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Назад"
-          onPress={onBack}
+          onPress={() => {
+            playTap();
+            onBack();
+          }}
           className="screen-header-action-btn screen-header-action-btn--back"
         >
           <Image source={backArrowIcon} style={{ width: 22, height: 18 }} resizeMode="contain" />

@@ -14,6 +14,7 @@ import {
   selectWinners,
 } from '@domain/game/selectors';
 import type { GameStatus, MatchSettings, RoundType, Team } from '@domain/game/types';
+import { playTimerEnd } from '@infrastructure/audio/sounds';
 import { triggerHaptic } from '@infrastructure/haptics';
 import { useAppStatePause } from '@shared/hooks/useAppStatePause';
 
@@ -105,6 +106,7 @@ export function useTimer() {
   const expiredRef = useRef(false);
   const haptic10Ref = useRef(false);
   const haptic3Ref = useRef(false);
+  const soundTimerEndRef = useRef(false);
 
   const isTimerActive = status === 'in_turn' && turn != null && turn.pausedAt == null;
 
@@ -114,6 +116,7 @@ export function useTimer() {
     expiredRef.current = false;
     haptic10Ref.current = false;
     haptic3Ref.current = false;
+    soundTimerEndRef.current = false;
   }, [turn?.startedAt, turn?.teamId]);
 
   useEffect(() => {
@@ -135,6 +138,10 @@ export function useTimer() {
         haptic3Ref.current = true;
         void triggerHaptic('heavy');
         AccessibilityInfo.announceForAccessibility('Залишилось 3 секунди');
+      }
+      if (remaining <= 5_000 && remaining > 4_900 && !soundTimerEndRef.current) {
+        soundTimerEndRef.current = true;
+        playTimerEnd();
       }
       if (remaining === 0 && !expiredRef.current) {
         expiredRef.current = true;
@@ -194,7 +201,7 @@ export const STATUS_ROUTE: Partial<Record<GameStatus, string>> = {
   awaiting_award: '/game/turn',
   review: '/game/review',
   round_results: '/game/review',
-  stat_carousel: '/game/results',
+  stat_carousel: '/game/statistic',
   end_of_match: '/game/results',
 };
 

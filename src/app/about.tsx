@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { strings } from '@content/strings';
 import { AppLogo } from '@ui/components/AppLogo';
 import { Button } from '@ui/components/Button';
+import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
 
@@ -35,6 +36,7 @@ export default function AboutScreen() {
           onPress={() => router.push('/privacy')}
         />
       </ScrollView>
+      <ScreenFooter label={strings.settings.play} onPress={() => router.replace('/')} />
     </SafeAreaView>
   );
 }

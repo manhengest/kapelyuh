@@ -1,5 +1,6 @@
 import { ScrollView, Pressable, View } from 'react-native';
 
+import { playTap } from '@infrastructure/audio/sounds';
 import { Text } from '@ui/components/Text';
 
 type HorizontalPickerProps<T extends string | number> = {
@@ -29,7 +30,12 @@ export function HorizontalPicker<T extends string | number>({
                 key={String(option)}
                 accessibilityRole="button"
                 accessibilityState={{ selected }}
-                onPress={() => onChange(option)}
+                onPress={() => {
+                  if (!selected) {
+                    playTap();
+                  }
+                  onChange(option);
+                }}
                 className={`picker-option ${selected ? 'picker-option--selected' : ''}`}
               >
                 <Text className={`picker-option-text ${selected ? 'picker-option-text--selected' : ''}`}>

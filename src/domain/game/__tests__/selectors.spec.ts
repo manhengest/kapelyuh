@@ -71,7 +71,7 @@ describe('domain/game/selectors', () => {
     const stats = selectMatchStats(turnHistory, teams, wordTexts);
 
     expect(stats.bestRound?.totalWordsGuessed).toBe(2);
-    expect(stats.bestRound?.teamNames).toContain('Команда 1');
+    expect(stats.bestRound?.teamName).toBe('Команда 1');
   });
 
   it('collectTurnEventsFromHistory flattens completed turns', () => {

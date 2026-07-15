@@ -185,15 +185,13 @@ export function selectMatchStats(
 
   let bestRound: MatchStats['bestRound'] = null;
   if (guessedByTeamRound.size > 0) {
-    const [, totalWordsGuessed] = [...guessedByTeamRound.entries()].reduce((best, current) =>
+    const [key, totalWordsGuessed] = [...guessedByTeamRound.entries()].reduce((best, current) =>
       current[1] > best[1] ? current : best,
     );
-    const tiedTeams = [...guessedByTeamRound.entries()]
-      .filter(([, count]) => count === totalWordsGuessed)
-      .map(([entryKey]) => entryKey.split(':')[0]);
+    const teamId = key.split(':')[0];
 
     bestRound = {
-      teamNames: tiedTeams.map((id) => teams.find((team) => team.id === id)?.name ?? id),
+      teamName: teams.find((team) => team.id === teamId)?.name ?? teamId,
       totalWordsGuessed,
     };
   }

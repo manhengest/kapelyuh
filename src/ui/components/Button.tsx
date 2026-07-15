@@ -1,5 +1,6 @@
-import { Pressable, type PressableProps } from 'react-native';
+import { Pressable, type GestureResponderEvent, type PressableProps } from 'react-native';
 
+import { playTap } from '@infrastructure/audio/sounds';
 import { Text } from '@ui/components/Text';
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger';
@@ -15,13 +16,20 @@ export function Button({
   variant = 'primary',
   disabled = false,
   className = '',
+  onPress,
   ...props
 }: ButtonProps) {
+  const handlePress = (event: GestureResponderEvent) => {
+    playTap();
+    onPress?.(event);
+  };
+
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
       disabled={disabled}
+      onPress={handlePress}
       className={`btn btn--${variant} ${disabled ? 'btn--disabled' : ''} ${className}`}
       {...props}
     >

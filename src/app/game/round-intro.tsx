@@ -7,6 +7,7 @@ import { ROUND_TYPES } from '@domain/game/types';
 import { GameScreenShell } from '@features/game/components/GameScreenShell';
 import { ConfirmExitModal } from '@features/game/components/Modals';
 import { useGameActions, useGameSelectors, useGameState } from '@features/game/hooks';
+import { playGameStart } from '@infrastructure/audio/sounds';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
@@ -197,7 +198,10 @@ export default function RoundIntroScreen() {
       <ScreenFooter
         hint={getRoundHint(roundType)}
         label={strings.common.start}
-        onPress={() => dispatch({ type: 'ROUND_INTRO_ACK' })}
+        onPress={() => {
+          playGameStart();
+          dispatch({ type: 'ROUND_INTRO_ACK' });
+        }}
       />
 
       <ConfirmExitModal

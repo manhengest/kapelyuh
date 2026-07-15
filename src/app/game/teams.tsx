@@ -7,6 +7,8 @@ import { strings } from '@content/strings';
 import type { Team } from '@domain/game/types';
 import { useGameActions, useGameState } from '@features/game/hooks';
 import { selectSessionWordIds } from '@features/game/words';
+import { playTap } from '@infrastructure/audio/sounds';
+import { triggerHaptic } from '@infrastructure/haptics';
 import { createId } from '@shared/lib/id';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
@@ -75,7 +77,11 @@ export default function TeamsScreen() {
                 key={team.id}
                 accessibilityRole="button"
                 accessibilityLabel="Змінити назву команди"
-                onPress={() => renameTeam(team.id)}
+                onPress={() => {
+                  void triggerHaptic('light');
+                  playTap();
+                  renameTeam(team.id);
+                }}
                 style={{
                   shadowColor: '#000',
                   shadowOffset: { width: 5, height: 5 },
