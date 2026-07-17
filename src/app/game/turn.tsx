@@ -16,6 +16,7 @@ import {
   useTimer,
   useWordText,
 } from '@features/game/hooks';
+import { useWordTextMap } from '@features/game/useWordTextMap';
 import { playGuess, playSkip } from '@infrastructure/audio/sounds';
 import { triggerHaptic } from '@infrastructure/haptics';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
@@ -35,6 +36,9 @@ export default function TurnScreen() {
   const word = useWordText(turn?.currentWordId);
   const palette = getRoundPalette(currentRound?.type);
   const roundMeta = getRoundMeta(currentRound?.type);
+  const { wordTexts } = useWordTextMap();
+  const queueWordIds = currentRound?.remainingWordIds ?? [];
+  const guessedWordIds = currentRound?.guessedWordIds ?? [];
 
   const [awardSelection, setAwardSelection] = useState<string | null | undefined>(undefined);
   const [wordFeedback, setWordFeedback] = useState<'guess' | 'skip' | null>(null);
@@ -100,9 +104,7 @@ export default function TurnScreen() {
         >
           {teamName}
         </Text>
-        <View
-          className="mt-1 rounded-full px-4 py-1 bg-white"
-        >
+        <View className="mt-1 rounded-full bg-white px-4 py-1">
           <Text className="text-base font-bold tracking-widest" style={{ color: palette.text }}>
             {roundMeta.name}
           </Text>
@@ -113,7 +115,7 @@ export default function TurnScreen() {
       <View className="items-center">
         <CountdownRing
           remainingMs={isAwaitingAward ? 0 : remainingMs}
-          totalMs={settings.turnDurationMs}
+          totalMs={turn?.durationMs ?? settings.turnDurationMs}
           textColor={palette.text}
           locked={isAwaitingAward}
         />
@@ -133,11 +135,7 @@ export default function TurnScreen() {
 
       {/* Action buttons */}
       <View className="pb-8" style={{ opacity: isAwaitingAward ? 0.3 : 1 }}>
-        <ActionButtons
-          onGuess={onGuess}
-          onSkip={onSkip}
-          disabled={isAwaitingAward}
-        />
+        <ActionButtons onGuess={onGuess} onSkip={onSkip} disabled={isAwaitingAward} />
       </View>
 
       <PauseModal
@@ -155,6 +153,32 @@ export default function TurnScreen() {
         onSelect={setAwardSelection}
         onConfirm={onConfirmAward}
       />
+
+      {__DEV__ && (
+        <>
+          <View className="absolute left-4 top-36 max-w-[35%] bg-white p-2" pointerEvents="none">
+            <Text className="text-[12px] font-bold text-highlightText">
+              QUEUE ({queueWordIds.length})
+            </Text>
+            {queueWordIds.map((id) => (
+              <Text key={id} className="text-[10px] text-highlightText">
+                {wordTexts[id] ?? id}
+              </Text>
+            ))}
+          </View>
+
+          <View className="absolute right-4 top-36 max-w-[35%] bg-white p-2" pointerEvents="none">
+            <Text className="text-[10px] font-bold text-highlightText">
+              GUESSED ({guessedWordIds.length})
+            </Text>
+            {guessedWordIds.map((id) => (
+              <Text key={id} className="text-[12px] text-highlightText">
+                {wordTexts[id] ?? id}
+              </Text>
+            ))}
+          </View>
+        </>
+      )}
     </GameScreenShell>
   );
 }

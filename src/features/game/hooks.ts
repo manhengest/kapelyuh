@@ -6,11 +6,13 @@ import { computeTurnScore, deriveWordOutcome } from '@domain/game/scoring';
 import {
   selectCurrentRound,
   selectCurrentTeam,
+  selectIsCarryOver,
   selectIsHatEmpty,
   selectMatchStats,
   selectReviewBanner,
   selectReviewCta,
   selectScoreboard,
+  selectUpcomingTurnDurationMs,
   selectWinners,
 } from '@domain/game/selectors';
 import type { GameStatus, MatchSettings, RoundType, Team } from '@domain/game/types';
@@ -47,6 +49,8 @@ export function useGameSelectors() {
       scoreboard: selectScoreboard(state),
       winners: selectWinners(state),
       matchStats: selectMatchStats(state.turnHistory, state.teams, wordTexts),
+      isCarryOver: selectIsCarryOver(state),
+      upcomingTurnDurationMs: selectUpcomingTurnDurationMs(state),
       wordTexts,
     }),
     [state, wordTexts],
@@ -200,7 +204,6 @@ export const STATUS_ROUTE: Partial<Record<GameStatus, string>> = {
   in_turn: '/game/turn',
   awaiting_award: '/game/turn',
   review: '/game/review',
-  round_results: '/game/review',
   stat_carousel: '/game/statistic',
   end_of_match: '/game/results',
 };

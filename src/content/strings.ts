@@ -51,6 +51,8 @@ export const strings = {
       'використовувати предмети',
     ],
     associationForbidden: ['однокореневі слова', 'міміку та жести', 'більше одного слова'],
+    carryOverContinues: (name: string) => `Команда ${name} продовжує`,
+    carryOverTimeLeft: (sec: number) => `Залишилось ${sec} сек`,
   },
   turn: {
     guess: 'Вгадав',
@@ -125,6 +127,7 @@ export const strings = {
   },
   privacy: {
     title: 'Політика конфіденційності',
+    headerTitle: 'Конфіденційність',
     updated: 'Останнє оновлення: червень 2026',
     sections: [
       {
@@ -141,7 +144,7 @@ export const strings = {
       },
       {
         title: 'Контакти',
-        body: 'Питання щодо конфіденційності: support@kapelyukh.app',
+        body: 'Питання щодо конфіденційності: manhengest@gmail.com',
       },
     ],
   },

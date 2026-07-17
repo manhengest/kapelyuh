@@ -6,7 +6,7 @@ import type {
   Team,
   TurnEvent,
 } from './types';
-import { ROUND_TYPES } from './types';
+import { CARRY_OVER_MIN_MS, ROUND_TYPES } from './types';
 
 export function selectCurrentTeam(state: GameState): Team | null {
   return state.teams[state.currentTeamIndex] ?? null;
@@ -82,6 +82,14 @@ export function selectWinners(state: GameState): Team[] {
   const maxTotal = Math.max(...board.map((row) => row.total));
   const winnerIds = new Set(board.filter((row) => row.total === maxTotal).map((row) => row.teamId));
   return state.teams.filter((team) => winnerIds.has(team.id));
+}
+
+export function selectIsCarryOver(state: GameState): boolean {
+  return state.carryOverMs != null && state.carryOverMs >= CARRY_OVER_MIN_MS;
+}
+
+export function selectUpcomingTurnDurationMs(state: GameState): number {
+  return selectIsCarryOver(state) ? (state.carryOverMs as number) : state.settings.turnDurationMs;
 }
 
 export function selectReviewBanner(state: GameState): 'hat_empty' | 'time_up' | null {

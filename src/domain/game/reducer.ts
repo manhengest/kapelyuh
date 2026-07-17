@@ -11,7 +11,7 @@ import type {
   Team,
   TurnState,
 } from './types';
-import { DEFAULT_MATCH_SETTINGS, ROUND_TYPES, SCORE } from './types';
+import { CARRY_OVER_MIN_MS, DEFAULT_MATCH_SETTINGS, ROUND_TYPES, SCORE } from './types';
 
 const STAT_CARD_COUNT = 3;
 
@@ -25,6 +25,7 @@ export function createInitialState(now = 0): GameState {
     currentTeamIndex: 0,
     turn: null,
     turnHistory: [],
+    carryOverMs: null,
     statCardsRemaining: STAT_CARD_COUNT,
     createdAt: now,
     updatedAt: now,
@@ -137,7 +138,12 @@ function appendTurnHistory(state: GameState, endedAt: number): GameState {
   };
 }
 
-function finalizeTurnToReview(state: GameState, turn: TurnState, now: number): GameState {
+function finalizeTurnToReview(
+  state: GameState,
+  turn: TurnState,
+  now: number,
+  carryOverMs: number | null = null,
+): GameState {
   return touch(
     {
       ...state,
@@ -146,6 +152,7 @@ function finalizeTurnToReview(state: GameState, turn: TurnState, now: number): G
         ...turn,
         currentWordId: null,
       },
+      carryOverMs,
     },
     now,
   );
@@ -182,6 +189,11 @@ function startTurnState(state: GameState, now: number): GameState {
     throw new Error('Cannot start turn without an active team');
   }
 
+  const duration =
+    state.carryOverMs != null && state.carryOverMs >= CARRY_OVER_MIN_MS
+      ? state.carryOverMs
+      : state.settings.turnDurationMs;
+
   return touch(
     {
       ...updateRound(state, { remainingWordIds: queue }),
@@ -189,12 +201,14 @@ function startTurnState(state: GameState, now: number): GameState {
       turn: {
         teamId: team.id,
         startedAt: now,
-        endsAt: now + state.settings.turnDurationMs,
+        endsAt: now + duration,
+        durationMs: duration,
         pausedAt: null,
         remainingOnPauseMs: null,
         currentWordId: wordId,
         events: [],
       },
+      carryOverMs: null,
     },
     now,
   );
@@ -238,7 +252,10 @@ function handleGuess(state: GameState, now: number): GameState {
   nextState = applyLiveTurnScore(nextState, nextTurn);
 
   if (nextWordId === null && queue.length === 0) {
-    return finalizeTurnToReview(nextState, nextState.turn!, now);
+    const leftover = Math.max(0, turn.endsAt - now);
+    const carryOverMs =
+      nextState.currentRoundIndex < 2 && leftover >= CARRY_OVER_MIN_MS ? leftover : null;
+    return finalizeTurnToReview(nextState, nextState.turn!, now, carryOverMs);
   }
 
   return nextState;
@@ -491,6 +508,7 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
           status: 'round_intro',
           currentTeamIndex: (withHistory.currentTeamIndex + 1) % withHistory.teams.length,
           turn: null,
+          carryOverMs: null,
           rounds: withHistory.rounds.map((entry, index) =>
             index === withHistory.currentRoundIndex
               ? { ...entry, turnIndex: round.turnIndex + 1 }
@@ -508,13 +526,15 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
       const nextRoundType = ROUND_TYPES[nextRoundIndex];
       const sessionWordIds = withHistory.rounds[0]?.sessionWordIds ?? [];
       const nextRound = createRound(nextRoundType, sessionWordIds);
+      const hasCarryOver =
+        withHistory.carryOverMs != null && withHistory.carryOverMs >= CARRY_OVER_MIN_MS;
 
       return touch(
         {
           ...withHistory,
           status: 'round_intro',
           currentRoundIndex: nextRoundIndex,
-          currentTeamIndex: 0,
+          currentTeamIndex: hasCarryOver ? withHistory.currentTeamIndex : 0,
           rounds: [...withHistory.rounds, nextRound],
           turn: null,
         },

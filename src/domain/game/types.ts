@@ -10,7 +10,6 @@ export type GameStatus =
   | 'in_turn'
   | 'awaiting_award'
   | 'review'
-  | 'round_results'
   | 'stat_carousel'
   | 'end_of_match';
 
@@ -21,6 +20,8 @@ export const SCORE = {
 } as const;
 
 export const ROUND_TYPES: readonly RoundType[] = ['elias', 'crocodile', 'association'] as const;
+
+export const CARRY_OVER_MIN_MS = 10_000;
 
 export const DEFAULT_MATCH_SETTINGS: MatchSettings = {
   teamCount: 2,
@@ -72,6 +73,7 @@ export interface TurnState {
   teamId: string;
   startedAt: number;
   endsAt: number;
+  durationMs: number;
   pausedAt: number | null;
   remainingOnPauseMs: number | null;
   currentWordId: string | null;
@@ -104,6 +106,7 @@ export interface GameState {
   currentTeamIndex: number;
   turn: TurnState | null;
   turnHistory: CompletedTurn[];
+  carryOverMs: number | null;
   statCardsRemaining: number;
   createdAt: number;
   updatedAt: number;

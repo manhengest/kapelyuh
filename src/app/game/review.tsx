@@ -103,11 +103,13 @@ export default function ReviewScreen() {
         >
           {netScore}
         </Text>
-        <Pressable onPress={() => setPenaltyVisible(true)} className="mb-4">
-          <Text className="text-center text-base text-primaryText">
-            {strings.review.penaltyInfo}
-          </Text>
-        </Pressable>
+        {gameState.settings.skipPenalty ? (
+          <Pressable onPress={() => setPenaltyVisible(true)} className="mb-4">
+            <Text className="text-center text-base text-primaryText">
+              {strings.review.penaltyInfo}
+            </Text>
+          </Pressable>
+        ) : null}
       </View>
 
       <ScrollView className="flex-1 px-5 mb-4" contentContainerClassName="pb-6">

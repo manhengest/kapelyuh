@@ -62,13 +62,13 @@ function getRoundHint(roundType: 'elias' | 'crocodile' | 'association' | undefin
 
 export default function RoundIntroScreen() {
   const router = useRouter();
-  const { currentRound, currentTeam } = useGameSelectors();
+  const { currentRound, currentTeam, isCarryOver, upcomingTurnDurationMs } = useGameSelectors();
   const { dispatch, abandonMatch } = useGameActions();
   const state = useGameState();
   const roundIndex = state.currentRoundIndex;
   const totalRounds = ROUND_TYPES.length;
   const roundType = currentRound?.type;
-  const turnDurationSec = Math.round(state.settings.turnDurationMs / 1000);
+  const turnDurationSec = Math.round(upcomingTurnDurationMs / 1000);
   const wordCount = state.settings.wordCount;
   const titleStyle = getRoundTitleStyle(roundType);
   const roundIntroIconStyle = getRoundIntroIconStyle(roundType);
@@ -168,9 +168,19 @@ export default function RoundIntroScreen() {
         </View>
 
         {/* Team name */}
-        <Text className="mb-10 text-center text-6xl font-bold leading-tight text-primaryText">
+        <Text className="text-center text-6xl font-bold leading-tight text-primaryText">
           {currentTeam?.name ?? ''}
         </Text>
+
+        {isCarryOver && currentTeam && (
+          <Text className="mb-6 mt-2 text-center text-lg font-semibold text-highlightText">
+            {strings.rounds.carryOverContinues(currentTeam.name)}
+            {'\n'}
+            {strings.rounds.carryOverTimeLeft(turnDurationSec)}
+          </Text>
+        )}
+
+        {!isCarryOver && <View className="mb-10" />}
 
         {/* Info row */}
         <View

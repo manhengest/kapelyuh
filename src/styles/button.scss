@@ -16,10 +16,18 @@
     background-color: $primary-btn;
   }
 
+  .btn--disabled {
+    background-color: $disabled-btn;
+  }
+
   .btn-text {
     text-align: center;
     font-size: 28px;
     font-weight: 700;
     color: $primary-text;
+  }
+
+  .btn-text--disabled {
+    color: $disabled-text;
   }
 }

@@ -249,6 +249,74 @@ describe('domain/game/reducer', () => {
   });
 });
 
+describe('domain/game/reducer carry-over time', () => {
+  it('carries over leftover time when the hat empties with ≥10s remaining', () => {
+    let state = startMatch(['w1', 'w2']);
+    state = guessCurrentWord(state, BASE_TIME + 10_000);
+    state = guessCurrentWord(state, BASE_TIME + 20_000);
+
+    expect(state.status).toBe('review');
+    expect(state.carryOverMs).toBe(40_000);
+  });
+
+  it('keeps the same team and consumes the carry-over on NEXT_ROUND', () => {
+    let state = startMatch(['w1', 'w2']);
+    state = guessCurrentWord(state, BASE_TIME + 10_000);
+    state = guessCurrentWord(state, BASE_TIME + 20_000);
+    expect(state.currentTeamIndex).toBe(0);
+
+    state = nextRound(state);
+    expect(state.currentTeamIndex).toBe(0);
+    expect(state.carryOverMs).toBe(40_000);
+
+    const ackAt = BASE_TIME + 130_000;
+    state = gameReducer(state, { type: 'ROUND_INTRO_ACK', now: ackAt });
+
+    expect(state.carryOverMs).toBeNull();
+    expect(state.turn?.durationMs).toBe(40_000);
+    expect((state.turn?.endsAt ?? 0) - ackAt).toBe(40_000);
+  });
+
+  it('does not carry over when the hat empties via timeout/award (leftover is 0)', () => {
+    let state = startMatch(['w1']);
+    state = expireTimer(state);
+    state = awardWord(state, null);
+
+    expect(state.status).toBe('review');
+    expect(state.carryOverMs).toBeNull();
+
+    state = nextRound(state);
+    expect(state.currentTeamIndex).toBe(0);
+  });
+
+  it('does not carry over when leftover is below the 10s threshold', () => {
+    let state = startMatch(['w1', 'w2']);
+    state = guessCurrentWord(state, BASE_TIME + 52_000);
+    state = guessCurrentWord(state, BASE_TIME + 55_000);
+
+    expect(state.carryOverMs).toBeNull();
+
+    state = nextRound(state);
+    expect(state.currentTeamIndex).toBe(0);
+  });
+
+  it('does not carry over past the last round', () => {
+    let state = startMatch(['w1']);
+    state = guessCurrentWord(state, BASE_TIME + 5_000);
+    state = nextRound(state); // -> crocodile
+    state = gameReducer(state, { type: 'ROUND_INTRO_ACK', now: BASE_TIME + 120_000 });
+    state = guessCurrentWord(state, BASE_TIME + 125_000);
+    state = nextRound(state); // -> association (last round)
+    state = gameReducer(state, { type: 'ROUND_INTRO_ACK', now: BASE_TIME + 240_000 });
+
+    state = guessCurrentWord(state, BASE_TIME + 245_000);
+
+    expect(state.status).toBe('review');
+    expect(state.currentRoundIndex).toBe(2);
+    expect(state.carryOverMs).toBeNull();
+  });
+});
+
 describe('domain/game/reducer team setup', () => {
   it('requires teams from TEAMS_COMPLETED payload', () => {
     let state = createInitialState(BASE_TIME);

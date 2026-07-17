@@ -33,7 +33,9 @@ export function Button({
       className={`btn btn--${variant} ${disabled ? 'btn--disabled' : ''} ${className}`}
       {...props}
     >
-      <Text className={`btn-text btn-text--${variant}`}>{label}</Text>
+      <Text className={`btn-text btn-text--${variant} ${disabled ? 'btn-text--disabled' : ''}`}>
+        {label}
+      </Text>
     </Pressable>
   );
 }

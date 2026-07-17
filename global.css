@@ -16,11 +16,17 @@
   .btn--primary {
     background-color: #FDC82B;
   }
+  .btn--disabled {
+    background-color: #D9D2CE;
+  }
   .btn-text {
     text-align: center;
     font-size: 28px;
     font-weight: 700;
     color: #401947;
+  }
+  .btn-text--disabled {
+    color: #8C8078;
   }
 }
 
