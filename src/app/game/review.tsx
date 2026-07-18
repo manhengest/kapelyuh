@@ -43,9 +43,7 @@ export default function ReviewScreen() {
 
   const words = useMemo(() => {
     return reviewWords.map((entry) => {
-      const original =
-        entry.outcome === 'guessed' || entry.outcome === 'skipped' ? entry.outcome : 'skipped';
-      const checked = (overrides[entry.wordId] ?? original) === 'guessed';
+      const checked = (overrides[entry.wordId] ?? entry.outcome) === 'guessed';
       return { ...entry, checked };
     });
   }, [overrides, reviewWords]);
@@ -118,30 +116,24 @@ export default function ReviewScreen() {
             {strings.review.emptyTurn}
           </Text>
         ) : (
-          <>
-            <View className="gap-2">
-              {words
-                .filter((entry) => entry.outcome === 'guessed' || entry.outcome === 'skipped')
-                .map((entry) => (
-                  <Pressable
-                    key={entry.wordId}
-                    accessibilityRole="checkbox"
-                    accessibilityState={{ checked: entry.checked }}
-                    onPress={() => toggleWord(entry.wordId, !entry.checked)}
-                    className="flex-row items-center gap-3 rounded-xl bg-white/70 px-4 py-3"
-                  >
-                    <View
-                      className={`review-checkbox ${entry.checked ? 'review-checkbox--checked' : ''}`}
-                    >
-                      {entry.checked ? <Text className="text-white">✓</Text> : null}
-                    </View>
-                    <Text className="flex-1 text-xl font-semibold text-primaryText">
-                      {entry.text}
-                    </Text>
-                  </Pressable>
-                ))}
-            </View>
-          </>
+          <View className="gap-2">
+            {words.map((entry) => (
+              <Pressable
+                key={entry.wordId}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: entry.checked }}
+                onPress={() => toggleWord(entry.wordId, !entry.checked)}
+                className="flex-row items-center gap-3 rounded-xl bg-white/70 px-4 py-3"
+              >
+                <View
+                  className={`review-checkbox ${entry.checked ? 'review-checkbox--checked' : ''}`}
+                >
+                  {entry.checked ? <Text className="text-white">✓</Text> : null}
+                </View>
+                <Text className="flex-1 text-xl font-semibold text-primaryText">{entry.text}</Text>
+              </Pressable>
+            ))}
+          </View>
         )}
       </ScrollView>
 

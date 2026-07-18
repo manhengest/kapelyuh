@@ -301,9 +301,6 @@ function handleAward(state: GameState, toTeamId: string | null, now: number): Ga
   }
 
   const round = getCurrentRound(state);
-  const guessedWordIds = round.guessedWordIds.includes(wordId)
-    ? round.guessedWordIds
-    : [...round.guessedWordIds, wordId];
 
   const nextTurn: TurnState = {
     ...turn,
@@ -319,11 +316,19 @@ function handleAward(state: GameState, toTeamId: string | null, now: number): Ga
     currentWordId: null,
   };
 
-  let nextState = updateRound(state, { guessedWordIds });
-  if (toTeamId) {
+  // «Ніхто не вгадав» — return the word to the hat; do not treat it as guessed.
+  let nextState: GameState;
+  if (toTeamId == null) {
+    nextState = updateRound(state, {
+      remainingWordIds: [...round.remainingWordIds, wordId],
+    });
+  } else {
+    const guessedWordIds = round.guessedWordIds.includes(wordId)
+      ? round.guessedWordIds
+      : [...round.guessedWordIds, wordId];
     nextState = {
-      ...nextState,
-      teams: addTeamRoundScore(nextState.teams, toTeamId, round.type, SCORE.award),
+      ...updateRound(state, { guessedWordIds }),
+      teams: addTeamRoundScore(state.teams, toTeamId, round.type, SCORE.award),
     };
   }
 

@@ -185,6 +185,21 @@ describe('domain/game/reducer', () => {
     );
   });
 
+  it('awarding to nobody gives zero points and returns the word to the hat', () => {
+    let state = startMatch(['w1', 'w2']);
+    const awardedWordId = state.turn?.currentWordId;
+    state = expireTimer(state);
+    state = awardWord(state, null);
+
+    expect(getCurrentRoundScore(state, 't1')).toBe(0);
+    expect(getCurrentRoundScore(state, 't2')).toBe(0);
+    expect(state.rounds[0]?.guessedWordIds).not.toContain(awardedWordId);
+    expect(state.rounds[0]?.remainingWordIds).toContain(awardedWordId);
+    expect(selectIsHatEmpty(state)).toBe(false);
+    const awarded = state.turn?.events.find((e) => e.kind === 'awarded');
+    expect(awarded).toMatchObject({ wordId: awardedWordId, toTeamId: null });
+  });
+
   it('awards «Слово для всіх» to any team and removes the word from the hat', () => {
     let state = startMatch(['w1', 'w2']);
     const awardedWordId = state.turn?.currentWordId;
@@ -280,9 +295,10 @@ describe('domain/game/reducer carry-over time', () => {
   it('does not carry over when the hat empties via timeout/award (leftover is 0)', () => {
     let state = startMatch(['w1']);
     state = expireTimer(state);
-    state = awardWord(state, null);
+    state = awardWord(state, 't2');
 
     expect(state.status).toBe('review');
+    expect(selectIsHatEmpty(state)).toBe(true);
     expect(state.carryOverMs).toBeNull();
 
     state = nextRound(state);

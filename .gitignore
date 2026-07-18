@@ -53,3 +53,4 @@ src/styles/.generated/
 
 # IDE
 .idea/
+/.claude/plans/

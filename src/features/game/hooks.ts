@@ -74,19 +74,26 @@ export function useReviewWords() {
 
     const ids = new Set<string>();
     for (const event of turn.events) {
-      if (event.kind === 'guessed' || event.kind === 'skipped' || event.kind === 'awarded') {
+      if (event.kind === 'guessed' || event.kind === 'skipped') {
         ids.add(event.wordId);
-      }
-      if (event.kind === 'expired' && event.pendingWordId) {
-        ids.add(event.pendingWordId);
       }
     }
 
-    return [...ids].map((wordId) => ({
-      wordId,
-      text: wordTexts[wordId] ?? wordId,
-      outcome: deriveWordOutcome(turn.events, wordId),
-    }));
+    // Only guessed/skipped words are reviewable. Awarded words — including
+    // «Ніхто не вгадав» — must not appear on the review screen.
+    return [...ids].flatMap((wordId) => {
+      const outcome = deriveWordOutcome(turn.events, wordId);
+      if (outcome !== 'guessed' && outcome !== 'skipped') {
+        return [];
+      }
+      return [
+        {
+          wordId,
+          text: wordTexts[wordId] ?? wordId,
+          outcome,
+        },
+      ];
+    });
   }, [turn, wordTexts]);
 }
 
