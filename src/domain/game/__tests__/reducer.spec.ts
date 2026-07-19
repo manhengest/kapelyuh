@@ -69,7 +69,7 @@ describe('domain/game/reducer', () => {
     expect(getCurrentRoundScore(state, 't1')).toBe(0);
   });
 
-  it('review-toggle applies -2 when skip penalty is enabled', () => {
+  it('review-toggle applies -1 when unchecking a guessed word, even with skip penalty', () => {
     let state = startMatch(['w1', 'w2'], undefined, makeSettings({ skipPenalty: -1 }));
     state = guessCurrentWord(state);
     const guessedWordId = state.turn?.events.find((event) => event.kind === 'guessed')?.wordId;
@@ -255,6 +255,75 @@ describe('domain/game/reducer', () => {
     expect(() => gameReducer(state, { type: 'ROUND_INTRO_ACK', now: BASE_TIME })).toThrow(/empty hat/);
   });
 
+  it('returns fouled words to hat and continues Alias with full timer', () => {
+    let state = startMatch(['w1', 'w2']);
+    state = guessCurrentWord(state, BASE_TIME + 10_000);
+    state = guessCurrentWord(state, BASE_TIME + 20_000);
+
+    expect(state.status).toBe('review');
+    expect(selectIsHatEmpty(state)).toBe(true);
+    expect(selectReviewCta(state)).toBe('next_round');
+    expect(state.carryOverMs).toBe(40_000);
+
+    const fouledWordId = state.turn?.events.find((event) => event.kind === 'guessed')?.wordId;
+    expect(fouledWordId).toBeTruthy();
+
+    state = submitReview(state, { [fouledWordId!]: 'skipped' });
+
+    expect(selectIsHatEmpty(state)).toBe(false);
+    expect(selectReviewBanner(state)).toBe('time_up');
+    expect(selectReviewCta(state)).toBe('next_turn');
+    expect(state.carryOverMs).toBeNull();
+    expect(state.rounds[0]?.remainingWordIds).toContain(fouledWordId);
+    expect(state.rounds[0]?.guessedWordIds).not.toContain(fouledWordId);
+    expect(state.turn?.events.find((event) => event.kind === 'skipped' && event.wordId === fouledWordId)).toBeTruthy();
+
+    state = nextTurn(state);
+    const ackAt = BASE_TIME + 80_000;
+    state = gameReducer(state, { type: 'ROUND_INTRO_ACK', now: ackAt });
+
+    expect(state.status).toBe('in_turn');
+    expect(state.currentRoundIndex).toBe(0);
+    expect(state.currentTeamIndex).toBe(1);
+    expect(state.turn?.durationMs).toBe(60_000);
+    expect((state.turn?.endsAt ?? 0) - ackAt).toBe(60_000);
+  });
+
+  it('returns fouled words to hat when the hat still has words', () => {
+    let state = startMatch(['w1', 'w2', 'w3']);
+    state = guessCurrentWord(state);
+    const fouledWordId = state.turn?.events.find((event) => event.kind === 'guessed')?.wordId;
+    expect(fouledWordId).toBeTruthy();
+
+    state = expireTimer(state);
+    state = awardWord(state, null);
+
+    expect(selectIsHatEmpty(state)).toBe(false);
+    const remainingBefore = state.rounds[0]?.remainingWordIds.length ?? 0;
+
+    state = submitReview(state, { [fouledWordId!]: 'skipped' });
+
+    expect(state.rounds[0]?.remainingWordIds).toContain(fouledWordId);
+    expect(state.rounds[0]?.remainingWordIds.length).toBe(remainingBefore + 1);
+    expect(state.rounds[0]?.guessedWordIds).not.toContain(fouledWordId);
+  });
+
+  it('does not alter hat or carry-over when review is submitted without fouls', () => {
+    let state = startMatch(['w1', 'w2']);
+    state = guessCurrentWord(state, BASE_TIME + 10_000);
+    state = guessCurrentWord(state, BASE_TIME + 20_000);
+
+    expect(state.carryOverMs).toBe(40_000);
+    const remainingBefore = [...(state.rounds[0]?.remainingWordIds ?? [])];
+    const guessedBefore = [...(state.rounds[0]?.guessedWordIds ?? [])];
+
+    state = submitReview(state, {});
+
+    expect(state.carryOverMs).toBe(40_000);
+    expect(state.rounds[0]?.remainingWordIds).toEqual(remainingBefore);
+    expect(state.rounds[0]?.guessedWordIds).toEqual(guessedBefore);
+  });
+
   it('ignores duplicate START_SETUP when a match is already being configured', () => {
     let state = createInitialState(BASE_TIME);
     state = gameReducer(state, { type: 'START_SETUP', now: BASE_TIME });
@@ -292,7 +361,7 @@ describe('domain/game/reducer carry-over time', () => {
     expect((state.turn?.endsAt ?? 0) - ackAt).toBe(40_000);
   });
 
-  it('does not carry over when the hat empties via timeout/award (leftover is 0)', () => {
+  it('advances to the next team when the hat empties via timeout/award (no carry-over)', () => {
     let state = startMatch(['w1']);
     state = expireTimer(state);
     state = awardWord(state, 't2');
@@ -300,20 +369,22 @@ describe('domain/game/reducer carry-over time', () => {
     expect(state.status).toBe('review');
     expect(selectIsHatEmpty(state)).toBe(true);
     expect(state.carryOverMs).toBeNull();
+    expect(state.currentTeamIndex).toBe(0);
 
     state = nextRound(state);
-    expect(state.currentTeamIndex).toBe(0);
+    expect(state.currentTeamIndex).toBe(1);
   });
 
-  it('does not carry over when leftover is below the 10s threshold', () => {
+  it('advances to the next team when leftover is below the 10s threshold', () => {
     let state = startMatch(['w1', 'w2']);
     state = guessCurrentWord(state, BASE_TIME + 52_000);
     state = guessCurrentWord(state, BASE_TIME + 55_000);
 
     expect(state.carryOverMs).toBeNull();
+    expect(state.currentTeamIndex).toBe(0);
 
     state = nextRound(state);
-    expect(state.currentTeamIndex).toBe(0);
+    expect(state.currentTeamIndex).toBe(1);
   });
 
   it('does not carry over past the last round', () => {

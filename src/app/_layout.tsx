@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { SQLiteProvider } from 'expo-sqlite';
 import { useEffect } from 'react';
+import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { GameRouteSync, useHydrateGameStore } from '@features/game/navigation';
@@ -35,7 +36,7 @@ export default function RootLayout() {
   }, [settingsHydrated, fontsLoaded]);
 
   if (!fontsLoaded) {
-    return null;
+    return <View style={{ flex: 1, backgroundColor: '#000000' }} />;
   }
 
   return (

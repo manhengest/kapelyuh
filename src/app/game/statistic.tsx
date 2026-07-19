@@ -75,15 +75,17 @@ export default function StatisticScreen() {
       <SafeAreaView className="flex-1">
         <ScreenHeader title={strings.results.statisticTitle} />
         <View className="flex-1 justify-center px-6">
-          <Text className="mb-4 text-center text-sm uppercase tracking-widest text-slate-400">
-            {Math.min(statIndex + 1, totalCards)} / {totalCards}
-          </Text>
-          <AnimatedText
-            style={carouselStyle}
-            className="text-center text-3xl font-bold leading-9 text-primaryText"
-          >
-            {statCards[Math.min(statIndex, totalCards - 1)]}
-          </AnimatedText>
+          <View className="rounded-3xl bg-white/80 px-8 py-6">
+            <Text className="mb-4 text-center text-sm uppercase tracking-widest text-slate-400">
+              {Math.min(statIndex + 1, totalCards)} / {totalCards}
+            </Text>
+            <AnimatedText
+              style={carouselStyle}
+              className="text-center text-xl font-bold leading-9 text-primaryText"
+            >
+              {statCards[Math.min(statIndex, totalCards - 1)]}
+            </AnimatedText>
+          </View>
         </View>
         <ScreenFooter
           label={strings.results.statNext}

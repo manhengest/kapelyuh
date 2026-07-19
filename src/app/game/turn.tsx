@@ -65,10 +65,16 @@ export default function TurnScreen() {
   const onSkip = useCallback(() => {
     void triggerHaptic('warning');
     playSkip();
+    // After timer expiry («слово для всіх»), Skip means the same as
+    // «Ніхто не вгадав» in the award modal — return word to hat and end turn.
+    if (isAwaitingAward) {
+      dispatch({ type: 'AWARD_WORD', toTeamId: null });
+      return;
+    }
     setWordFeedback('skip');
     dispatch({ type: 'SKIP_WORD' });
     setTimeout(() => setWordFeedback(null), 250);
-  }, [dispatch]);
+  }, [dispatch, isAwaitingAward]);
 
   const onConfirmAward = () => {
     if (awardSelection === undefined) {
@@ -161,7 +167,6 @@ export default function TurnScreen() {
         <ActionButtons
           onGuess={onGuess}
           onSkip={onSkip}
-          skipDisabled={isAwaitingAward}
           guessDisabled={false}
         />
       </View>
@@ -182,7 +187,7 @@ export default function TurnScreen() {
         onConfirm={onConfirmAward}
       />
 
-      {__DEV__ && (
+      {false && (
         <>
           <View className="absolute left-4 top-36 max-w-[35%] bg-white p-2" pointerEvents="none">
             <Text className="text-[12px] font-bold text-highlightText">

@@ -4,8 +4,8 @@ export function scoreForOutcome(outcome: 'guessed' | 'skipped', skipPenalty: 0 |
   return outcome === 'guessed' ? 1 : skipPenalty;
 }
 
-export function reviewToggleDelta(skipPenalty: 0 | -1): number {
-  return -(1 - skipPenalty);
+export function reviewToggleDelta(): number {
+  return -1;
 }
 
 export function deriveWordOutcome(
@@ -82,7 +82,10 @@ export function applyReviewOverrides(
 
     const finalOutcome = overrides[wordId] ?? original;
     const originalScore = scoreForOutcome(original, skipPenalty);
-    const finalScore = scoreForOutcome(finalOutcome, skipPenalty);
+    const finalScore =
+      original === 'guessed' && finalOutcome === 'skipped'
+        ? 0
+        : scoreForOutcome(finalOutcome, skipPenalty);
     delta += finalScore - originalScore;
   }
 

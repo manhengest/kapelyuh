@@ -17,9 +17,8 @@ describe('domain/game/scoring', () => {
     expect(scoreForOutcome('skipped', -1)).toBe(-1);
   });
 
-  it('computes review toggle delta as -1 or -2 depending on skip penalty', () => {
-    expect(reviewToggleDelta(0)).toBe(-1);
-    expect(reviewToggleDelta(-1)).toBe(-2);
+  it('computes review toggle delta as -1 regardless of skip penalty', () => {
+    expect(reviewToggleDelta()).toBe(-1);
   });
 
   it('clamps team totals to zero', () => {
@@ -57,7 +56,7 @@ describe('domain/game/scoring', () => {
     ];
 
     expect(applyReviewOverrides(events, { w1: 'skipped' }, 0)).toBe(-1);
-    expect(applyReviewOverrides(events, { w1: 'skipped' }, -1)).toBe(-2);
+    expect(applyReviewOverrides(events, { w1: 'skipped' }, -1)).toBe(-1);
     expect(applyReviewOverrides(events, { w2: 'guessed' }, 0)).toBe(1);
     expect(applyReviewOverrides(events, { w2: 'guessed' }, -1)).toBe(2);
   });

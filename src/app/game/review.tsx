@@ -6,9 +6,9 @@ import { Pressable, ScrollView, View } from 'react-native';
 
 import { strings } from '@content/strings';
 import { applyReviewOverrides, computeTurnScore } from '@domain/game/scoring';
-import { selectMatchStatCardCount } from '@domain/game/selectors';
+import { selectMatchStatCardCount, selectReviewCta } from '@domain/game/selectors';
 import { GameScreenShell } from '@features/game/components/GameScreenShell';
-import { ConfirmExitModal, PenaltyModal } from '@features/game/components/Modals';
+import { ConfirmExitModal } from '@features/game/components/Modals';
 import {
   useGameActions,
   useGameSelectors,
@@ -22,7 +22,7 @@ import { Text } from '@ui/components/Text';
 import { getRoundPalette } from '@ui/theme/roundPalette';
 
 export default function ReviewScreen() {
-  const { currentTeam, currentRound, reviewBanner, reviewCta, matchStats } = useGameSelectors();
+  const { currentTeam, currentRound, isHatEmpty, matchStats } = useGameSelectors();
   const { dispatch, abandonMatch } = useGameActions();
   const reviewWords = useReviewWords();
   const gameState = useGameState();
@@ -37,9 +37,10 @@ export default function ReviewScreen() {
     const skipPenalty = gameState.settings.skipPenalty;
     const base = computeTurnScore(turn.events, skipPenalty);
     const delta = applyReviewOverrides(turn.events, overrides, skipPenalty);
-    return base + delta;
+    const raw = base + delta;
+    // With skip penalty, turn net can go negative; display never drops below 0.
+    return skipPenalty ? Math.max(0, raw) : raw;
   }, [gameState.turn, gameState.settings.skipPenalty, overrides]);
-  const [penaltyVisible, setPenaltyVisible] = useState(false);
   const [confirmVisible, setConfirmVisible] = useState(false);
 
   const words = useMemo(() => {
@@ -57,13 +58,30 @@ export default function ReviewScreen() {
     }));
   };
 
+  const returnsWords = useMemo(
+    () =>
+      reviewWords.some(
+        (entry) => entry.outcome === 'guessed' && overrides[entry.wordId] === 'skipped',
+      ),
+    [overrides, reviewWords],
+  );
+
+  const effectivelyEmpty = isHatEmpty && !returnsWords;
+  const effectiveCta = !effectivelyEmpty
+    ? 'next_turn'
+    : gameState.currentRoundIndex < 2
+      ? 'next_round'
+      : 'match_results';
+  const effectiveBanner = effectivelyEmpty ? 'hat_empty' : 'time_up';
+
   const onContinue = () => {
-    dispatch({ type: 'REVIEW_SUBMITTED', overrides });
-    if (reviewCta === 'next_turn') {
+    const nextState = dispatch({ type: 'REVIEW_SUBMITTED', overrides });
+    const cta = selectReviewCta(nextState);
+    if (cta === 'next_turn') {
       dispatch({ type: 'NEXT_TURN' });
       return;
     }
-    if (reviewCta === 'next_round') {
+    if (cta === 'next_round') {
       dispatch({ type: 'NEXT_ROUND' });
       return;
     }
@@ -76,14 +94,14 @@ export default function ReviewScreen() {
   };
 
   let ctaLabel: string = strings.review.nextTeam;
-  if (reviewCta === 'next_round') {
+  if (effectiveCta === 'next_round') {
     ctaLabel = strings.review.nextRound;
-  } else if (reviewCta === 'match_results') {
+  } else if (effectiveCta === 'match_results') {
     ctaLabel = strings.review.matchResults;
   }
 
   const bannerText =
-    reviewBanner === 'hat_empty' ? strings.review.hatEmpty : strings.review.timeUp;
+    effectiveBanner === 'hat_empty' ? strings.review.hatEmpty : strings.review.timeUp;
 
   return (
     <GameScreenShell roundType={currentRound?.type}>
@@ -102,13 +120,6 @@ export default function ReviewScreen() {
         >
           {netScore}
         </Text>
-        {gameState.settings.skipPenalty ? (
-          <Pressable onPress={() => setPenaltyVisible(true)} className="mb-4">
-            <Text className="text-center text-base text-primaryText">
-              {strings.review.penaltyInfo}
-            </Text>
-          </Pressable>
-        ) : null}
       </View>
 
       <ScrollView className="flex-1 px-5 mb-4" contentContainerClassName="pb-6">
@@ -138,7 +149,6 @@ export default function ReviewScreen() {
         )}
       </ScrollView>
 
-      <PenaltyModal visible={penaltyVisible} onClose={() => setPenaltyVisible(false)} />
       <ConfirmExitModal
         visible={confirmVisible}
         onConfirm={onConfirmExit}

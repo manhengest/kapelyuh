@@ -36,9 +36,9 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "REPLACE_WITH_APPLE_ID",
-        "ascAppId": "REPLACE_WITH_ASC_APP_ID",
-        "appleTeamId": "REPLACE_WITH_APPLE_TEAM_ID",
+        "appleId": "manhengest@gmail.com",
+        "ascAppId": "6792458951",
+        "appleTeamId": "D76S76BG7C",
         "groups": ["Internal"]
       }
     }

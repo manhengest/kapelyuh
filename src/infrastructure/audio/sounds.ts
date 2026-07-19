@@ -2,10 +2,10 @@ import { createAudioPlayer, setAudioModeAsync, type AudioPlayer } from 'expo-aud
 
 import { useSettingsStore } from '@features/settings/store';
 
-const END_SOURCE = require('@assets/sounds/end.wav');
+const END_SOURCE = require('@assets/sounds/game-end.mp3');
 const GAME_START_SOURCE = require('@assets/sounds/game-start.mp3');
 const GUESS_SOURCE = require('@assets/sounds/guessed.mp3');
-const SKIP_SOURCE = require('@assets/sounds/skip.mp3');
+const SKIP_SOURCE = require('@assets/sounds/skip.m4a');
 const TAP_SOURCE = require('@assets/sounds/tap.mp3');
 const TIMER_END_SOURCE = require('@assets/sounds/timer-end.m4a');
 

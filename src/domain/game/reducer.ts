@@ -1,7 +1,12 @@
 import { shuffle } from '@domain/utils/shuffle';
 
 import type { GameEvent } from './events';
-import { applyReviewOverrides, clampScore, computeTurnScore } from './scoring';
+import {
+  applyReviewOverrides,
+  clampScore,
+  computeTurnScore,
+  deriveWordOutcome,
+} from './scoring';
 import type {
   CompletedTurn,
   GameState,
@@ -335,6 +340,27 @@ function handleAward(state: GameState, toTeamId: string | null, now: number): Ga
   return finalizeTurnToReview(touch({ ...nextState, turn: nextTurn }, now), nextTurn, now);
 }
 
+function collectReviewReturnedWordIds(
+  events: TurnState['events'],
+  overrides: Record<string, 'guessed' | 'skipped'>,
+): string[] {
+  const returnedWordIds: string[] = [];
+  const seen = new Set<string>();
+
+  for (const event of events) {
+    if (event.kind !== 'guessed' || seen.has(event.wordId)) {
+      continue;
+    }
+
+    seen.add(event.wordId);
+    if (deriveWordOutcome(events, event.wordId) === 'guessed' && overrides[event.wordId] === 'skipped') {
+      returnedWordIds.push(event.wordId);
+    }
+  }
+
+  return returnedWordIds;
+}
+
 function handleReviewSubmitted(
   state: GameState,
   overrides: Record<string, 'guessed' | 'skipped'>,
@@ -346,18 +372,48 @@ function handleReviewSubmitted(
   }
 
   const round = getCurrentRound(state);
+  const returnedWordIds = collectReviewReturnedWordIds(turn.events, overrides);
   const delta = applyReviewOverrides(turn.events, overrides, state.settings.skipPenalty);
-  if (delta === 0) {
+
+  if (delta === 0 && returnedWordIds.length === 0) {
     return touch(state, now);
   }
 
-  return touch(
-    {
-      ...state,
-      teams: addTeamRoundScore(state.teams, turn.teamId, round.type, delta),
-    },
-    now,
-  );
+  const returnedSet = new Set(returnedWordIds);
+  let nextState = state;
+
+  if (delta !== 0) {
+    nextState = {
+      ...nextState,
+      teams: addTeamRoundScore(nextState.teams, turn.teamId, round.type, delta),
+    };
+  }
+
+  if (returnedWordIds.length > 0) {
+    const nextEvents = turn.events.map((event) => {
+      if (event.kind === 'guessed' && returnedSet.has(event.wordId)) {
+        return { kind: 'skipped' as const, wordId: event.wordId, at: event.at };
+      }
+      return event;
+    });
+
+    nextState = updateRound(
+      {
+        ...nextState,
+        turn: {
+          ...turn,
+          events: nextEvents,
+        },
+        carryOverMs: null,
+      },
+      {
+        remainingWordIds: [...round.remainingWordIds, ...returnedWordIds],
+        guessedWordIds: round.guessedWordIds.filter((wordId) => !returnedSet.has(wordId)),
+      },
+    );
+  }
+
+  return touch(nextState, now);
 }
 
 function assertStatus(state: GameState, allowed: GameState['status'][]): void {
@@ -534,12 +590,18 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
       const hasCarryOver =
         withHistory.carryOverMs != null && withHistory.carryOverMs >= CARRY_OVER_MIN_MS;
 
+      // Carry-over: same team keeps leftover time into the next round.
+      // Otherwise the finishing team's turn is over — next team starts.
+      const nextTeamIndex = hasCarryOver
+        ? withHistory.currentTeamIndex
+        : (withHistory.currentTeamIndex + 1) % withHistory.teams.length;
+
       return touch(
         {
           ...withHistory,
           status: 'round_intro',
           currentRoundIndex: nextRoundIndex,
-          currentTeamIndex: hasCarryOver ? withHistory.currentTeamIndex : 0,
+          currentTeamIndex: nextTeamIndex,
           rounds: [...withHistory.rounds, nextRound],
           turn: null,
         },

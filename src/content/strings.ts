@@ -75,12 +75,6 @@ export const strings = {
     timeUp: 'Час вичерпано',
     hatEmpty: 'Капелюх пустий',
     pointsAwarded: 'Нараховано балів',
-    penaltyInfo: 'ⓘ Чому тут віднімається 2 бали, якщо позначити слово як невгадане?',
-    penaltyTitle: 'Чому віднімається 2 бали?',
-    penaltyBody1:
-      'Коли слово було вгадане під час ходу, команда отримала +1 бал. Якщо зняти позначку «вгадано», цей бал забирається.',
-    penaltyBody2:
-      'Додатково застосовується штраф за пропуск (−1), якщо він увімкнений у налаштуваннях. Разом це дає −2 бали.',
     confirmStop: 'Завершити матч?',
     emptyTurn: 'На жаль, ваша команда не вгадала жодного слова в цьому раунді.',
     nextTeam: 'Наступна команда',
@@ -98,11 +92,11 @@ export const strings = {
     tableTotal: '🏅',
     stats: {
       fastestGuess: (word: string, seconds: number) =>
-        `Найшвидше вгадали «${word}» — лише ${seconds} с`,
+        `Найшвидше вгадали слово «${word}» — лише за ${seconds} секунд`,
       mostSkippedWord: (word: string, count: number) =>
-        `«${word}» пропускали найчастіше — ${count} разів`,
+        `Слово «${word}» пропускали найчастіше — ${count} разів`,
       bestTurn: (teamName: string, count: number) =>
-        `Найпродуктивніший хід: ${teamName} — ${count} слів`,
+        `Найпродуктивніший хід: Команда «${teamName}» відгадала ${count} слів`,
     },
   },
   settings: {

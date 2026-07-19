@@ -84,7 +84,7 @@ export function AwardModal({
           style={{ transform: [{ translateY: contentTranslateY }] }}
           className="rounded-t-3xl bg-white px-6 pb-10 pt-6"
         >
-          <Text className="mb-4 text-center text-xl font-bold text-black">
+          <Text className="mb-4 text-center text-2xl font-bold text-black">
             {strings.award.title}
           </Text>
           <View className="mb-4 gap-2">
@@ -109,6 +109,7 @@ export function AwardModal({
             </Pressable>
           </View>
           <Button
+            textClassName='text-2xl'
             label={strings.common.done}
             disabled={!hasSelection}
             onPress={onConfirm}
@@ -137,28 +138,6 @@ export function ConfirmExitModal({ visible, onConfirm, onCancel }: ConfirmExitMo
             <Button label={strings.pause.exit} onPress={onConfirm} />
             <Button label={strings.common.back} variant="outline" onPress={onCancel} />
           </View>
-        </View>
-      </View>
-    </Modal>
-  );
-}
-
-type PenaltyModalProps = {
-  visible: boolean;
-  onClose: () => void;
-};
-
-export function PenaltyModal({ visible, onClose }: PenaltyModalProps) {
-  return (
-    <Modal visible={visible} transparent animationType="fade">
-      <View className="flex-1 justify-end bg-black/50">
-        <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6">
-          <Text className="mb-3 text-center text-xl font-bold text-black">
-            {strings.review.penaltyTitle}
-          </Text>
-          <Text className="mb-2 text-base leading-6 text-slate-700">{strings.review.penaltyBody1}</Text>
-          <Text className="mb-6 text-base leading-6 text-slate-700">{strings.review.penaltyBody2}</Text>
-          <Button label={strings.common.understand} onPress={onClose} />
         </View>
       </View>
     </Modal>
