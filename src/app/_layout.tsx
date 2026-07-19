@@ -9,14 +9,14 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { GameRouteSync, useHydrateGameStore } from '@features/game/navigation';
 import { useSettingsStore } from '@features/settings/store';
-import { initSentry } from '@infrastructure/analytics/sentry';
+import { initSentry, Sentry } from '@infrastructure/analytics/sentry';
 import { initSounds } from '@infrastructure/audio/sounds';
 import { migrateDbIfNeeded } from '@infrastructure/db/migrate';
 import { useAppFonts } from '@ui/hooks/useAppFonts';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
-export default function RootLayout() {
+function RootLayout() {
   useHydrateGameStore();
   const fontsLoaded = useAppFonts();
   const hydrateSettings = useSettingsStore((store) => store.hydrate);
@@ -54,3 +54,5 @@ export default function RootLayout() {
     </SQLiteProvider>
   );
 }
+
+export default Sentry.wrap(RootLayout);

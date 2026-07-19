@@ -31,8 +31,9 @@
       [
         "@sentry/react-native/expo",
         {
-          "organization": "kapelyukh",
-          "project": "kapelyukh"
+          "url": "https://sentry.io/",
+          "organization": "khodzinskyi-vv",
+          "project": "react-native"
         }
       ],
       [

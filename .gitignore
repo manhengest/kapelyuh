@@ -54,3 +54,5 @@ src/styles/.generated/
 # IDE
 .idea/
 /.claude/plans/
+
+.env.local
