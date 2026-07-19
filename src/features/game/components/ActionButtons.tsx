@@ -42,10 +42,16 @@ function ActionButton({ label, icon, backgroundColor, onPress, disabled }: Actio
 type ActionButtonsProps = {
   onGuess: () => void;
   onSkip: () => void;
-  disabled?: boolean;
+  guessDisabled?: boolean;
+  skipDisabled?: boolean;
 };
 
-export function ActionButtons({ onGuess, onSkip, disabled = false }: ActionButtonsProps) {
+export function ActionButtons({
+  onGuess,
+  onSkip,
+  guessDisabled = false,
+  skipDisabled = false,
+}: ActionButtonsProps) {
   return (
     <View className="flex-row items-end justify-center gap-6">
       <ActionButton
@@ -53,14 +59,14 @@ export function ActionButtons({ onGuess, onSkip, disabled = false }: ActionButto
         icon={skipIcon}
         backgroundColor="#FEFAF7"
         onPress={onSkip}
-        disabled={disabled}
+        disabled={skipDisabled}
       />
       <ActionButton
         label="Відгадано"
         icon={guessedIcon}
         backgroundColor="#FDC82B"
         onPress={onGuess}
-        disabled={disabled}
+        disabled={guessDisabled}
       />
     </View>
   );

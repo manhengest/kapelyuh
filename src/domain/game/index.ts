@@ -10,6 +10,8 @@ export {
   selectCurrentRound,
   selectCurrentTeam,
   selectIsHatEmpty,
+  formatGuessDurationSeconds,
+  selectMatchStatCardCount,
   selectMatchStats,
   selectRemainingWordCount,
   selectRemainingWords,

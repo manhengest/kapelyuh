@@ -4,6 +4,7 @@ import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reani
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from '@content/strings';
+import { formatGuessDurationSeconds } from '@domain/game/selectors';
 import { useGameActions, useGameSelectors, useGameState } from '@features/game/hooks';
 import { useGameStore } from '@features/game/store';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
@@ -24,7 +25,7 @@ export default function StatisticScreen() {
       cards.push(
         strings.results.stats.fastestGuess(
           matchStats.fastestGuess.wordText,
-          Math.round(matchStats.fastestGuess.durationMs / 1000),
+          formatGuessDurationSeconds(matchStats.fastestGuess.durationMs),
         ),
       );
     }
@@ -36,11 +37,11 @@ export default function StatisticScreen() {
         ),
       );
     }
-    if (matchStats.bestRound) {
+    if (matchStats.bestTurn) {
       cards.push(
-        strings.results.stats.bestRound(
-          matchStats.bestRound.teamName,
-          matchStats.bestRound.totalWordsGuessed,
+        strings.results.stats.bestTurn(
+          matchStats.bestTurn.teamName,
+          matchStats.bestTurn.totalWordsGuessed,
         ),
       );
     }

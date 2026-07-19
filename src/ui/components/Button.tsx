@@ -4,10 +4,13 @@ import { playTap } from '@infrastructure/audio/sounds';
 import { Text } from '@ui/components/Text';
 
 type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'danger';
+type ButtonTextSize = 'sm' | 'md' | 'lg';
 
 type ButtonProps = PressableProps & {
   label: string;
   variant?: ButtonVariant;
+  textSize?: ButtonTextSize;
+  textClassName?: string;
   disabled?: boolean;
 };
 
@@ -16,6 +19,7 @@ export function Button({
   variant = 'primary',
   disabled = false,
   className = '',
+  textClassName = '',
   onPress,
   ...props
 }: ButtonProps) {
@@ -33,7 +37,9 @@ export function Button({
       className={`btn btn--${variant} ${disabled ? 'btn--disabled' : ''} ${className}`}
       {...props}
     >
-      <Text className={`btn-text btn-text--${variant} ${disabled ? 'btn-text--disabled' : ''}`}>
+      <Text
+        className={`btn-text btn-text--${variant} ${disabled ? 'btn-text--disabled' : ''} ${textClassName}`}
+      >
         {label}
       </Text>
     </Pressable>

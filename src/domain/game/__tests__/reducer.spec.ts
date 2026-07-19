@@ -144,7 +144,7 @@ describe('domain/game/reducer', () => {
     let state = startMatch(['w1']);
     state = guessCurrentWord(state);
 
-    state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
+    state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', cardCount: 3, now: BASE_TIME });
     expect(state.status).toBe('stat_carousel');
     expect(state.statCardsRemaining).toBe(3);
 
@@ -160,7 +160,7 @@ describe('domain/game/reducer', () => {
   it('replays with the same teams and settings after match end', () => {
     let state = startMatch(['w1']);
     state = guessCurrentWord(state);
-    state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
+    state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', cardCount: 3, now: BASE_TIME });
     for (let index = 0; index < 3; index += 1) {
       state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME + index });
     }

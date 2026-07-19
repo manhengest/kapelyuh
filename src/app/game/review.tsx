@@ -6,6 +6,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 
 import { strings } from '@content/strings';
 import { applyReviewOverrides, computeTurnScore } from '@domain/game/scoring';
+import { selectMatchStatCardCount } from '@domain/game/selectors';
 import { GameScreenShell } from '@features/game/components/GameScreenShell';
 import { ConfirmExitModal, PenaltyModal } from '@features/game/components/Modals';
 import {
@@ -21,7 +22,7 @@ import { Text } from '@ui/components/Text';
 import { getRoundPalette } from '@ui/theme/roundPalette';
 
 export default function ReviewScreen() {
-  const { currentTeam, currentRound, reviewBanner, reviewCta } = useGameSelectors();
+  const { currentTeam, currentRound, reviewBanner, reviewCta, matchStats } = useGameSelectors();
   const { dispatch, abandonMatch } = useGameActions();
   const reviewWords = useReviewWords();
   const gameState = useGameState();
@@ -66,7 +67,7 @@ export default function ReviewScreen() {
       dispatch({ type: 'NEXT_ROUND' });
       return;
     }
-    dispatch({ type: 'OPEN_STAT_CAROUSEL' });
+    dispatch({ type: 'OPEN_STAT_CAROUSEL', cardCount: selectMatchStatCardCount(matchStats) });
   };
 
   const onConfirmExit = () => {

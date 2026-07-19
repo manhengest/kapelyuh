@@ -25,7 +25,10 @@ function createDefaultTeams(count: number): Team[] {
   const used = new Set<string>();
   return Array.from({ length: count }, (_, index) => {
     const pool = TEAM_NAME_SUGGESTIONS.filter((n) => !used.has(n));
-    const name = pool[index % pool.length] ?? `Команда ${index + 1}`;
+    const name =
+      pool.length > 0
+        ? pool[Math.floor(Math.random() * pool.length)]!
+        : `Команда ${index + 1}`;
     used.add(name);
     return {
       id: createId('team'),

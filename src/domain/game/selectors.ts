@@ -127,10 +127,35 @@ function guessDurations(turn: CompletedTurn): { wordId: string; durationMs: numb
         durationMs: Math.max(0, event.at - previousAt),
       });
     }
-    previousAt = event.at;
+    if (event.kind === 'guessed' || event.kind === 'skipped') {
+      previousAt = event.at;
+    }
   }
 
   return durations;
+}
+
+const MIN_COMPARABLE_GUESS_MS = 1;
+
+export function formatGuessDurationSeconds(durationMs: number): number {
+  if (durationMs <= 0) {
+    return 0;
+  }
+  return Math.max(1, Math.round(durationMs / 1000));
+}
+
+export function selectMatchStatCardCount(stats: MatchStats): number {
+  let count = 0;
+  if (stats.fastestGuess) {
+    count += 1;
+  }
+  if (stats.mostSkippedWord) {
+    count += 1;
+  }
+  if (stats.bestTurn) {
+    count += 1;
+  }
+  return count > 0 ? count : 1;
 }
 
 export function selectMatchStats(
@@ -141,8 +166,6 @@ export function selectMatchStats(
   const guessEvents: { wordId: string; durationMs: number }[] = [];
   const skipCountsByTeam = new Map<string, number>();
   const skipCountsByWord = new Map<string, number>();
-  const guessedByRound = new Map<number, number>();
-  const guessedByTeamRound = new Map<string, number>();
 
   for (const turn of turnHistory) {
     guessDurations(turn).forEach((entry) => guessEvents.push(entry));
@@ -152,22 +175,26 @@ export function selectMatchStats(
         skipCountsByTeam.set(turn.teamId, (skipCountsByTeam.get(turn.teamId) ?? 0) + 1);
         skipCountsByWord.set(event.wordId, (skipCountsByWord.get(event.wordId) ?? 0) + 1);
       }
-      if (event.kind === 'guessed') {
-        guessedByRound.set(turn.roundIndex, (guessedByRound.get(turn.roundIndex) ?? 0) + 1);
-        const key = `${turn.teamId}:${turn.roundIndex}`;
-        guessedByTeamRound.set(key, (guessedByTeamRound.get(key) ?? 0) + 1);
-      }
     }
   }
 
+  const comparableGuesses = guessEvents.filter(
+    (entry) => entry.durationMs >= MIN_COMPARABLE_GUESS_MS,
+  );
+  const fastestPool = comparableGuesses.length > 0 ? comparableGuesses : guessEvents;
+
   const fastestGuess =
-    guessEvents.length > 0
-      ? guessEvents.reduce((best, current) => (current.durationMs < best.durationMs ? current : best))
+    fastestPool.length > 0
+      ? fastestPool.reduce((best, current) =>
+          current.durationMs < best.durationMs ? current : best,
+        )
       : null;
 
   const slowestGuess =
     guessEvents.length > 0
-      ? guessEvents.reduce((worst, current) => (current.durationMs > worst.durationMs ? current : worst))
+      ? guessEvents.reduce((worst, current) =>
+          current.durationMs > worst.durationMs ? current : worst,
+        )
       : null;
 
   let leastSkippedTeam: MatchStats['leastSkippedTeam'] = null;
@@ -191,17 +218,18 @@ export function selectMatchStats(
     };
   }
 
-  let bestRound: MatchStats['bestRound'] = null;
-  if (guessedByTeamRound.size > 0) {
-    const [key, totalWordsGuessed] = [...guessedByTeamRound.entries()].reduce((best, current) =>
-      current[1] > best[1] ? current : best,
-    );
-    const teamId = key.split(':')[0];
-
-    bestRound = {
-      teamName: teams.find((team) => team.id === teamId)?.name ?? teamId,
-      totalWordsGuessed,
-    };
+  let bestTurn: MatchStats['bestTurn'] = null;
+  for (const turn of turnHistory) {
+    const totalWordsGuessed = turn.events.filter((event) => event.kind === 'guessed').length;
+    if (totalWordsGuessed === 0) {
+      continue;
+    }
+    if (!bestTurn || totalWordsGuessed > bestTurn.totalWordsGuessed) {
+      bestTurn = {
+        teamName: teams.find((team) => team.id === turn.teamId)?.name ?? turn.teamId,
+        totalWordsGuessed,
+      };
+    }
   }
 
   return {
@@ -219,7 +247,7 @@ export function selectMatchStats(
       : null,
     leastSkippedTeam,
     mostSkippedWord,
-    bestRound,
+    bestTurn,
   };
 }
 

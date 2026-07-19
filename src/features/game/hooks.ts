@@ -79,11 +79,11 @@ export function useReviewWords() {
       }
     }
 
-    // Only guessed/skipped words are reviewable. Awarded words — including
-    // «Ніхто не вгадав» — must not appear on the review screen.
+    // Only guessed words appear on review — skipped words are omitted.
+    // Awarded words — including «Ніхто не вгадав» — must not appear either.
     return [...ids].flatMap((wordId) => {
       const outcome = deriveWordOutcome(turn.events, wordId);
-      if (outcome !== 'guessed' && outcome !== 'skipped') {
+      if (outcome !== 'guessed') {
         return [];
       }
       return [

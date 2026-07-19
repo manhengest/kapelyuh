@@ -7,7 +7,7 @@ import { Text } from '@ui/components/Text';
 
 type PauseModalProps = {
   visible: boolean;
-  roundNumber: number;
+  roundLine: string;
   teamName: string;
   onResume: () => void;
   onExit: () => void;
@@ -15,7 +15,7 @@ type PauseModalProps = {
 
 export function PauseModal({
   visible,
-  roundNumber,
+  roundLine,
   teamName,
   onResume,
   onExit,
@@ -24,18 +24,18 @@ export function PauseModal({
     <Modal visible={visible} transparent animationType="fade">
       <View className="flex-1 justify-end bg-black/50">
         <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6">
-          <Text className="mb-2 text-center text-2xl font-bold text-slate-900">
+          <Text className="mb-2 text-center text-2xl font-bold text-black">
             {strings.pause.title}
           </Text>
           <Text className="mb-1 text-center text-base text-slate-600">
-            {strings.pause.round(roundNumber)}
+            {roundLine}
           </Text>
-          <Text className="mb-6 text-center text-base text-slate-600">
+          <Text className="mb-8 text-center text-base text-slate-600">
             {strings.pause.team(teamName)}
           </Text>
           <View className="gap-3">
-            <Button label={strings.pause.resume} onPress={onResume} />
-            <Button label={strings.pause.exit} variant="outline" onPress={onExit} />
+            <Button textClassName='text-xl' label={strings.pause.resume} onPress={onResume} />
+            <Button textClassName='text-xl' label={strings.pause.exit} variant="outline" onPress={onExit} />
           </View>
         </View>
       </View>
@@ -84,7 +84,7 @@ export function AwardModal({
           style={{ transform: [{ translateY: contentTranslateY }] }}
           className="rounded-t-3xl bg-white px-6 pb-10 pt-6"
         >
-          <Text className="mb-4 text-center text-xl font-bold text-slate-900">
+          <Text className="mb-4 text-center text-xl font-bold text-black">
             {strings.award.title}
           </Text>
           <View className="mb-4 gap-2">
@@ -96,7 +96,7 @@ export function AwardModal({
                 onPress={() => onSelect(team.id)}
                 className={`award-option ${selectedTeamId === team.id ? 'award-option--selected' : ''}`}
               >
-                <Text className="text-base font-medium text-slate-900">{team.name}</Text>
+                <Text className="text-base font-medium text-black">{team.name}</Text>
               </Pressable>
             ))}
             <Pressable
@@ -105,7 +105,7 @@ export function AwardModal({
               onPress={() => onSelect(null)}
               className={`award-option ${selectedTeamId === null ? 'award-option--selected' : ''}`}
             >
-              <Text className="text-base font-medium text-slate-900">{strings.award.nobody}</Text>
+              <Text className="text-base font-medium text-black">{strings.award.nobody}</Text>
             </Pressable>
           </View>
           <Button
@@ -130,7 +130,7 @@ export function ConfirmExitModal({ visible, onConfirm, onCancel }: ConfirmExitMo
     <Modal visible={visible} transparent animationType="fade">
       <View className="flex-1 justify-end bg-black/50">
         <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6">
-          <Text className="mb-6 text-center text-2xl font-bold text-slate-900">
+          <Text className="mb-6 text-center text-2xl font-bold text-black">
             {strings.review.confirmStop}
           </Text>
           <View className="gap-3">
@@ -153,7 +153,7 @@ export function PenaltyModal({ visible, onClose }: PenaltyModalProps) {
     <Modal visible={visible} transparent animationType="fade">
       <View className="flex-1 justify-end bg-black/50">
         <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6">
-          <Text className="mb-3 text-center text-xl font-bold text-slate-900">
+          <Text className="mb-3 text-center text-xl font-bold text-black">
             {strings.review.penaltyTitle}
           </Text>
           <Text className="mb-2 text-base leading-6 text-slate-700">{strings.review.penaltyBody1}</Text>

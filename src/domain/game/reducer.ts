@@ -550,12 +550,13 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
     case 'OPEN_STAT_CAROUSEL': {
       assertStatus(state, ['review']);
       const withHistory = appendTurnHistory(state, event.now);
+      const cardCount = Math.max(1, event.cardCount);
       return touch(
         {
           ...withHistory,
           status: 'stat_carousel',
           turn: null,
-          statCardsRemaining: STAT_CARD_COUNT,
+          statCardsRemaining: cardCount,
         },
         event.now,
       );

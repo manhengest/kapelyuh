@@ -16,6 +16,13 @@
     background-color: $primary-btn;
   }
 
+  .btn--outline {
+    background-color: transparent;
+    border-width: 2px;
+    border-style: solid;
+    border-color: $primary-text;
+  }
+
   .btn--disabled {
     background-color: $disabled-btn;
   }

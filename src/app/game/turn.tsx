@@ -1,12 +1,13 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
 import { strings } from '@content/strings';
 import { ActionButtons } from '@features/game/components/ActionButtons';
 import { CountdownRing } from '@features/game/components/CountdownRing';
 import { GameScreenShell } from '@features/game/components/GameScreenShell';
 import { AwardModal, PauseModal } from '@features/game/components/Modals';
+import { PauseIcon } from '@features/game/components/PauseIcon';
 import { WordCard } from '@features/game/components/WordCard';
 import {
   getRoundMeta,
@@ -41,18 +42,25 @@ export default function TurnScreen() {
   const guessedWordIds = currentRound?.guessedWordIds ?? [];
 
   const [awardSelection, setAwardSelection] = useState<string | null | undefined>(undefined);
+  const [awardModalVisible, setAwardModalVisible] = useState(false);
   const [wordFeedback, setWordFeedback] = useState<'guess' | 'skip' | null>(null);
 
   const isAwaitingAward = status === 'awaiting_award';
   const teamName = currentTeam?.name ?? '—';
 
   const onGuess = useCallback(() => {
+    if (isAwaitingAward) {
+      void triggerHaptic('success');
+      playGuess();
+      setAwardModalVisible(true);
+      return;
+    }
     void triggerHaptic('success');
     playGuess();
     setWordFeedback('guess');
     dispatch({ type: 'GUESS_WORD' });
     setTimeout(() => setWordFeedback(null), 250);
-  }, [dispatch]);
+  }, [dispatch, isAwaitingAward]);
 
   const onSkip = useCallback(() => {
     void triggerHaptic('warning');
@@ -62,14 +70,15 @@ export default function TurnScreen() {
     setTimeout(() => setWordFeedback(null), 250);
   }, [dispatch]);
 
-  const onConfirmAward = useCallback(() => {
+  const onConfirmAward = () => {
     if (awardSelection === undefined) {
       return;
     }
     void triggerHaptic('success');
     dispatch({ type: 'AWARD_WORD', toTeamId: awardSelection });
     setAwardSelection(undefined);
-  }, [awardSelection, dispatch]);
+    setAwardModalVisible(false);
+  };
 
   const onPausePress = useCallback(() => {
     void triggerHaptic('light');
@@ -86,6 +95,8 @@ export default function TurnScreen() {
     setPauseModalVisible(false);
     router.replace('/');
   }, [abandonMatch, router, setPauseModalVisible]);
+
+  const showPauseButton = !isAwaitingAward && !pauseModalVisible;
 
   return (
     <GameScreenShell roundType={currentRound?.type}>
@@ -121,33 +132,50 @@ export default function TurnScreen() {
         />
       </View>
 
-      {/* Word card */}
-      <View className="flex-1 items-center justify-center pb-16">
+      {/* Word card + pause */}
+      <View className="flex-1 items-center justify-center pb-8">
         <WordCard
           word={word}
           backgroundColor={palette.card}
           textColor={palette.wordText}
           label={isAwaitingAward ? strings.turn.wordForAll : undefined}
-          hideFromAccessibility={!isAwaitingAward}
+          hideFromAccessibility={false}
           feedback={wordFeedback}
         />
+        {showPauseButton ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={strings.turn.pause}
+            onPress={onPausePress}
+            className="mt-4 h-12 w-12 items-center justify-center"
+          >
+            <PauseIcon color={palette.text} size={20} />
+          </Pressable>
+        ) : (
+          <View className="mt-4 h-12 w-12" />
+        )}
       </View>
 
       {/* Action buttons */}
-      <View className="pb-8" style={{ opacity: isAwaitingAward ? 0.3 : 1 }}>
-        <ActionButtons onGuess={onGuess} onSkip={onSkip} disabled={isAwaitingAward} />
+      <View className="pb-8">
+        <ActionButtons
+          onGuess={onGuess}
+          onSkip={onSkip}
+          skipDisabled={isAwaitingAward}
+          guessDisabled={false}
+        />
       </View>
 
       <PauseModal
         visible={pauseModalVisible && !isAwaitingAward}
-        roundNumber={roundIndex + 1}
+        roundLine={strings.pause.round(roundMeta.name)}
         teamName={teamName}
         onResume={onResume}
         onExit={onExit}
       />
 
       <AwardModal
-        visible={isAwaitingAward}
+        visible={awardModalVisible}
         teams={teams}
         selectedTeamId={awardSelection}
         onSelect={setAwardSelection}

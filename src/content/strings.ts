@@ -62,9 +62,9 @@ export const strings = {
   },
   pause: {
     title: 'Гру зупинено',
-    round: (n: number) => `Тур: ${n}`,
+    round: (name: string) => `Тур: ${name}`,
     team: (name: string) => `Команда: ${name}`,
-    exit: 'Так, вийти',
+    exit: 'Вийти',
     resume: 'Продовжити',
   },
   award: {
@@ -101,7 +101,7 @@ export const strings = {
         `Найшвидше вгадали «${word}» — лише ${seconds} с`,
       mostSkippedWord: (word: string, count: number) =>
         `«${word}» пропускали найчастіше — ${count} разів`,
-      bestRound: (teamName: string, count: number) =>
+      bestTurn: (teamName: string, count: number) =>
         `Найпродуктивніший хід: ${teamName} — ${count} слів`,
     },
   },

@@ -16,6 +16,12 @@
   .btn--primary {
     background-color: #FDC82B;
   }
+  .btn--outline {
+    background-color: transparent;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #401947;
+  }
   .btn--disabled {
     background-color: #D9D2CE;
   }
