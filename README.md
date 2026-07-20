@@ -31,12 +31,13 @@ npx expo start --dev-client
 
 ## Скрипти
 
-| Команда             | Опис           |
-| ------------------- | -------------- |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm run lint`      | ESLint         |
-| `npm run format`    | Prettier check |
-| `npm test`          | Jest           |
+
+| Команда             | Опис                                        |
+| ------------------- | ------------------------------------------- |
+| `npm run typecheck` | `tsc --noEmit`                              |
+| `npm run lint`      | ESLint                                      |
+| `npm run format`    | Prettier check                              |
+| `npm test`          | Jest                                        |
 | `npm run build:db`  | Збірка `kapelyukh.db` з `scripts/words.csv` |
 
 ## Phase 5 — TestFlight beta (pre-upload gate)
@@ -55,27 +56,3 @@ Maestro CLI: `curl -fsSL "https://get.maestro.mobile.dev" | bash`
 Деталі: [docs/eas-testflight.md](docs/eas-testflight.md), [docs/beta-test-matrix.md](docs/beta-test-matrix.md), [docs/beta-feedback.md](docs/beta-feedback.md).
 
 Профіль `preview` — internal/ad-hoc без App Store Connect, для швидшої ітерації без TestFlight.
-
-## Phase 0 — ручні кроки
-
-1. **Apple Developer** — підтвердити enrollment ($99/рік).
-2. **Bundle ID** — зареєструвати `com.kapelyukh.app` в [Apple Developer → Identifiers](https://developer.apple.com/account/resources/identifiers/list).
-3. **EAS** — `npx eas-cli init`, оновити `app.json` → `extra.eas.projectId`.
-4. **Sentry** — створити проєкт, DSN у `.env.local` як `EXPO_PUBLIC_SENTRY_DSN=...`; для EAS Build — secrets + [docs/sentry-beta.md](docs/sentry-beta.md).
-5. **Dev Build** — `npx eas-cli build --profile development --platform ios`, встановити на фізичний iPhone, перевірити запуск.
-
-## Структура
-
-```
-src/
-  app/              expo-router екрани
-  features/         Zustand slices, hooks
-  domain/           чистий TS game engine (без React/Expo)
-  infrastructure/   storage, db, Sentry
-  ui/               design system
-  content/          українські рядки (без i18n)
-maestro/            E2E smoke (local gate)
-docs/               beta matrix, TestFlight, sign-off
-```
-
-Документація продукту: `docs/`, план розробки: `.cursor/plans/`.
