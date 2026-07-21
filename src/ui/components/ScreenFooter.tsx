@@ -1,6 +1,7 @@
 import { View } from 'react-native';
 
 import { Button } from '@ui/components/Button';
+import { ContentColumn } from '@ui/components/ContentColumn';
 import { Text } from '@ui/components/Text';
 
 const primaryShadow = {
@@ -29,12 +30,14 @@ export function ScreenFooter({
   secondaryOnPress,
 }: ScreenFooterProps) {
   return (
-    <View className="gap-3 px-5 pb-6">
-      {hint ? <Text className="text-md text-center text-highlightText">{hint}</Text> : null}
-      {secondaryLabel && secondaryOnPress ? (
-        <Button label={secondaryLabel} variant="outline" onPress={secondaryOnPress} />
-      ) : null}
-      <Button style={primaryShadow} label={label} onPress={onPress} disabled={disabled} />
-    </View>
+    <ContentColumn>
+      <View className="gap-3 px-5 pb-6">
+        {hint ? <Text className="text-md text-center text-highlightText">{hint}</Text> : null}
+        {secondaryLabel && secondaryOnPress ? (
+          <Button label={secondaryLabel} variant="outline" onPress={secondaryOnPress} />
+        ) : null}
+        <Button style={primaryShadow} label={label} onPress={onPress} disabled={disabled} />
+      </View>
+    </ContentColumn>
   );
 }

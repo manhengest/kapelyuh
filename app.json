@@ -10,7 +10,7 @@
     "backgroundColor": "#000000",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": false,
+      "supportsTablet": true,
       "bundleIdentifier": "com.kapelyukh.app",
       "buildNumber": "1",
       "deploymentTarget": "17.6.1",

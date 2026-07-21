@@ -5,6 +5,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { strings } from '@content/strings';
 import { useGameStore } from '@features/game/store';
 import { playTap } from '@infrastructure/audio/sounds';
+import { useIsWideLayout } from '@shared/hooks/useIsWideLayout';
+import { ContentColumn } from '@ui/components/ContentColumn';
 import { Text } from '@ui/components/Text';
 
 const aboutIcon = require('@assets/images/icons/landing/about.png');
@@ -60,6 +62,7 @@ function LandingMenuButton({ label, icon, onPress }: Readonly<LandingMenuButtonP
 export default function HomeScreen() {
   const router = useRouter();
   const dispatch = useGameStore((store) => store.dispatch);
+  const isWideLayout = useIsWideLayout();
 
   const startNewGame = () => {
     playTap();
@@ -69,77 +72,79 @@ export default function HomeScreen() {
 
   return (
     <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
-      <SafeAreaView className="flex-1 justify-between">
-        <View className="items-center px-6 pt-16">
-          <Image
-            source={hatIcon}
-            accessibilityRole="image"
-            accessibilityLabel={strings.appName}
-            style={{ width: 240, height: 132 }}
-            resizeMode="contain"
-          />
-          <Image
-            source={textIcon}
-            accessibilityRole="image"
-            accessibilityLabel={strings.appName}
-            style={{ width: 320, height: 96, marginTop: 4 }}
-            resizeMode="contain"
-          />
-          <View className="mt-2 flex-row items-center justify-center gap-2">
-            <Text className="text-lg font-bold text-[#3D2B56]">{strings.home.tagline}</Text>
+      <SafeAreaView className="flex-1">
+        <ContentColumn className={`flex-1 justify-between ${isWideLayout ? 'pt-4' : ''}`}>
+          <View className={`items-center px-6 ${isWideLayout ? 'pt-20' : 'pt-16'}`}>
             <Image
-              source={heartSubtitleIcon}
+              source={hatIcon}
               accessibilityRole="image"
-              accessibilityLabel=""
-              style={{ width: 18, height: 18 }}
+              accessibilityLabel={strings.appName}
+              style={{ width: 240, height: 132 }}
               resizeMode="contain"
+            />
+            <Image
+              source={textIcon}
+              accessibilityRole="image"
+              accessibilityLabel={strings.appName}
+              style={{ width: 320, height: 96, marginTop: 4 }}
+              resizeMode="contain"
+            />
+            <View className="mt-2 flex-row items-center justify-center gap-2">
+              <Text className="text-lg font-bold text-[#3D2B56]">{strings.home.tagline}</Text>
+              <Image
+                source={heartSubtitleIcon}
+                accessibilityRole="image"
+                accessibilityLabel=""
+                style={{ width: 18, height: 18 }}
+                resizeMode="contain"
+              />
+            </View>
+          </View>
+
+          <View className={`px-12 pb-20 ${isWideLayout ? 'gap-6' : 'gap-5'}`}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={strings.home.newGame}
+              onPress={startNewGame}
+              style={{
+                shadowColor: '#FEA41E',
+                shadowOffset: { width: 0, height: 5 },
+                shadowOpacity: 0.5,
+                shadowRadius: 0,
+                elevation: 10, // Android
+              }}
+              className="landing-new-game-btn"
+            >
+              <Image
+                source={newGameIcon}
+                style={{ width: 48, height: 48, position: 'absolute', left: 24, top: 17 }}
+                resizeMode="contain"
+              />
+              <Text className="landing-new-game-btn-text">{strings.home.newGame}</Text>
+              <Image
+                source={newGameFragmentIcon}
+                style={{ width: 32, height: 42, position: 'absolute', right: 24, top: 12 }}
+                resizeMode="contain"
+              />
+            </Pressable>
+
+            <LandingMenuButton
+              label={strings.home.rules}
+              icon={howToPlayIcon}
+              onPress={() => router.push('/rules')}
+            />
+            <LandingMenuButton
+              label={strings.home.settings}
+              icon={settingsIcon}
+              onPress={() => router.push('/settings')}
+            />
+            <LandingMenuButton
+              label={strings.home.about}
+              icon={aboutIcon}
+              onPress={() => router.push('/about')}
             />
           </View>
-        </View>
-
-        <View className="gap-5 px-14 pb-20">
-          <Pressable
-            accessibilityRole="button"
-            accessibilityLabel={strings.home.newGame}
-            onPress={startNewGame}
-            style={{
-              shadowColor: '#FEA41E',
-              shadowOffset: { width: 0, height: 5 },
-              shadowOpacity: 0.5,
-              shadowRadius: 0,
-              elevation: 10, // Android
-            }}
-            className="landing-new-game-btn"
-          >
-            <Image
-              source={newGameIcon}
-              style={{ width: 48, height: 48, position: 'absolute', left: 24, top: 17 }}
-              resizeMode="contain"
-            />
-            <Text className="landing-new-game-btn-text">{strings.home.newGame}</Text>
-            <Image
-              source={newGameFragmentIcon}
-              style={{ width: 32, height: 42, position: 'absolute', right: 24, top: 12 }}
-              resizeMode="contain"
-            />
-          </Pressable>
-
-          <LandingMenuButton
-            label={strings.home.rules}
-            icon={howToPlayIcon}
-            onPress={() => router.push('/rules')}
-          />
-          <LandingMenuButton
-            label={strings.home.settings}
-            icon={settingsIcon}
-            onPress={() => router.push('/settings')}
-          />
-          <LandingMenuButton
-            label={strings.home.about}
-            icon={aboutIcon}
-            onPress={() => router.push('/about')}
-          />
-        </View>
+        </ContentColumn>
       </SafeAreaView>
     </ImageBackground>
   );

@@ -19,3 +19,8 @@ export const spacing = {
   lg: 24,
   xl: 32,
 } as const;
+
+export const layout = {
+  contentMaxWidth: 480,
+  wideLayoutBreakpoint: 768,
+} as const;

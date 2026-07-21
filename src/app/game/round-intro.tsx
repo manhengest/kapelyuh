@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Image, ImageBackground, View } from 'react-native';
+import { Image, ImageBackground, ScrollView, View } from 'react-native';
 
 import { strings } from '@content/strings';
 import { ROUND_TYPES } from '@domain/game/types';
@@ -93,7 +93,7 @@ export default function RoundIntroScreen() {
     <GameScreenShell roundType={roundType}>
       <ScreenHeader onBack={onBack} />
 
-      <View className="flex-1 px-5 pt-2">
+      <ScrollView className="flex-1" contentContainerClassName="px-5 pt-2 pb-4">
         {/* Round number badge */}
         <View className="mb-10 items-center">
           <View>
@@ -191,7 +191,7 @@ export default function RoundIntroScreen() {
             shadowRadius: 3,
             elevation: 10,
           }}
-          className="flex-row items-center justify-center gap-6 self-center rounded-full bg-[#f6efe8] px-6 py-2.5"
+          className="mb-8 flex-row items-center justify-center gap-6 self-center rounded-full bg-[#f6efe8] px-6 py-2.5"
         >
           <View className="flex-row items-center gap-2">
             <Image source={clockIcon} style={{ width: 24, height: 24 }} resizeMode="contain" />
@@ -203,7 +203,7 @@ export default function RoundIntroScreen() {
             <Text className="text-lg font-bold text-primaryText">{wordCount} слів</Text>
           </View>
         </View>
-      </View>
+      </ScrollView>
 
       <ScreenFooter
         hint={getRoundHint(roundType)}

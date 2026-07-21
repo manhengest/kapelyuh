@@ -8,6 +8,7 @@ import type { Difficulty, MatchSettings } from '@domain/game/types';
 import { DEFAULT_MATCH_SETTINGS } from '@domain/game/types';
 import { useGameActions, useGameState } from '@features/game/hooks';
 import { useAppSettings } from '@features/settings/store';
+import { ContentColumn } from '@ui/components/ContentColumn';
 import { HorizontalPicker } from '@ui/components/HorizontalPicker';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
@@ -60,49 +61,51 @@ export default function SetupScreen() {
   return (
     <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
       <SafeAreaView className="flex-1">
-        <ScreenHeader title={strings.setup.title} onBack={() => router.replace('/')} />
-        <ScrollView className="flex-1 px-8" contentContainerClassName="pt-4">
-          <View className="gap-3">
-            <SettingsCard>
-              <HorizontalPicker
-                label={strings.setup.turnDuration}
-                options={[...TURN_DURATIONS_SEC]}
-                value={settings.turnDurationMs / 1000}
-                onChange={(seconds) =>
-                  setSettings((current) => ({ ...current, turnDurationMs: seconds * 1000 }))
-                }
-              />
-            </SettingsCard>
-            <SettingsCard>
-              <HorizontalPicker
-                label={strings.setup.teamCount}
-                options={[...TEAM_COUNTS]}
-                value={settings.teamCount}
-                onChange={(teamCount) => setSettings((current) => ({ ...current, teamCount }))}
-              />
-            </SettingsCard>
-            <SettingsCard>
-              <HorizontalPicker
-                label={strings.setup.wordCount}
-                options={[...WORD_COUNTS]}
-                value={settings.wordCount}
-                onChange={(wordCount) => setSettings((current) => ({ ...current, wordCount }))}
-              />
-            </SettingsCard>
-            <SettingsCard>
-              <HorizontalPicker
-                label={strings.setup.difficulty}
-                options={difficultyOptions}
-                value={settings.difficulties[0]}
-                onChange={(difficulty) =>
-                  setSettings((current) => ({ ...current, difficulties: [difficulty] }))
-                }
-                formatOption={(d) => difficultyLabels[d]}
-              />
-            </SettingsCard>
-          </View>
-        </ScrollView>
-        <ScreenFooter hint={strings.setup.wordSetNote} label={strings.common.next} onPress={onNext} />
+        <ContentColumn className="flex-1">
+          <ScreenHeader title={strings.setup.title} onBack={() => router.replace('/')} />
+          <ScrollView className="flex-1 px-8" contentContainerClassName="pt-4">
+            <View className="gap-3">
+              <SettingsCard>
+                <HorizontalPicker
+                  label={strings.setup.turnDuration}
+                  options={[...TURN_DURATIONS_SEC]}
+                  value={settings.turnDurationMs / 1000}
+                  onChange={(seconds) =>
+                    setSettings((current) => ({ ...current, turnDurationMs: seconds * 1000 }))
+                  }
+                />
+              </SettingsCard>
+              <SettingsCard>
+                <HorizontalPicker
+                  label={strings.setup.teamCount}
+                  options={[...TEAM_COUNTS]}
+                  value={settings.teamCount}
+                  onChange={(teamCount) => setSettings((current) => ({ ...current, teamCount }))}
+                />
+              </SettingsCard>
+              <SettingsCard>
+                <HorizontalPicker
+                  label={strings.setup.wordCount}
+                  options={[...WORD_COUNTS]}
+                  value={settings.wordCount}
+                  onChange={(wordCount) => setSettings((current) => ({ ...current, wordCount }))}
+                />
+              </SettingsCard>
+              <SettingsCard>
+                <HorizontalPicker
+                  label={strings.setup.difficulty}
+                  options={difficultyOptions}
+                  value={settings.difficulties[0]}
+                  onChange={(difficulty) =>
+                    setSettings((current) => ({ ...current, difficulties: [difficulty] }))
+                  }
+                  formatOption={(d) => difficultyLabels[d]}
+                />
+              </SettingsCard>
+            </View>
+          </ScrollView>
+          <ScreenFooter hint={strings.setup.wordSetNote} label={strings.common.next} onPress={onNext} />
+        </ContentColumn>
       </SafeAreaView>
     </ImageBackground>
   );

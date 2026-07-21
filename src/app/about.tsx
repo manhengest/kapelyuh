@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { strings } from '@content/strings';
 import { AppLogo } from '@ui/components/AppLogo';
 import { Button } from '@ui/components/Button';
+import { ContentColumn } from '@ui/components/ContentColumn';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
@@ -16,27 +17,29 @@ export default function AboutScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <ScreenHeader title={strings.about.title} onBack={() => router.back()} />
-      <ScrollView className="flex-1 px-5" contentContainerClassName="py-6">
-        <View className="mb-2 items-center">
-          <AppLogo size="lg" />
-        </View>
-        <Text className="mb-2 text-center text-3xl font-bold text-slate-900">
-          {strings.appName}
-        </Text>
-        <Text className="mb-6 text-center text-sm text-slate-500">
-          {strings.about.version(version)}
-        </Text>
-        <Text className="mb-8 text-center text-base leading-6 text-slate-700">
-          {strings.about.description}
-        </Text>
-        <Button
-          label={strings.about.privacy}
-          variant="outline"
-          onPress={() => router.push('/privacy')}
-        />
-      </ScrollView>
-      <ScreenFooter label={strings.settings.play} onPress={() => router.replace('/')} />
+      <ContentColumn className="flex-1">
+        <ScreenHeader title={strings.about.title} onBack={() => router.back()} />
+        <ScrollView className="flex-1 px-5" contentContainerClassName="py-6">
+          <View className="mb-2 items-center">
+            <AppLogo size="lg" />
+          </View>
+          <Text className="mb-2 text-center text-3xl font-bold text-slate-900">
+            {strings.appName}
+          </Text>
+          <Text className="mb-6 text-center text-sm text-slate-500">
+            {strings.about.version(version)}
+          </Text>
+          <Text className="mb-8 text-center text-base leading-6 text-slate-700">
+            {strings.about.description}
+          </Text>
+          <Button
+            label={strings.about.privacy}
+            variant="outline"
+            onPress={() => router.push('/privacy')}
+          />
+        </ScrollView>
+        <ScreenFooter label={strings.settings.play} onPress={() => router.replace('/')} />
+      </ContentColumn>
     </SafeAreaView>
   );
 }

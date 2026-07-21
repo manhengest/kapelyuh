@@ -10,6 +10,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { RoundType } from '@domain/game/types';
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
+import { ContentColumn } from '@ui/components/ContentColumn';
 import { getRoundPalette } from '@ui/theme/roundPalette';
 
 const mainBg = require('@assets/images/main-bg.png');
@@ -42,7 +43,7 @@ export function GameScreenShell({ roundType, children, className = '', ...props 
     <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
       <Animated.View style={tintStyle} />
       <SafeAreaView className={`flex-1 ${className}`} {...props}>
-        {children}
+        <ContentColumn className="flex-1">{children}</ContentColumn>
       </SafeAreaView>
     </ImageBackground>
   );
