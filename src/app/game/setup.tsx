@@ -15,8 +15,8 @@ import { ScreenHeader } from '@ui/components/ScreenHeader';
 
 const mainBg = require('@assets/images/main-bg.png');
 
-const WORD_COUNTS = [10, 30, 60, 90] as const;
-const TURN_DURATIONS_SEC = [10, 60, 90, 120] as const;
+const WORD_COUNTS = [30, 60, 90] as const;
+const TURN_DURATIONS_SEC = [60, 90, 120] as const;
 const TEAM_COUNTS = [2, 3, 4] as const;
 
 function SettingsCard({ children }: { children: ReactNode }) {
@@ -29,7 +29,7 @@ function SettingsCard({ children }: { children: ReactNode }) {
         shadowRadius: 3,
         elevation: 10,
       }}
-      className="rounded-3xl bg-white px-8 py-6"
+      className="rounded-3xl bg-white px-6 py-4"
     >
       {children}
     </View>
@@ -63,7 +63,7 @@ export default function SetupScreen() {
       <SafeAreaView className="flex-1">
         <ContentColumn className="flex-1">
           <ScreenHeader title={strings.setup.title} onBack={() => router.replace('/')} />
-          <ScrollView className="flex-1 px-8" contentContainerClassName="pt-4">
+          <ScrollView className="flex-1 px-6" contentContainerClassName="pt-4">
             <View className="gap-3">
               <SettingsCard>
                 <HorizontalPicker
