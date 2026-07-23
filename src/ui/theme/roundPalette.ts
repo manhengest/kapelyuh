@@ -15,8 +15,8 @@ export function getRoundPalette(roundType: RoundType | undefined) {
 
 export const RoundTitleStyle = {
   elias: { color: '#FB6694', fontSize: 90 },
-  crocodile: { color: '#0D6E79', fontSize: 70 },
-  association: { color: '#7C5C00', fontSize: 72 },
+  crocodile: { color: '#0D6E79', fontSize: 60 },
+  association: { color: '#7C5C00', fontSize: 65 },
 } as const satisfies Record<RoundType, { color: string; fontSize: number }>;
 
 export function getRoundTitleStyle(roundType: RoundType | undefined) {

@@ -168,7 +168,7 @@ export default function RoundIntroScreen() {
         </View>
 
         {/* Team name */}
-        <Text className="text-center text-6xl font-bold leading-tight text-primaryText">
+        <Text className="text-center text-5xl font-bold leading-tight text-primaryText">
           {currentTeam?.name ?? ''}
         </Text>
 
