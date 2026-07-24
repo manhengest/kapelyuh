@@ -29,7 +29,6 @@ export function initSentry(): void {
     dist,
     tracesSampleRate: 0,
     enableAutoSessionTracking: false,
-    enableLogs: true,
   });
 
   initialized = true;
