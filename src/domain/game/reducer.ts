@@ -7,6 +7,7 @@ import {
   computeTurnScore,
   deriveWordOutcome,
 } from './scoring';
+import { selectMatchStatCardCount, selectMatchStats } from './selectors';
 import type {
   CompletedTurn,
   GameState,
@@ -612,7 +613,8 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
     case 'OPEN_STAT_CAROUSEL': {
       assertStatus(state, ['review']);
       const withHistory = appendTurnHistory(state, event.now);
-      const cardCount = Math.max(1, event.cardCount);
+      const matchStats = selectMatchStats(withHistory.turnHistory, withHistory.teams, {});
+      const cardCount = selectMatchStatCardCount(matchStats);
       return touch(
         {
           ...withHistory,

@@ -58,8 +58,44 @@ describe('domain/game/selectors', () => {
   it('selectMatchStats surfaces fastest and slowest guesses', () => {
     const stats = selectMatchStats(turnHistory, teams, wordTexts);
 
-    expect(stats.fastestGuess).toEqual({ wordText: 'швидко', durationMs: 4_000 });
-    expect(stats.slowestGuess).toEqual({ wordText: 'повільно', durationMs: 50_000 });
+    expect(stats.fastestGuess).toEqual({ wordText: 'швидко', durationMs: 14_000 });
+    expect(stats.slowestGuess).toEqual({ wordText: 'повільно', durationMs: 55_000 });
+  });
+
+  it('selectMatchStats sums guess duration across rounds for the same word', () => {
+    const multiRoundHistory: CompletedTurn[] = [
+      {
+        teamId: 't1',
+        roundIndex: 0,
+        roundType: 'elias',
+        startedAt: 0,
+        endedAt: 3_000,
+        events: [{ kind: 'guessed', wordId: 'w-repeat', at: 3_000 }],
+      },
+      {
+        teamId: 't1',
+        roundIndex: 1,
+        roundType: 'crocodile',
+        startedAt: 10_000,
+        endedAt: 15_000,
+        events: [{ kind: 'guessed', wordId: 'w-repeat', at: 15_000 }],
+      },
+      {
+        teamId: 't2',
+        roundIndex: 2,
+        roundType: 'association',
+        startedAt: 20_000,
+        endedAt: 22_000,
+        events: [{ kind: 'guessed', wordId: 'w-repeat', at: 22_000 }],
+      },
+    ];
+
+    const stats = selectMatchStats(multiRoundHistory, teams, {
+      'w-repeat': 'повтор',
+    });
+
+    expect(stats.fastestGuess).toEqual({ wordText: 'повтор', durationMs: 10_000 });
+    expect(stats.slowestGuess).toEqual({ wordText: 'повтор', durationMs: 10_000 });
   });
 
   it('selectMatchStats finds the least skipped team and most skipped word', () => {

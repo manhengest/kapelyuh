@@ -145,12 +145,12 @@ export function useTimer() {
         void triggerHaptic('heavy');
         AccessibilityInfo.announceForAccessibility('Залишилось 10 секунд');
       }
-      if (remaining <= 3_000 && remaining > 2_900 && !haptic3Ref.current) {
+      if (remaining <= 3_000 && !haptic3Ref.current) {
         haptic3Ref.current = true;
         void triggerHaptic('heavy');
         AccessibilityInfo.announceForAccessibility('Залишилось 3 секунди');
       }
-      if (remaining <= 5_000 && remaining > 4_900 && !soundTimerEndRef.current) {
+      if (remaining <= 5_000 && !soundTimerEndRef.current) {
         soundTimerEndRef.current = true;
         playTimerEnd();
       }

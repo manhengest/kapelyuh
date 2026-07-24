@@ -178,10 +178,23 @@ export function selectMatchStats(
     }
   }
 
-  const comparableGuesses = guessEvents.filter(
+  const durationByWord = new Map<string, number>();
+  for (const entry of guessEvents) {
+    durationByWord.set(
+      entry.wordId,
+      (durationByWord.get(entry.wordId) ?? 0) + entry.durationMs,
+    );
+  }
+
+  const wordDurations = [...durationByWord.entries()].map(([wordId, durationMs]) => ({
+    wordId,
+    durationMs,
+  }));
+
+  const comparableGuesses = wordDurations.filter(
     (entry) => entry.durationMs >= MIN_COMPARABLE_GUESS_MS,
   );
-  const fastestPool = comparableGuesses.length > 0 ? comparableGuesses : guessEvents;
+  const fastestPool = comparableGuesses.length > 0 ? comparableGuesses : wordDurations;
 
   const fastestGuess =
     fastestPool.length > 0
@@ -191,8 +204,8 @@ export function selectMatchStats(
       : null;
 
   const slowestGuess =
-    guessEvents.length > 0
-      ? guessEvents.reduce((worst, current) =>
+    wordDurations.length > 0
+      ? wordDurations.reduce((worst, current) =>
           current.durationMs > worst.durationMs ? current : worst,
         )
       : null;

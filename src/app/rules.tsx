@@ -24,12 +24,15 @@ export default function RulesScreen() {
               <View key={entry.title} className="mb-8">
                 <Text className="mb-4 text-2xl font-bold text-slate-900">{entry.title}</Text>
                 <Text className="mb-6 text-lg leading-6 text-slate-700">{entry.body}</Text>
-                <View className="rounded-2xl bg-white/70 px-4 py-4">
-                  <Text className="mb-1 text-lg font-bold uppercase text-pink-700">
-                    {entry.tipLabel}
-                  </Text>
-                  <Text className="text-lg text-slate-800">{entry.tip}</Text>
-                </View>
+                {entry.tipLabel && (
+                  <View className="rounded-2xl bg-white/70 px-4 py-4">
+                    <Text className="mb-1 text-lg font-bold uppercase text-pink-700">
+                      {entry.tipLabel}
+                    </Text>
+                    <Text className="text-lg text-slate-800">{entry.tip}</Text>
+                  </View>
+                )}
+                
               </View>
             ))}
           </ScrollView>
