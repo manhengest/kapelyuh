@@ -27,9 +27,12 @@ npm run styles:build
 
 export APP_VARIANT="${APP_VARIANT:-production}"
 
-# Sentry upload needs SENTRY_AUTH_TOKEN. Without it, Archive fails the build.
-# Mirror eas.json development-simulator: skip upload unless a token is provided.
-if [ -z "${SENTRY_AUTH_TOKEN:-}" ]; then
+TOKEN_SET=0
+if [ -n "${SENTRY_AUTH_TOKEN:-}" ]; then
+  TOKEN_SET=1
+  # Length only — never print the token value.
+  echo "SENTRY_AUTH_TOKEN is set (length=${#SENTRY_AUTH_TOKEN})"
+else
   export SENTRY_DISABLE_AUTO_UPLOAD=true
   echo "SENTRY_AUTH_TOKEN unset — disabling Sentry source map upload"
 fi
@@ -40,23 +43,37 @@ npx expo prebuild --platform ios --no-install
 cd ios
 pod install
 
-# Persist for Xcode script phases (Archive). Workflow env vars are available to
-# ci_scripts, but Sentry upload runs inside an Xcode build phase that sources
-# .xcode.env.local — forward the token there so sentry-cli can authenticate.
+# sentry-cli reads auth from sentry.properties more reliably than env alone
+# inside Xcode build phases. Rewrite after prebuild so it is not wiped.
+if [ "$TOKEN_SET" -eq 1 ]; then
+  umask 077
+  cat > sentry.properties <<'EOF'
+defaults.url=https://sentry.io/
+defaults.org=khodzinskyi-vv
+defaults.project=react-native
+EOF
+  # Append token separately so special characters are not interpreted by the shell.
+  printf 'auth.token=%s\n' "$SENTRY_AUTH_TOKEN" >> sentry.properties
+  echo "Wrote auth.token into ios/sentry.properties for Archive upload"
+
+  # Early auth check (non-fatal) so Post-Clone logs show the real API error.
+  if SENTRY_PROPERTIES=sentry.properties npx --yes @sentry/cli@2 info 2>&1 | tee /tmp/sentry-info.log; then
+    echo "Sentry auth check OK"
+  else
+    echo "warning: Sentry auth check failed — see output above"
+    echo "warning: verify org=khodzinskyi-vv project=react-native and token scopes (project:releases, org:read)"
+  fi
+fi
+
+# Persist for Xcode script phases (Archive).
+# SENTRY_ALLOW_FAILURE keeps Archive green if Sentry API still rejects the token.
 {
   echo "export NODE_BINARY=$NODE_BIN"
+  echo "export SENTRY_ALLOW_FAILURE=true"
   if [ -n "${SENTRY_DISABLE_AUTO_UPLOAD:-}" ]; then
     echo "export SENTRY_DISABLE_AUTO_UPLOAD=true"
   fi
-  if [ -n "${SENTRY_AUTH_TOKEN:-}" ]; then
-    # %q escapes safely; do not echo the raw token to build logs.
-    printf 'export SENTRY_AUTH_TOKEN=%q\n' "$SENTRY_AUTH_TOKEN"
-  fi
 } > .xcode.env.local
-
-if [ -n "${SENTRY_AUTH_TOKEN:-}" ]; then
-  echo "SENTRY_AUTH_TOKEN forwarded to .xcode.env.local"
-fi
 
 echo "Generated workspace:"
 ls -la Kapelyuh.xcworkspace
