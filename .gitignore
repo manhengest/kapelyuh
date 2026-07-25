@@ -39,8 +39,10 @@ yarn-error.*
 
 example
 
-# generated native folders
-/ios
+# generated native folders (keep Xcode Cloud scripts tracked)
+/ios/*
+!/ios/ci_scripts/
+!/ios/ci_scripts/**
 /android
 
 /docs
