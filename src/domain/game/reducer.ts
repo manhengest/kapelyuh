@@ -64,17 +64,6 @@ function initTeams(teams: Team[]): Team[] {
   }));
 }
 
-function resetTeamScores(teams: Team[]): Team[] {
-  return teams.map((team) => ({
-    ...team,
-    scores: {
-      elias: 0,
-      crocodile: 0,
-      association: 0,
-    },
-  }));
-}
-
 function getCurrentRound(state: GameState): RoundState {
   const round = state.rounds[state.currentRoundIndex];
   if (!round) {
@@ -437,6 +426,7 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
           ...state,
           status: 'setup_teams',
           settings: event.settings,
+          teams: [],
         },
         event.now,
       );
@@ -635,18 +625,6 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
 
       return touch({ ...state, status: 'end_of_match', statCardsRemaining: 0 }, event.now);
     }
-
-    case 'REPLAY_WITH_SAME_TEAMS':
-      assertStatus(state, ['end_of_match']);
-      return touch(
-        {
-          ...createInitialState(event.now),
-          status: 'setup_teams',
-          settings: state.settings,
-          teams: resetTeamScores(state.teams),
-        },
-        event.now,
-      );
 
     case 'ABANDON_MATCH':
       return touch(createInitialState(event.now), event.now);

@@ -18,5 +18,4 @@ export type GameEvent =
   | { type: 'NEXT_ROUND'; now: number }
   | { type: 'OPEN_STAT_CAROUSEL'; now: number }
   | { type: 'DISMISS_STAT_CAROUSEL'; now: number }
-  | { type: 'REPLAY_WITH_SAME_TEAMS'; now: number }
   | { type: 'ABANDON_MATCH'; now: number };

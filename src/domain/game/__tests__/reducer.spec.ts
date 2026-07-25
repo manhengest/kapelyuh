@@ -155,18 +155,19 @@ describe('domain/game/reducer', () => {
     expect(state.status).toBe('end_of_match');
   });
 
-  it('replays with the same teams and settings after match end', () => {
-    let state = startMatch(['w1']);
-    state = guessCurrentWord(state);
-    state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
-    for (let index = 0; index < 2; index += 1) {
-      state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME + index });
-    }
+  it('clears teams when settings are completed so team count can change', () => {
+    let state = startMatch(['w1', 'w2']);
+    expect(state.teams).toHaveLength(2);
 
-    state = gameReducer(state, { type: 'REPLAY_WITH_SAME_TEAMS', now: BASE_TIME + 100 });
+    state = gameReducer(state, {
+      type: 'SETTINGS_COMPLETED',
+      settings: { ...makeSettings(), teamCount: 4 },
+      now: BASE_TIME + 1,
+    });
+
     expect(state.status).toBe('setup_teams');
-    expect(state.teams.map((team) => team.name)).toEqual(['Команда 1', 'Команда 2']);
-    expect(state.teams.every((team) => team.scores.elias === 0)).toBe(true);
+    expect(state.teams).toHaveLength(0);
+    expect(state.settings.teamCount).toBe(4);
   });
 
   it('abandons an active match back to idle', () => {

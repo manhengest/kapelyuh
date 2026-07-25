@@ -6,6 +6,7 @@ import { strings } from '@content/strings';
 import { useGameStore } from '@features/game/store';
 import { playTap } from '@infrastructure/audio/sounds';
 import { useIsWideLayout } from '@shared/hooks/useIsWideLayout';
+import { getAppVersion } from '@shared/lib/appVersion';
 import { ContentColumn } from '@ui/components/ContentColumn';
 import { Text } from '@ui/components/Text';
 
@@ -63,6 +64,7 @@ export default function HomeScreen() {
   const router = useRouter();
   const dispatch = useGameStore((store) => store.dispatch);
   const isWideLayout = useIsWideLayout();
+  const version = getAppVersion();
 
   const startNewGame = () => {
     playTap();
@@ -73,8 +75,8 @@ export default function HomeScreen() {
   return (
     <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
       <SafeAreaView className="flex-1">
-        <ContentColumn className={`flex-1 justify-between ${isWideLayout ? 'pt-4' : ''}`}>
-          <View className={`items-center px-6 ${isWideLayout ? 'pt-20' : 'pt-16'}`}>
+        <ContentColumn className={`flex-1 justify-between items-center ${isWideLayout ? 'pt-4' : ''}`}>
+          <View className={`items-center ${isWideLayout ? 'pt-20' : 'pt-16'}`}>
             <Image
               source={hatIcon}
               accessibilityRole="image"
@@ -101,7 +103,7 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          <View className={`px-12 pb-20 ${isWideLayout ? 'gap-6' : 'gap-5'}`}>
+          <View className={`w-full max-w-[360px] px-6 ${isWideLayout ? 'gap-6' : 'gap-5'}`}>
             <Pressable
               accessibilityRole="button"
               accessibilityLabel={strings.home.newGame}
@@ -143,6 +145,9 @@ export default function HomeScreen() {
               icon={aboutIcon}
               onPress={() => router.push('/about')}
             />
+            <Text className="mt-8 text-center text-sm text-[#3D2B56]/60">
+              {strings.about.version(version)}
+            </Text>
           </View>
         </ContentColumn>
       </SafeAreaView>

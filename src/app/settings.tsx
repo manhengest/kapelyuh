@@ -22,7 +22,7 @@ export default function SettingsScreen() {
       <SafeAreaView className="flex-1">
         <ContentColumn className="flex-1">
           <ScreenHeader title={strings.settings.title} onBack={() => router.back()} />
-          <ScrollView className="flex-1 px-5" contentContainerClassName="pb-8">
+          <ScrollView className="flex-1 px-5" contentContainerClassName="pt-8">
             <View>
               <SettingsToggleRow
                 label={strings.settings.sound}

@@ -14,7 +14,7 @@ export function getRoundPalette(roundType: RoundType | undefined) {
 }
 
 export const RoundTitleStyle = {
-  elias: { color: '#FB6694', fontSize: 90 },
+  elias: { color: '#FB6694', fontSize: 80 },
   crocodile: { color: '#0D6E79', fontSize: 60 },
   association: { color: '#7C5C00', fontSize: 65 },
 } as const satisfies Record<RoundType, { color: string; fontSize: number }>;
@@ -43,7 +43,7 @@ export function getRoundIntroIconStyle(roundType: RoundType | undefined) {
 }
 
 export const HatIconStyle = {
-  elias: { width: 120, height: 121, right: 0, bottom: 0 },
+  elias: { width: 120, height: 121, right: -10, bottom: 0 },
   crocodile: { width: 100, height: 121, right: 0, bottom: -20 },
   association: { width: 90, height: 111, right: 20, bottom: -20 },
 } as const satisfies Record<RoundType, { width: number; height: number; right: number; bottom: number }>;

@@ -2,11 +2,12 @@ import * as Sentry from '@sentry/react-native';
 import Constants from 'expo-constants';
 
 import { getSettings } from '@infrastructure/storage/settings';
+import { getAppVersion } from '@shared/lib/appVersion';
 
 let initialized = false;
 
 export function getSentryRelease(): { release: string; dist: string } {
-  const version = Constants.expoConfig?.version ?? '0.0.0';
+  const version = getAppVersion();
   const dist = Constants.expoConfig?.ios?.buildNumber ?? '0';
   return { release: `kapelyukh@${version}`, dist };
 }
