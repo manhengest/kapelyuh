@@ -10,11 +10,7 @@ export const Text = forwardRef<RNText, TextProps>(function AppText({ style, ...p
   const family = nunitoFamilyForWeight(flat?.fontWeight);
 
   return (
-    <RNText
-      ref={ref}
-      {...props}
-      style={[style, { fontFamily: family, fontWeight: undefined }]}
-    />
+    <RNText ref={ref} {...props} style={[style, { fontFamily: family, fontWeight: undefined }]} />
   );
 });
 

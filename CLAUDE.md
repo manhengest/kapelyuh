@@ -6,17 +6,17 @@ Offline Ukrainian party game (React Native + Expo). Read this before planning or
 
 **Капелюх** is a feature-complete V1.0 iOS party game: one device, 2–N teams, one shared hat of words across three rounds (Еліас → Крокодил → Асоціація).
 
-| Area | Status |
-| --- | --- |
-| Version | `package.json` `version` → `app.config.ts` → runtime via `getAppVersion()`; optional `APP_VERSION` in `.env.local`; iOS bundle `com.kapelyukh.app` |
-| Platforms | iPhone primary; iPad supported (`supportsTablet` + centered `ContentColumn`) |
-| Game loop | Full: setup → teams → round-intro → turn → award → review → (next turn/round) → results → statistic |
-| Persistence | Active match autosaved to MMKV; finished sessions in SQLite; settings in MMKV |
-| Words | `scripts/words.csv` (~950 Ukrainian words) → `npm run build:db` → `assets/data/kapelyukh.db` |
-| Monetization | No ads / no IAP. `infrastructure/purchases/stub.ts` always returns `isPro: false` (Pro → V1.1) |
-| Observability | Sentry (opt-in via Settings); crash reporting only |
-| Distribution | EAS profiles: `development`, `development-simulator`, `preview`, `production` + TestFlight submit |
-| Release gate | Phase 5/6 docs in `docs/` (beta matrix, TestFlight, word-list sign-off) — treat as process, not code truth |
+| Area          | Status                                                                                                                                             |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Version       | `package.json` `version` → `app.config.ts` → runtime via `getAppVersion()`; optional `APP_VERSION` in `.env.local`; iOS bundle `com.kapelyukh.app` |
+| Platforms     | iPhone primary; iPad supported (`supportsTablet` + centered `ContentColumn`)                                                                       |
+| Game loop     | Full: setup → teams → round-intro → turn → award → review → (next turn/round) → results → statistic                                                |
+| Persistence   | Active match autosaved to MMKV; finished sessions in SQLite; settings in MMKV                                                                      |
+| Words         | `scripts/words.csv` (~950 Ukrainian words) → `npm run build:db` → `assets/data/kapelyukh.db`                                                       |
+| Monetization  | No ads / no IAP. `infrastructure/purchases/stub.ts` always returns `isPro: false` (Pro → V1.1)                                                     |
+| Observability | Sentry (opt-in via Settings); crash reporting only                                                                                                 |
+| Distribution  | EAS profiles: `development`, `development-simulator`, `preview`, `production` + TestFlight submit                                                  |
+| Release gate  | Phase 5/6 docs in `docs/` (beta matrix, TestFlight, word-list sign-off) — treat as process, not code truth                                         |
 
 **Screens (`src/app/`):** home, rules, settings, about, privacy; game: setup, teams, round-intro, turn, review, results, statistic.
 
@@ -66,16 +66,16 @@ Before running any project command in the terminal, use Node **24.18.0** (see `.
 nvm use
 ```
 
-| Command | When to use |
-| --- | --- |
-| `npm start` | Dev server + SCSS watch (`scripts/dev.js`; use `--dev-client` after EAS dev build) |
-| `npm run ios` / `npm run android` | Same as start, platform flag |
-| `npm run typecheck` | After code changes — must pass |
-| `npm run lint` | ESLint with zero warnings |
-| `npm run format` | Prettier check |
-| `npm test` | Jest — prefer single spec files during iteration |
-| `npm run build:db` | Regenerate `assets/data/kapelyukh.db` from `scripts/words.csv` |
-| `npm run styles:build` | One-shot SCSS → CSS sync |
+| Command                           | When to use                                                                        |
+| --------------------------------- | ---------------------------------------------------------------------------------- |
+| `npm start`                       | Dev server + SCSS watch (`scripts/dev.js`; use `--dev-client` after EAS dev build) |
+| `npm run ios` / `npm run android` | Same as start, platform flag                                                       |
+| `npm run typecheck`               | After code changes — must pass                                                     |
+| `npm run lint`                    | ESLint with zero warnings                                                          |
+| `npm run format`                  | Prettier check                                                                     |
+| `npm test`                        | Jest — prefer single spec files during iteration                                   |
+| `npm run build:db`                | Regenerate `assets/data/kapelyukh.db` from `scripts/words.csv`                     |
+| `npm run styles:build`            | One-shot SCSS → CSS sync                                                           |
 
 CI (`.github/workflows/ci.yml`) runs typecheck + lint + format + test on every PR. Run `typecheck` + `lint` + `test` before finishing non-trivial work.
 
@@ -136,7 +136,7 @@ Import order is enforced: builtin → external → internal, alphabetized, blank
 
 - **Minimize diff** — simplest correct change; no drive-by refactors.
 - **Match existing patterns** — read surrounding code before writing.
-- **Comments** — explain *why*, not *what*. No comments on obvious code.
+- **Comments** — explain _why_, not _what_. No comments on obvious code.
 - **Tests** — add only when they cover real behavior; skip trivial assertions.
 
 ## Testing
@@ -155,15 +155,15 @@ Import order is enforced: builtin → external → internal, alphabetized, blank
 
 ## Documentation map
 
-| Path | Contents |
-| --- | --- |
-| `README.md` | Setup, EAS dev build, scripts, TestFlight gate |
-| `PRIVACY.md` | User agreement / privacy copy (Ukrainian) |
-| `docs/` | Beta/TestFlight, Sentry, word-list sign-off, design brief, TZ |
-| `docs/design-brief.md` | Visual / UX brief |
-| `design/` | Approved screen reference PNGs |
-| `.cursor/plans/` | Ad-hoc feature plans (not a single roadmap) |
-| `scripts/words.csv` | Word list source for SQLite build |
+| Path                   | Contents                                                      |
+| ---------------------- | ------------------------------------------------------------- |
+| `README.md`            | Setup, EAS dev build, scripts, TestFlight gate                |
+| `PRIVACY.md`           | User agreement / privacy copy (Ukrainian)                     |
+| `docs/`                | Beta/TestFlight, Sentry, word-list sign-off, design brief, TZ |
+| `docs/design-brief.md` | Visual / UX brief                                             |
+| `design/`              | Approved screen reference PNGs                                |
+| `.cursor/plans/`       | Ad-hoc feature plans (not a single roadmap)                   |
+| `scripts/words.csv`    | Word list source for SQLite build                             |
 
 When docs and code disagree, **code is the source of truth** — update docs if you change behavior. (Example: `docs/word-list-signoff.md` word counts may lag `scripts/words.csv`.)
 

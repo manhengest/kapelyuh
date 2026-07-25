@@ -97,7 +97,13 @@ function buildDatabase(words: CsvWord[]): void {
 
   const insertMany = db.transaction((entries: CsvWord[]) => {
     entries.forEach((entry, index) => {
-      insertWord.run(`w-${index + 1}`, BUNDLED_PACK_ID, entry.text, entry.difficulty, entry.category);
+      insertWord.run(
+        `w-${index + 1}`,
+        BUNDLED_PACK_ID,
+        entry.text,
+        entry.difficulty,
+        entry.category,
+      );
     });
   });
 

@@ -104,7 +104,11 @@ export default function SetupScreen() {
               </SettingsCard>
             </View>
           </ScrollView>
-          <ScreenFooter hint={strings.setup.wordSetNote} label={strings.common.next} onPress={onNext} />
+          <ScreenFooter
+            hint={strings.setup.wordSetNote}
+            label={strings.common.next}
+            onPress={onNext}
+          />
         </ContentColumn>
       </SafeAreaView>
     </ImageBackground>

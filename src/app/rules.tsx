@@ -26,13 +26,12 @@ export default function RulesScreen() {
                 <Text className="mb-6 text-lg leading-6 text-slate-700">{entry.body}</Text>
                 {entry.tipLabel && (
                   <View className="rounded-2xl bg-white/70 px-4 py-4">
-                    <Text className="mb-1 text-lg font-bold uppercase text-pink-700">
+                    <Text className="text-pink-700 mb-1 text-lg font-bold uppercase">
                       {entry.tipLabel}
                     </Text>
                     <Text className="text-lg text-slate-800">{entry.tip}</Text>
                   </View>
                 )}
-                
               </View>
             ))}
           </ScrollView>

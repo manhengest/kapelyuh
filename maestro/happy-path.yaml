@@ -6,27 +6,27 @@ name: Happy path smoke
 ---
 - launchApp:
     clearState: true
-- assertVisible: "Нова гра"
-- tapOn: "Нова гра"
-- assertVisible: "Налаштування"
-- tapOn: "Далі"
-- assertVisible: "Команди"
-- tapOn: "Далі"
+- assertVisible: 'Нова гра'
+- tapOn: 'Нова гра'
+- assertVisible: 'Налаштування'
+- tapOn: 'Далі'
+- assertVisible: 'Команди'
+- tapOn: 'Далі'
 - extendedWaitUntil:
-    visible: "ЕЛІАС"
+    visible: 'ЕЛІАС'
     timeout: 15000
-- tapOn: "Далі"
-- assertVisible: "Поїхали!"
-- tapOn: "Поїхали!"
+- tapOn: 'Далі'
+- assertVisible: 'Поїхали!'
+- tapOn: 'Поїхали!'
 - extendedWaitUntil:
-    visible: "Пропустити"
+    visible: 'Пропустити'
     timeout: 8000
-- assertVisible: "Вгадав"
-- tapOn: "Вгадав"
-- tapOn: "Пауза"
-- assertVisible: "Гру зупинено"
-- tapOn: "Продовжити"
-- tapOn: "На головну"
-- assertVisible: "Гру зупинено"
-- tapOn: "Так, вийти"
-- assertVisible: "Нова гра"
+- assertVisible: 'Вгадав'
+- tapOn: 'Вгадав'
+- tapOn: 'Пауза'
+- assertVisible: 'Гру зупинено'
+- tapOn: 'Продовжити'
+- tapOn: 'На головну'
+- assertVisible: 'Гру зупинено'
+- tapOn: 'Так, вийти'
+- assertVisible: 'Нова гра'

@@ -11,7 +11,11 @@ import { playGameStart } from '@infrastructure/audio/sounds';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
-import { getHatIconStyle, getRoundIntroIconStyle, getRoundTitleStyle } from '@ui/theme/roundPalette';
+import {
+  getHatIconStyle,
+  getRoundIntroIconStyle,
+  getRoundTitleStyle,
+} from '@ui/theme/roundPalette';
 
 const clockIcon = require('@assets/images/icons/round-intro/clock.png');
 const dividerIcon = require('@assets/images/icons/round-intro/devider.png');
@@ -161,9 +165,7 @@ export default function RoundIntroScreen() {
         {/* "Хід команди" badge */}
         <View className="mb-3 items-center">
           <View>
-            <Text className="text-2xl font-bold text-highlightText">
-              {strings.rounds.teamTurn}
-            </Text>
+            <Text className="text-2xl font-bold text-highlightText">{strings.rounds.teamTurn}</Text>
           </View>
         </View>
 

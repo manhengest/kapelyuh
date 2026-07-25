@@ -13,13 +13,7 @@ type PauseModalProps = {
   onExit: () => void;
 };
 
-export function PauseModal({
-  visible,
-  roundLine,
-  teamName,
-  onResume,
-  onExit,
-}: PauseModalProps) {
+export function PauseModal({ visible, roundLine, teamName, onResume, onExit }: PauseModalProps) {
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View className="flex-1 justify-end bg-black/50">
@@ -27,15 +21,18 @@ export function PauseModal({
           <Text className="mb-2 text-center text-2xl font-bold text-black">
             {strings.pause.title}
           </Text>
-          <Text className="mb-1 text-center text-base text-slate-600">
-            {roundLine}
-          </Text>
+          <Text className="mb-1 text-center text-base text-slate-600">{roundLine}</Text>
           <Text className="mb-8 text-center text-base text-slate-600">
             {strings.pause.team(teamName)}
           </Text>
           <View className="gap-3">
-            <Button textClassName='text-xl' label={strings.pause.resume} onPress={onResume} />
-            <Button textClassName='text-xl' label={strings.pause.exit} variant="outline" onPress={onExit} />
+            <Button textClassName="text-xl" label={strings.pause.resume} onPress={onResume} />
+            <Button
+              textClassName="text-xl"
+              label={strings.pause.exit}
+              variant="outline"
+              onPress={onExit}
+            />
           </View>
         </View>
       </View>
@@ -76,10 +73,7 @@ export function AwardModal({
 
   return (
     <Modal visible={visible} transparent animationType="none">
-      <Animated.View
-        style={{ opacity: overlayOpacity }}
-        className="flex-1 justify-end bg-black/50"
-      >
+      <Animated.View style={{ opacity: overlayOpacity }} className="flex-1 justify-end bg-black/50">
         <Animated.View
           style={{ transform: [{ translateY: contentTranslateY }] }}
           className="rounded-t-3xl bg-white px-6 pb-10 pt-6"
@@ -109,7 +103,7 @@ export function AwardModal({
             </Pressable>
           </View>
           <Button
-            textClassName='text-2xl'
+            textClassName="text-2xl"
             label={strings.common.done}
             disabled={!hasSelection}
             onPress={onConfirm}

@@ -1,11 +1,7 @@
 import type { ReactNode } from 'react';
 import { useEffect } from 'react';
 import { ImageBackground, type ViewProps } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import type { RoundType } from '@domain/game/types';
@@ -20,7 +16,12 @@ type GameScreenShellProps = ViewProps & {
   children: ReactNode;
 };
 
-export function GameScreenShell({ roundType, children, className = '', ...props }: GameScreenShellProps) {
+export function GameScreenShell({
+  roundType,
+  children,
+  className = '',
+  ...props
+}: GameScreenShellProps) {
   const palette = getRoundPalette(roundType);
   const reducedMotion = useReducedMotion();
   const tintOpacity = useSharedValue(0);
@@ -30,7 +31,9 @@ export function GameScreenShell({ roundType, children, className = '', ...props 
       tintOpacity.value = roundType === 'elias' || roundType == null ? 0 : 0.35;
       return;
     }
-    tintOpacity.value = withTiming(roundType === 'elias' || roundType == null ? 0 : 0.35, { duration: 400 });
+    tintOpacity.value = withTiming(roundType === 'elias' || roundType == null ? 0 : 0.35, {
+      duration: 400,
+    });
   }, [tintOpacity, reducedMotion, roundType]);
 
   const tintStyle = useAnimatedStyle(() => ({

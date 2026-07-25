@@ -164,11 +164,7 @@ export default function TurnScreen() {
 
       {/* Action buttons */}
       <View className="pb-8">
-        <ActionButtons
-          onGuess={onGuess}
-          onSkip={onSkip}
-          guessDisabled={false}
-        />
+        <ActionButtons onGuess={onGuess} onSkip={onSkip} guessDisabled={false} />
       </View>
 
       <PauseModal

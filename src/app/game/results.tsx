@@ -61,7 +61,7 @@ export default function ResultsScreen() {
       <SafeAreaView className="flex-1">
         <ContentColumn className="flex-1">
           <ScrollView className="flex-1 px-5" contentContainerClassName="py-8">
-            <Text className="mb-1 text-center text-5xl leading-normal font-bold text-highlightText">
+            <Text className="mb-1 text-center text-5xl font-bold leading-normal text-highlightText">
               {strings.results.matchComplete}
             </Text>
             <Text className="mb-6 text-center text-2xl text-slate-600">
@@ -74,7 +74,8 @@ export default function ResultsScreen() {
                   <Text className="text-4xl">🏅</Text>
                   <Text className="mt-2 text-3xl font-bold text-black">{winner.name}</Text>
                   <Text className="text-lg text-highlightText">
-                    {winner.scores.elias + winner.scores.crocodile + winner.scores.association} балів
+                    {winner.scores.elias + winner.scores.crocodile + winner.scores.association}{' '}
+                    балів
                   </Text>
                 </View>
               </WinnerMedal>
@@ -91,7 +92,9 @@ export default function ResultsScreen() {
               {scoreboard.map((row) => (
                 <View key={row.teamId} className="flex-row border-t border-slate-200 px-3 py-2">
                   <Text className="flex-1 text-lg text-highlightText">{row.name}</Text>
-                  <Text className="w-10 text-center text-lg text-highlightText">{row.scores.elias}</Text>
+                  <Text className="w-10 text-center text-lg text-highlightText">
+                    {row.scores.elias}
+                  </Text>
                   <Text className="w-10 text-center text-lg text-highlightText">
                     {row.scores.crocodile}
                   </Text>

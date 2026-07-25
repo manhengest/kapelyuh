@@ -1,10 +1,5 @@
 export { type GameEvent } from './events';
-export {
-  applySettings,
-  createInitialState,
-  gameReducer,
-  isActiveMatch,
-} from './reducer';
+export { applySettings, createInitialState, gameReducer, isActiveMatch } from './reducer';
 export {
   collectTurnEventsFromHistory,
   selectCurrentRound,

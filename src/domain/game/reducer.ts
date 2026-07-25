@@ -1,12 +1,7 @@
 import { shuffle } from '@domain/utils/shuffle';
 
 import type { GameEvent } from './events';
-import {
-  applyReviewOverrides,
-  clampScore,
-  computeTurnScore,
-  deriveWordOutcome,
-} from './scoring';
+import { applyReviewOverrides, clampScore, computeTurnScore, deriveWordOutcome } from './scoring';
 import { selectMatchStatCardCount, selectMatchStats } from './selectors';
 import type {
   CompletedTurn,
@@ -343,7 +338,10 @@ function collectReviewReturnedWordIds(
     }
 
     seen.add(event.wordId);
-    if (deriveWordOutcome(events, event.wordId) === 'guessed' && overrides[event.wordId] === 'skipped') {
+    if (
+      deriveWordOutcome(events, event.wordId) === 'guessed' &&
+      overrides[event.wordId] === 'skipped'
+    ) {
       returnedWordIds.push(event.wordId);
     }
   }

@@ -14,10 +14,16 @@ export function createTestDatabase(): Database.Database {
   return db;
 }
 
-export function seedTestWords(db: Database.Database, words: { id: string; text: string; difficulty: string }[]): void {
-  db.prepare(
-    'INSERT INTO packs (id, name, source, created_at) VALUES (?, ?, ?, ?)',
-  ).run(BUNDLED_PACK_ID, BUNDLED_PACK_NAME, 'bundled', Date.now());
+export function seedTestWords(
+  db: Database.Database,
+  words: { id: string; text: string; difficulty: string }[],
+): void {
+  db.prepare('INSERT INTO packs (id, name, source, created_at) VALUES (?, ?, ?, ?)').run(
+    BUNDLED_PACK_ID,
+    BUNDLED_PACK_NAME,
+    'bundled',
+    Date.now(),
+  );
 
   const insert = db.prepare(
     'INSERT INTO words (id, pack_id, text, difficulty, category_id) VALUES (?, ?, ?, ?, ?)',

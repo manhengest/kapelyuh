@@ -66,8 +66,18 @@ export function CountdownRing({ remainingMs, locked = false }: CountdownRingProp
         },
       ]}
     >
-      <Image source={require('@assets/images/icons/round-intro/clock.png')} style={{ width: 24, height: 24 }} />
-      <Text style={{ color: timerColor, fontSize: 32, fontWeight: '700', fontVariant: ['tabular-nums'] }}>
+      <Image
+        source={require('@assets/images/icons/round-intro/clock.png')}
+        style={{ width: 24, height: 24 }}
+      />
+      <Text
+        style={{
+          color: timerColor,
+          fontSize: 32,
+          fontWeight: '700',
+          fontVariant: ['tabular-nums'],
+        }}
+      >
         {locked ? '00:00' : formatTimer(remainingMs)}
       </Text>
     </Animated.View>

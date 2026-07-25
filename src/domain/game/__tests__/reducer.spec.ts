@@ -251,7 +251,9 @@ describe('domain/game/reducer', () => {
     let state = startMatch(['w1']);
     state = guessCurrentWord(state); // empties the hat → review
     state = nextTurn(state); // transitions to round_intro
-    expect(() => gameReducer(state, { type: 'ROUND_INTRO_ACK', now: BASE_TIME })).toThrow(/empty hat/);
+    expect(() => gameReducer(state, { type: 'ROUND_INTRO_ACK', now: BASE_TIME })).toThrow(
+      /empty hat/,
+    );
   });
 
   it('returns fouled words to hat and continues Alias with full timer', () => {
@@ -275,7 +277,9 @@ describe('domain/game/reducer', () => {
     expect(state.carryOverMs).toBeNull();
     expect(state.rounds[0]?.remainingWordIds).toContain(fouledWordId);
     expect(state.rounds[0]?.guessedWordIds).not.toContain(fouledWordId);
-    expect(state.turn?.events.find((event) => event.kind === 'skipped' && event.wordId === fouledWordId)).toBeTruthy();
+    expect(
+      state.turn?.events.find((event) => event.kind === 'skipped' && event.wordId === fouledWordId),
+    ).toBeTruthy();
 
     state = nextTurn(state);
     const ackAt = BASE_TIME + 80_000;

@@ -20,9 +20,7 @@ export function PlaceholderScreen({ title, description, links = [] }: Placeholde
   return (
     <SafeAreaView className="flex-1 bg-white">
       <View className="flex-1 justify-center gap-4 px-6">
-        <Text className="text-center text-3xl font-bold text-slate-900">
-          {title}
-        </Text>
+        <Text className="text-center text-3xl font-bold text-slate-900">{title}</Text>
         <Text className="text-center text-base text-slate-600">
           {description ?? strings.common.placeholder}
         </Text>

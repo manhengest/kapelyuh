@@ -38,7 +38,9 @@ export function HorizontalPicker<T extends string | number>({
                 }}
                 className={`picker-option ${selected ? 'picker-option--selected' : ''}`}
               >
-                <Text className={`picker-option-text ${selected ? 'picker-option-text--selected' : ''}`}>
+                <Text
+                  className={`picker-option-text ${selected ? 'picker-option-text--selected' : ''}`}
+                >
                   {formatOption(option)}
                 </Text>
               </Pressable>

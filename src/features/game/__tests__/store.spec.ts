@@ -16,7 +16,9 @@ jest.mock('@infrastructure/storage/activeMatch', () => ({
   clearActiveMatch: jest.fn(),
 }));
 
-const saveFinishedSessionMock = saveFinishedSession as jest.MockedFunction<typeof saveFinishedSession>;
+const saveFinishedSessionMock = saveFinishedSession as jest.MockedFunction<
+  typeof saveFinishedSession
+>;
 const clearActiveMatchMock = clearActiveMatch as jest.MockedFunction<typeof clearActiveMatch>;
 
 describe('features/game/store session persistence', () => {

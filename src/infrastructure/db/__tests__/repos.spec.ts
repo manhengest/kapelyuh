@@ -11,7 +11,6 @@ import {
 } from '@infrastructure/db/sessions.repo';
 import { getAllWords, getWordTextMap, clearWordsCache } from '@infrastructure/db/words.repo';
 
-
 import { createBetterSqliteAdapter, createTestDatabase, seedTestWords } from './testDb';
 
 function finishedState(sessionWordIds: string[], updatedAt: number): GameState {

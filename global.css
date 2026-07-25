@@ -14,7 +14,7 @@
     padding-bottom: 12px;
   }
   .btn--primary {
-    background-color: #FDC82B;
+    background-color: #fdc82b;
   }
   .btn--outline {
     background-color: transparent;
@@ -23,7 +23,7 @@
     border-color: #401947;
   }
   .btn--disabled {
-    background-color: #D9D2CE;
+    background-color: #d9d2ce;
   }
   .btn-text {
     text-align: center;
@@ -32,7 +32,7 @@
     color: #401947;
   }
   .btn-text--disabled {
-    color: #8C8078;
+    color: #8c8078;
   }
 }
 
@@ -47,7 +47,7 @@
     padding-bottom: 12px;
   }
   .award-option--selected {
-    border-color: #FDC82B;
+    border-color: #fdc82b;
     background-color: #fff3cd;
   }
 }
@@ -63,8 +63,8 @@
     border-color: #94a3b8;
   }
   .review-checkbox--checked {
-    border-color: #FB6694;
-    background-color: #FB6694;
+    border-color: #fb6694;
+    background-color: #fb6694;
   }
 }
 
@@ -78,8 +78,8 @@
     border-color: #cdb7b7;
   }
   .picker-option--selected {
-    background-color: #FB6694;
-    border-color: #FB6694;
+    background-color: #fb6694;
+    border-color: #fb6694;
   }
   .picker-option-text {
     font-size: 16px;
@@ -105,7 +105,7 @@
     border-radius: 35px;
     padding-left: 35px;
     padding-right: 24px;
-    background-color: #FDC82B;
+    background-color: #fdc82b;
   }
   .landing-new-game-btn-text {
     flex: 1;
@@ -121,7 +121,7 @@
     border-radius: 9999px;
     padding-left: 80px;
     padding-right: 20px;
-    background-color: #FEFAF7;
+    background-color: #fefaf7;
   }
   .landing-menu-btn-text {
     flex: 1;

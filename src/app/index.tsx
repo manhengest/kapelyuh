@@ -75,7 +75,9 @@ export default function HomeScreen() {
   return (
     <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
       <SafeAreaView className="flex-1">
-        <ContentColumn className={`flex-1 justify-between items-center ${isWideLayout ? 'pt-4' : ''}`}>
+        <ContentColumn
+          className={`flex-1 items-center justify-between ${isWideLayout ? 'pt-4' : ''}`}
+        >
           <View className={`items-center ${isWideLayout ? 'pt-20' : 'pt-16'}`}>
             <Image
               source={hatIcon}

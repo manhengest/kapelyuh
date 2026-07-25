@@ -36,10 +36,7 @@ describe('domain/game/selectors integration', () => {
   });
 
   it('selectScoreboard and selectWinners derive totals from team scores', () => {
-    let state = startMatch(['w1', 'w2'], [
-      makeTeam('t1', 'А'),
-      makeTeam('t2', 'Б'),
-    ]);
+    let state = startMatch(['w1', 'w2'], [makeTeam('t1', 'А'), makeTeam('t2', 'Б')]);
 
     state = guessCurrentWord(state);
 

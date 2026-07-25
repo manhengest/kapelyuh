@@ -1,11 +1,4 @@
-import type {
-  CompletedTurn,
-  GameState,
-  MatchStats,
-  RoundType,
-  Team,
-  TurnEvent,
-} from './types';
+import type { CompletedTurn, GameState, MatchStats, RoundType, Team, TurnEvent } from './types';
 import { CARRY_OVER_MIN_MS, ROUND_TYPES } from './types';
 
 export function selectCurrentTeam(state: GameState): Team | null {
@@ -100,7 +93,9 @@ export function selectReviewBanner(state: GameState): 'hat_empty' | 'time_up' | 
   return selectIsHatEmpty(state) ? 'hat_empty' : 'time_up';
 }
 
-export function selectReviewCta(state: GameState): 'next_turn' | 'next_round' | 'match_results' | null {
+export function selectReviewCta(
+  state: GameState,
+): 'next_turn' | 'next_round' | 'match_results' | null {
   if (state.status !== 'review') {
     return null;
   }
@@ -180,10 +175,7 @@ export function selectMatchStats(
 
   const durationByWord = new Map<string, number>();
   for (const entry of guessEvents) {
-    durationByWord.set(
-      entry.wordId,
-      (durationByWord.get(entry.wordId) ?? 0) + entry.durationMs,
-    );
+    durationByWord.set(entry.wordId, (durationByWord.get(entry.wordId) ?? 0) + entry.durationMs);
   }
 
   const wordDurations = [...durationByWord.entries()].map(([wordId, durationMs]) => ({
