@@ -4,145 +4,90 @@
 
 @layer components {
   .btn {
-    min-height: 60px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 30px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    @apply min-h-[60px] items-center justify-center rounded-[30px] px-5 py-3;
   }
+
   .btn--primary {
-    background-color: #fdc82b;
+    @apply bg-primaryBtn;
   }
+
   .btn--outline {
-    background-color: transparent;
-    border-width: 2px;
-    border-style: solid;
-    border-color: #401947;
+    @apply border-2 border-primaryText bg-transparent;
   }
+
   .btn--disabled {
-    background-color: #d9d2ce;
+    @apply bg-disabledBtn;
   }
+
   .btn-text {
-    text-align: center;
-    font-size: 28px;
-    font-weight: 700;
-    color: #401947;
+    @apply text-center text-[28px] font-bold text-primaryText;
   }
+
   .btn-text--disabled {
-    color: #8c8078;
+    @apply text-disabledText;
   }
-}
 
-@layer components {
   .award-option {
-    border-radius: 12px;
-    border-width: 1px;
-    border-color: #e2e8f0;
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    @apply rounded-xl border border-slate-200 px-4 py-3;
   }
+
   .award-option--selected {
-    border-color: #fdc82b;
-    background-color: #fff3cd;
+    @apply border-primaryBtn bg-awardSelected;
   }
-}
 
-@layer components {
   .review-checkbox {
-    height: 24px;
-    width: 24px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    border-width: 1px;
-    border-color: #94a3b8;
+    @apply h-6 w-6 items-center justify-center rounded-md border border-slate-400;
   }
+
   .review-checkbox--checked {
-    border-color: #fb6694;
-    background-color: #fb6694;
+    @apply border-pink bg-pink;
   }
-}
 
-@layer components {
   .picker-option {
-    border-radius: 16px;
-    padding: 14px 17px;
-    background-color: #f6efe8;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #cdb7b7;
+    @apply rounded-2xl border border-pickerBorder bg-pickerSurface px-[17px] py-[14px];
   }
+
   .picker-option--selected {
-    background-color: #fb6694;
-    border-color: #fb6694;
+    @apply border-pink bg-pink;
   }
+
   .picker-option-text {
-    font-size: 16px;
-    font-weight: 700;
-    color: #401947;
+    @apply text-center text-base font-bold text-primaryText;
   }
+
   .picker-option-text--selected {
-    color: #fefbf8;
+    @apply text-white;
   }
+
   .picker-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 14px;
+    @apply mb-[14px] text-2xl font-bold;
   }
-}
 
-@layer components {
   .landing-new-game-btn {
-    position: relative;
-    min-height: 88px;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 35px;
-    padding-left: 35px;
-    padding-right: 24px;
-    background-color: #fdc82b;
+    @apply relative min-h-[88px] flex-row items-center rounded-[35px] bg-primaryBtn pl-[35px] pr-6;
   }
-  .landing-new-game-btn-text {
-    flex: 1;
-    text-align: center;
-    font-size: 38px;
-    font-weight: 800;
-    color: #401947;
-  }
-  .landing-menu-btn {
-    min-height: 64px;
-    flex-direction: row;
-    align-items: center;
-    border-radius: 9999px;
-    padding-left: 80px;
-    padding-right: 20px;
-    background-color: #fefaf7;
-  }
-  .landing-menu-btn-text {
-    flex: 1;
-    font-size: 24px;
-    font-weight: 700;
-    color: #401947;
-  }
-}
 
-@layer components {
+  .landing-new-game-btn-text {
+    @apply flex-1 text-center text-[38px] font-extrabold text-primaryText;
+  }
+
+  .landing-menu-btn {
+    @apply min-h-[64px] w-full flex-row items-center rounded-full bg-white pl-20;
+  }
+
+  .landing-menu-btn-text {
+    @apply flex-1 text-2xl font-bold text-primaryText;
+  }
+
   .screen-header-action-btn {
-    height: 44px;
-    width: 44px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 9999px;
+    @apply h-11 w-11 items-center justify-center rounded-full;
   }
+
   .screen-header-action-btn--back {
-    background-color: rgba(255, 255, 255, 0.6);
+    @apply bg-[rgba(255,255,255,0.6)];
   }
+
   .screen-header-action-btn--home {
-    background-color: rgba(0, 0, 0, 0.1);
+    @apply bg-[rgba(0,0,0,0.1)];
   }
 }

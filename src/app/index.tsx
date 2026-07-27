@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { Image, ImageBackground, Pressable, View, type ImageSourcePropType } from 'react-native';
+import { Image, ImageBackground, View, type ImageSourcePropType } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from '@content/strings';
@@ -8,6 +8,7 @@ import { playTap } from '@infrastructure/audio/sounds';
 import { useIsWideLayout } from '@shared/hooks/useIsWideLayout';
 import { getAppVersion } from '@shared/lib/appVersion';
 import { ContentColumn } from '@ui/components/ContentColumn';
+import { HardShadowPressable } from '@ui/components/HardShadowPressable';
 import { Text } from '@ui/components/Text';
 
 const aboutIcon = require('@assets/images/icons/landing/about.png');
@@ -29,21 +30,19 @@ type LandingMenuButtonProps = {
 
 function LandingMenuButton({ label, icon, onPress }: Readonly<LandingMenuButtonProps>) {
   return (
-    <Pressable
+    <HardShadowPressable
       accessibilityRole="button"
       accessibilityLabel={label}
       onPress={() => {
         playTap();
         onPress();
       }}
-      className="landing-menu-btn"
-      style={{
-        shadowColor: '#f2f2f2',
-        shadowOffset: { width: 0, height: 5 },
-        shadowOpacity: 0.8,
-        shadowRadius: 0,
-        elevation: 10, // Android
-      }}
+      fullWidth={false}
+      className="w-[290px] self-center"
+      faceClassName="landing-menu-btn"
+      shadowClassName="min-h-[64px] rounded-full"
+      shadowColor="#f2f2f2"
+      shadowOpacity={0.8}
     >
       <Image
         source={icon}
@@ -56,7 +55,7 @@ function LandingMenuButton({ label, icon, onPress }: Readonly<LandingMenuButtonP
         style={{ width: 12, height: 20, position: 'absolute', right: 24, top: 20 }}
         resizeMode="contain"
       />
-    </Pressable>
+    </HardShadowPressable>
   );
 }
 
@@ -105,19 +104,15 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          <View className={`w-full max-w-[360px] px-6 ${isWideLayout ? 'gap-6' : 'gap-5'}`}>
-            <Pressable
+          <View className={`w-full flex-col items-center max-w-[350px] px-6 ${isWideLayout ? 'gap-6' : 'gap-5'}`}>
+            <HardShadowPressable
               accessibilityRole="button"
               accessibilityLabel={strings.home.newGame}
               onPress={startNewGame}
-              style={{
-                shadowColor: '#FEA41E',
-                shadowOffset: { width: 0, height: 5 },
-                shadowOpacity: 0.5,
-                shadowRadius: 0,
-                elevation: 10, // Android
-              }}
-              className="landing-new-game-btn"
+              faceClassName="landing-new-game-btn"
+              shadowClassName="min-h-[88px] rounded-[35px]"
+              shadowColor="#FEA41E"
+              shadowOpacity={0.5}
             >
               <Image
                 source={newGameIcon}
@@ -130,7 +125,7 @@ export default function HomeScreen() {
                 style={{ width: 32, height: 42, position: 'absolute', right: 24, top: 12 }}
                 resizeMode="contain"
               />
-            </Pressable>
+            </HardShadowPressable>
 
             <LandingMenuButton
               label={strings.home.rules}

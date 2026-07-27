@@ -50,9 +50,6 @@ example
 /coverage
 /design
 
-# generated from src/styles/*.scss
-src/styles/.generated/
-
 # IDE
 .idea/
 .claude

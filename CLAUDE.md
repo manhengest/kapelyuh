@@ -39,7 +39,6 @@ src/
   domain/           pure TS game engine (reducer, selectors, scoring, wordSelector)
   infrastructure/   SQLite, MMKV, Sentry, haptics, audio, purchases stub
   ui/               design system (Button, Text, tokens, fonts)
-  styles/           SCSS sources → synced into global.css / NativeWind
   content/          Ukrainian strings + random team names
   shared/           cross-cutting hooks and utils
   types/            ambient type shims (assets, css)
@@ -49,7 +48,7 @@ src/
 
 **State flow:** UI dispatches events → Zustand `features/game/store` → `domain/game/reducer` → selectors drive UI. Match state persists via `infrastructure/storage/activeMatch` (MMKV).
 
-**Styling:** Prefer existing SCSS modules under `src/styles/` + NativeWind `className`. `npm start` runs `scripts/sync-styles.js --watch` alongside Expo. Tokens live in `src/ui/theme/` and `src/styles/_tokens.scss`.
+**Styling:** NativeWind `className` utilities + semantic component classes in [`global.css`](global.css) via `@apply`. Design tokens live in [`tailwind.config.js`](tailwind.config.js) only. Layout breakpoints stay in [`src/ui/theme/tokens.ts`](src/ui/theme/tokens.ts).
 
 ## Stack (pinned)
 
@@ -68,14 +67,13 @@ nvm use
 
 | Command                           | When to use                                                                        |
 | --------------------------------- | ---------------------------------------------------------------------------------- |
-| `npm start`                       | Dev server + SCSS watch (`scripts/dev.js`; use `--dev-client` after EAS dev build) |
+| `npm start`                       | Dev server (`scripts/dev.js`; use `--dev-client` after EAS dev build)              |
 | `npm run ios` / `npm run android` | Same as start, platform flag                                                       |
 | `npm run typecheck`               | After code changes — must pass                                                     |
 | `npm run lint`                    | ESLint with zero warnings                                                          |
 | `npm run format`                  | Prettier check                                                                     |
 | `npm test`                        | Jest — prefer single spec files during iteration                                   |
 | `npm run build:db`                | Regenerate `assets/data/kapelyukh.db` from `scripts/words.csv`                     |
-| `npm run styles:build`            | One-shot SCSS → CSS sync                                                           |
 
 CI (`.github/workflows/ci.yml`) runs typecheck + lint + format + test on every PR. Run `typecheck` + `lint` + `test` before finishing non-trivial work.
 
@@ -182,5 +180,5 @@ When docs and code disagree, **code is the source of truth** — update docs if 
 - **Don't add i18n** — permanently out of scope.
 - **Timer logic** — use absolute timestamps and `useAppStatePause`; never interval-only timers.
 - **Word DB** — after editing `words.csv`, run `npm run build:db` and commit the regenerated `assets/data/kapelyukh.db`. App boot requires that asset (`SQLiteProvider` + `assetSource`).
-- **Styles** — edit `src/styles/*.scss`, not only `global.css`; keep watch/sync running via `npm start`.
+- **Styles** — edit `global.css` for shared component classes and `tailwind.config.js` for tokens; use Tailwind utilities in TSX for one-off layout.
 - **Pro / IAP** — do not wire StoreKit or RevenueCat in V1; keep the purchases stub.

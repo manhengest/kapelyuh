@@ -23,7 +23,6 @@ NODE_BIN="$(command -v node)"
 echo "Using Node $($NODE_BIN -v) at $NODE_BIN"
 
 npm ci
-npm run styles:build
 
 export APP_VARIANT="${APP_VARIANT:-production}"
 

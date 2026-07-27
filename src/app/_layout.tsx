@@ -11,13 +11,17 @@ import { GameRouteSync, useHydrateGameStore } from '@features/game/navigation';
 import { useSettingsStore } from '@features/settings/store';
 import { initSentry, Sentry } from '@infrastructure/analytics/sentry';
 import { initSounds } from '@infrastructure/audio/sounds';
-import { migrateDbIfNeeded } from '@infrastructure/db/migrate';
+import {
+  initializeWordsDatabase,
+  shouldForceOverwriteWordsDb,
+} from '@infrastructure/db/wordsDbSync';
 import { useAppFonts } from '@ui/hooks/useAppFonts';
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 
 function RootLayout() {
   useHydrateGameStore();
+  const forceOverwriteWordsDb = shouldForceOverwriteWordsDb();
   const fontsLoaded = useAppFonts();
   const hydrateSettings = useSettingsStore((store) => store.hydrate);
   const settingsHydrated = useSettingsStore((store) => store.hydrated);
@@ -42,8 +46,11 @@ function RootLayout() {
   return (
     <SQLiteProvider
       databaseName="kapelyukh.db"
-      assetSource={{ assetId: require('@assets/data/kapelyukh.db') }}
-      onInit={migrateDbIfNeeded}
+      assetSource={{
+        assetId: require('@assets/data/kapelyukh.db'),
+        forceOverwrite: forceOverwriteWordsDb,
+      }}
+      onInit={(db) => initializeWordsDatabase(db, forceOverwriteWordsDb)}
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
         <GameRouteSync />

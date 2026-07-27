@@ -18,17 +18,17 @@ import { Text } from '@ui/components/Text';
 
 const mainBg = require('@assets/images/main-bg.png');
 
-function pickRandomName(exclude: string): string {
-  const pool = TEAM_NAME_SUGGESTIONS.filter((n) => n !== exclude);
-  return pool[Math.floor(Math.random() * pool.length)] ?? exclude;
+function pickUniqueRandomName(usedNames: ReadonlySet<string>, fallbackIndex: number): string {
+  const pool = TEAM_NAME_SUGGESTIONS.filter((name) => !usedNames.has(name));
+  return pool.length > 0
+    ? pool[Math.floor(Math.random() * pool.length)]!
+    : `Команда ${fallbackIndex + 1}`;
 }
 
 function createDefaultTeams(count: number): Team[] {
   const used = new Set<string>();
   return Array.from({ length: count }, (_, index) => {
-    const pool = TEAM_NAME_SUGGESTIONS.filter((n) => !used.has(n));
-    const name =
-      pool.length > 0 ? pool[Math.floor(Math.random() * pool.length)]! : `Команда ${index + 1}`;
+    const name = pickUniqueRandomName(used, index);
     used.add(name);
     return {
       id: createId('team'),
@@ -59,24 +59,22 @@ type TeamsEditorProps = {
 function TeamsEditor({ settings, teamsFromStore, teamCount }: TeamsEditorProps) {
   const { dispatch } = useGameActions();
   const [teams, setTeams] = useState<Team[]>(() => resolveTeams(teamsFromStore, teamCount));
-  const [isSelectingWords, setIsSelectingWords] = useState(false);
 
   const renameTeam = (teamId: string) => {
-    setTeams((current) =>
-      current.map((entry) =>
-        entry.id === teamId ? { ...entry, name: pickRandomName(entry.name) } : entry,
-      ),
-    );
+    setTeams((current) => {
+      const index = current.findIndex((team) => team.id === teamId);
+      if (index < 0) return current;
+
+      const usedNames = new Set(current.map((team) => team.name));
+      const name = pickUniqueRandomName(usedNames, index);
+
+      return current.map((entry) => (entry.id === teamId ? { ...entry, name } : entry));
+    });
   };
 
   const onNext = async () => {
-    setIsSelectingWords(true);
-    try {
-      const sessionWordIds = await selectSessionWordIds(settings);
-      dispatch({ type: 'TEAMS_COMPLETED', teams, sessionWordIds });
-    } finally {
-      setIsSelectingWords(false);
-    }
+    const sessionWordIds = await selectSessionWordIds(settings);
+    dispatch({ type: 'TEAMS_COMPLETED', teams, sessionWordIds });
   };
 
   return (
@@ -100,7 +98,7 @@ function TeamsEditor({ settings, teamsFromStore, teamCount }: TeamsEditorProps) 
                 shadowRadius: 3,
                 elevation: 10,
               }}
-              className="flex-row items-center rounded-3xl bg-white px-8 py-6 transition-transform duration-150 ease-out active:scale-95"
+              className="flex-row items-center rounded-3xl bg-white px-8 py-6 transition-transform duration-150 ease-out active:scale-[0.97]"
             >
               <View className="flex-1">
                 <Text className="text-2xl font-bold text-primaryText">{team.name}</Text>
@@ -123,7 +121,6 @@ function TeamsEditor({ settings, teamsFromStore, teamCount }: TeamsEditorProps) 
       <ScreenFooter
         hint={strings.setup.teamHint}
         label={strings.common.next}
-        disabled={teams.length < 2 || isSelectingWords}
         onPress={onNext}
       />
     </>

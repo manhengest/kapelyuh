@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { Pressable, View } from 'react-native';
 
 import { strings } from '@content/strings';
@@ -8,7 +8,10 @@ import { CountdownRing } from '@features/game/components/CountdownRing';
 import { GameScreenShell } from '@features/game/components/GameScreenShell';
 import { AwardModal, PauseModal } from '@features/game/components/Modals';
 import { PauseIcon } from '@features/game/components/PauseIcon';
-import { WordCard } from '@features/game/components/WordCard';
+import {
+  SwipeableWordCard,
+  type SwipeableWordCardHandle,
+} from '@features/game/components/SwipeableWordCard';
 import {
   getRoundMeta,
   useGameActions,
@@ -43,26 +46,32 @@ export default function TurnScreen() {
 
   const [awardSelection, setAwardSelection] = useState<string | null | undefined>(undefined);
   const [awardModalVisible, setAwardModalVisible] = useState(false);
-  const [wordFeedback, setWordFeedback] = useState<'guess' | 'skip' | null>(null);
+  const [wordFeedback, setWordFeedback] = useState<'guess' | null>(null);
+  const wordCardRef = useRef<SwipeableWordCardHandle>(null);
 
   const isAwaitingAward = status === 'awaiting_award';
   const teamName = currentTeam?.name ?? '—';
 
-  const onGuess = useCallback(() => {
-    if (isAwaitingAward) {
+  const performGuess = useCallback(
+    (withFeedback: boolean) => {
+      if (isAwaitingAward) {
+        void triggerHaptic('success');
+        playGuess();
+        setAwardModalVisible(true);
+        return;
+      }
       void triggerHaptic('success');
       playGuess();
-      setAwardModalVisible(true);
-      return;
-    }
-    void triggerHaptic('success');
-    playGuess();
-    setWordFeedback('guess');
-    dispatch({ type: 'GUESS_WORD' });
-    setTimeout(() => setWordFeedback(null), 250);
-  }, [dispatch, isAwaitingAward]);
+      if (withFeedback) {
+        setWordFeedback('guess');
+        setTimeout(() => setWordFeedback(null), 250);
+      }
+      dispatch({ type: 'GUESS_WORD' });
+    },
+    [dispatch, isAwaitingAward],
+  );
 
-  const onSkip = useCallback(() => {
+  const performSkip = useCallback(() => {
     void triggerHaptic('warning');
     playSkip();
     // After timer expiry («слово для всіх»), Skip means the same as
@@ -71,10 +80,15 @@ export default function TurnScreen() {
       dispatch({ type: 'AWARD_WORD', toTeamId: null });
       return;
     }
-    setWordFeedback('skip');
     dispatch({ type: 'SKIP_WORD' });
-    setTimeout(() => setWordFeedback(null), 250);
   }, [dispatch, isAwaitingAward]);
+
+  const onGuess = useCallback(() => performGuess(true), [performGuess]);
+  const onSkip = useCallback(() => {
+    wordCardRef.current?.triggerExit('left');
+  }, []);
+  const onSwipeGuess = useCallback(() => performGuess(false), [performGuess]);
+  const onSwipeSkip = useCallback(() => performSkip(), [performSkip]);
 
   const onConfirmAward = () => {
     if (awardSelection === undefined) {
@@ -102,7 +116,7 @@ export default function TurnScreen() {
     router.replace('/');
   }, [abandonMatch, router, setPauseModalVisible]);
 
-  const showPauseButton = !isAwaitingAward && !pauseModalVisible;
+  const showPauseButton = !pauseModalVisible;
 
   return (
     <GameScreenShell roundType={currentRound?.type}>
@@ -140,13 +154,18 @@ export default function TurnScreen() {
 
       {/* Word card + pause */}
       <View className="flex-1 items-center justify-center pb-8">
-        <WordCard
+        <SwipeableWordCard
+          ref={wordCardRef}
+          key={word}
           word={word}
           backgroundColor={palette.card}
           textColor={palette.wordText}
           label={isAwaitingAward ? strings.turn.wordForAll : undefined}
           hideFromAccessibility={false}
           feedback={wordFeedback}
+          onSwipeGuess={onSwipeGuess}
+          onSwipeSkip={onSwipeSkip}
+          enabled={!pauseModalVisible}
         />
         {showPauseButton ? (
           <Pressable
@@ -168,7 +187,7 @@ export default function TurnScreen() {
       </View>
 
       <PauseModal
-        visible={pauseModalVisible && !isAwaitingAward}
+        visible={pauseModalVisible}
         roundLine={strings.pause.round(roundMeta.name)}
         teamName={teamName}
         onResume={onResume}

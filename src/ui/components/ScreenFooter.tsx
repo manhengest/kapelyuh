@@ -4,14 +4,6 @@ import { Button } from '@ui/components/Button';
 import { ContentColumn } from '@ui/components/ContentColumn';
 import { Text } from '@ui/components/Text';
 
-const primaryShadow = {
-  shadowColor: '#FEA41E',
-  shadowOffset: { width: 0, height: 5 },
-  shadowOpacity: 0.5,
-  shadowRadius: 0,
-  elevation: 10,
-} as const;
-
 interface ScreenFooterProps {
   hint?: string;
   label: string;
@@ -36,7 +28,7 @@ export function ScreenFooter({
         {secondaryLabel && secondaryOnPress ? (
           <Button label={secondaryLabel} variant="outline" onPress={secondaryOnPress} />
         ) : null}
-        <Button style={primaryShadow} label={label} onPress={onPress} disabled={disabled} />
+        <Button label={label} onPress={onPress} disabled={disabled} />
       </View>
     </ContentColumn>
   );

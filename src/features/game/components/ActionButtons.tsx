@@ -1,19 +1,23 @@
 import { Image, ImageSourcePropType, Pressable, View } from 'react-native';
 
+import { guessedIcon, skipIcon } from '@features/game/components/turnActionIcons';
 import { Text } from '@ui/components/Text';
-
-const guessedIcon = require('@assets/images/icons/turn/guessed.png');
-const skipIcon = require('@assets/images/icons/turn/skip.png');
 
 type ActionButtonProps = {
   label: string;
   icon: ImageSourcePropType;
-  backgroundColor: string;
+  backgroundClassName: string;
   onPress: () => void;
   disabled: boolean;
 };
 
-function ActionButton({ label, icon, backgroundColor, onPress, disabled }: ActionButtonProps) {
+function ActionButton({
+  label,
+  icon,
+  backgroundClassName,
+  onPress,
+  disabled,
+}: ActionButtonProps) {
   return (
     <View className="items-center gap-2">
       <Pressable
@@ -21,9 +25,8 @@ function ActionButton({ label, icon, backgroundColor, onPress, disabled }: Actio
         accessibilityLabel={label}
         disabled={disabled}
         onPress={onPress}
-        className="h-44 w-44 items-center justify-center rounded-3xl"
+        className={`h-44 w-44 items-center justify-center rounded-3xl ${backgroundClassName}`}
         style={{
-          backgroundColor,
           opacity: disabled ? 0.3 : 1,
           shadowColor: '#000',
           shadowOffset: { width: 5, height: 5 },
@@ -57,14 +60,14 @@ export function ActionButtons({
       <ActionButton
         label="Пропустити"
         icon={skipIcon}
-        backgroundColor="#FEFAF7"
+        backgroundClassName="bg-white"
         onPress={onSkip}
         disabled={skipDisabled}
       />
       <ActionButton
         label="Відгадано"
         icon={guessedIcon}
-        backgroundColor="#FDC82B"
+        backgroundClassName="bg-primaryBtn"
         onPress={onGuess}
         disabled={guessDisabled}
       />
