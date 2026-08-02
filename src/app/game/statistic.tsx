@@ -1,18 +1,49 @@
 import { useMemo } from 'react';
-import { ImageBackground, View } from 'react-native';
-import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { Image, ImageBackground, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from '@content/strings';
 import { formatGuessDurationSeconds } from '@domain/game/selectors';
+import { skipIcon } from '@features/game/components/turnActionIcons';
 import { useGameActions, useGameSelectors, useGameState } from '@features/game/hooks';
 import { useGameStore } from '@features/game/store';
+import { ClockIcon } from '@ui/components/ClockIcon';
 import { ContentColumn } from '@ui/components/ContentColumn';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
+import { StarIcon } from '@ui/components/StarIcon';
 import { AnimatedText, Text } from '@ui/components/Text';
 
 const mainBg = require('@assets/images/main-bg.png');
+const statIconColor = '#FE7298';
+const statIconSize = 48;
+
+type StatCardKind = 'fast' | 'skip' | 'best' | 'fallback';
+
+type StatCard = {
+  kind: StatCardKind;
+  text: string;
+};
+
+function StatCardIcon({ kind }: { kind: StatCardKind }) {
+  switch (kind) {
+    case 'fast':
+      return <ClockIcon color={statIconColor} size={statIconSize} />;
+    case 'skip':
+      return (
+        <Image
+          source={skipIcon}
+          style={{ width: statIconSize, height: statIconSize }}
+          resizeMode="contain"
+        />
+      );
+    case 'best':
+      return <StarIcon color={statIconColor} size={statIconSize} />;
+    default:
+      return null;
+  }
+}
 
 export default function StatisticScreen() {
   const statCardsRemaining = useGameState().statCardsRemaining;
@@ -20,37 +51,43 @@ export default function StatisticScreen() {
   const { dispatch } = useGameActions();
   const cardOpacity = useSharedValue(1);
 
-  const statCards = useMemo(() => {
-    const cards: string[] = [];
+  const statCards = useMemo((): StatCard[] => {
+    const cards: StatCard[] = [];
     if (matchStats.fastestGuess) {
-      cards.push(
-        strings.results.stats.fastestGuess(
+      cards.push({
+        kind: 'fast',
+        text: strings.results.stats.fastestGuess(
           matchStats.fastestGuess.wordText,
           formatGuessDurationSeconds(matchStats.fastestGuess.durationMs),
         ),
-      );
+      });
     }
     if (matchStats.mostSkippedWord) {
-      cards.push(
-        strings.results.stats.mostSkippedWord(
+      cards.push({
+        kind: 'skip',
+        text: strings.results.stats.mostSkippedWord(
           matchStats.mostSkippedWord.wordText,
           matchStats.mostSkippedWord.skipCount,
         ),
-      );
+      });
     }
     if (matchStats.bestTurn) {
-      cards.push(
-        strings.results.stats.bestTurn(
+      cards.push({
+        kind: 'best',
+        text: strings.results.stats.bestTurn(
           matchStats.bestTurn.teamName,
           matchStats.bestTurn.totalWordsGuessed,
         ),
-      );
+      });
     }
-    return cards.length > 0 ? cards : ['Гарна гра! Дякуємо, що грали разом.'];
+    return cards.length > 0
+      ? cards
+      : [{ kind: 'fallback', text: 'Гарна гра! Дякуємо, що грали разом.' }];
   }, [matchStats]);
 
   const totalCards = statCards.length;
   const statIndex = totalCards - statCardsRemaining;
+  const currentCard = statCards[Math.min(statIndex, totalCards - 1)];
 
   const dismissStat = () => {
     cardOpacity.value = withTiming(0.95, { duration: 90 });
@@ -81,19 +118,23 @@ export default function StatisticScreen() {
               <Text className="mb-4 text-center text-sm uppercase tracking-widest text-slate-400">
                 {Math.min(statIndex + 1, totalCards)} / {totalCards}
               </Text>
-              <AnimatedText
-                style={carouselStyle}
-                className="text-center text-xl font-bold leading-9 text-primaryText"
-              >
-                {statCards[Math.min(statIndex, totalCards - 1)]}
-              </AnimatedText>
+              <Animated.View style={carouselStyle} className="items-center">
+                {currentCard.kind !== 'fallback' && (
+                  <View className="mb-4">
+                    <StatCardIcon kind={currentCard.kind} />
+                  </View>
+                )}
+                <AnimatedText className="text-center text-xl font-bold leading-9 text-black">
+                  {currentCard.text}
+                </AnimatedText>
+              </Animated.View>
             </View>
           </View>
           <ScreenFooter
             label={strings.results.statNext}
             onPress={dismissStat}
-            secondaryLabel={strings.results.statSkip}
-            secondaryOnPress={skipToPodium}
+            skipLabel={strings.results.statSkip}
+            skipOnPress={skipToPodium}
           />
         </ContentColumn>
       </SafeAreaView>

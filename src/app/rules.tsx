@@ -18,7 +18,11 @@ export default function RulesScreen() {
     <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
       <SafeAreaView className="flex-1">
         <ContentColumn className="flex-1">
-          <ScreenHeader title={strings.home.rules} onBack={() => router.replace('/')} />
+          <ScreenHeader
+            title={strings.home.rules}
+            backIcon="home"
+            onBack={() => router.replace('/')}
+          />
           <ScrollView className="flex-1" contentContainerClassName="px-6 pt-8 pb-4">
             {steps.map((entry) => (
               <View key={entry.title} className="mb-8">

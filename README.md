@@ -10,7 +10,7 @@
 
 ## Розробка
 
-Node.js **24.18.0** (див. `.nvmrc`: `nvm use`).
+Node.js **24.18.1** (див. `.nvmrc`: `nvm use`).
 
 ```bash
 npm install

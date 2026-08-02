@@ -8,8 +8,10 @@ import { GameScreenShell } from '@features/game/components/GameScreenShell';
 import { ConfirmExitModal } from '@features/game/components/Modals';
 import { useGameActions, useGameSelectors, useGameState } from '@features/game/hooks';
 import { playGameStart } from '@infrastructure/audio/sounds';
+import { ClockIcon } from '@ui/components/ClockIcon';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
+import { StarIcon } from '@ui/components/StarIcon';
 import { Text } from '@ui/components/Text';
 import {
   getHatIconStyle,
@@ -17,10 +19,7 @@ import {
   getRoundTitleStyle,
 } from '@ui/theme/roundPalette';
 
-const clockIcon = require('@assets/images/icons/round-intro/clock.png');
-const dividerIcon = require('@assets/images/icons/round-intro/devider.png');
 const roundNameBgImage = require('@assets/images/icons/round-intro/round-name-bg.png');
-const starIcon = require('@assets/images/icons/round-intro/star.png');
 
 const roundIntroIconByRound = {
   elias: require('@assets/images/icons/round-intro/elias-round-icon.png.png'),
@@ -101,7 +100,7 @@ export default function RoundIntroScreen() {
         {/* Round number badge */}
         <View className="mb-10 items-center">
           <View>
-            <Text className="text-3xl font-bold text-highlightText">
+            <Text className="text-3xl font-bold text-black">
               {strings.rounds.roundLabel(roundIndex + 1, totalRounds)}
             </Text>
           </View>
@@ -175,7 +174,7 @@ export default function RoundIntroScreen() {
         </Text>
 
         {isCarryOver && currentTeam && (
-          <Text className="mb-6 mt-2 text-center text-lg font-semibold text-highlightText">
+          <Text className="mb-6 mt-2 text-center text-lg font-semibold text-black">
             {strings.rounds.carryOverContinues(currentTeam.name)}
             {'\n'}
             {strings.rounds.carryOverTimeLeft(turnDurationSec)}
@@ -193,15 +192,15 @@ export default function RoundIntroScreen() {
             shadowRadius: 3,
             elevation: 10,
           }}
-          className="mb-8 flex-row items-center justify-center gap-6 self-center rounded-full bg-[#f6efe8] px-6 py-2.5"
+          className="mb-8 flex-row items-center justify-center gap-4 self-center rounded-full bg-white/80 px-6 py-2.5"
         >
           <View className="flex-row items-center gap-2">
-            <Image source={clockIcon} style={{ width: 24, height: 24 }} resizeMode="contain" />
+            <ClockIcon color={titleStyle.color} />
             <Text className="text-lg font-bold text-primaryText">{turnDurationSec} сек</Text>
           </View>
-          <Image source={dividerIcon} style={{ width: 7, height: 24 }} resizeMode="contain" />
+          <View className="h-6 w-px bg-primaryText/25" />
           <View className="flex-row items-center gap-2">
-            <Image source={starIcon} style={{ width: 24, height: 24 }} resizeMode="contain" />
+            <StarIcon color={titleStyle.color} />
             <Text className="text-lg font-bold text-primaryText">{wordCount} слів</Text>
           </View>
         </View>

@@ -120,7 +120,7 @@ export default function TurnScreen() {
 
   return (
     <GameScreenShell roundType={currentRound?.type}>
-      <ScreenHeader onBack={onPausePress} />
+      <ScreenHeader onBack={onPausePress} backIcon="home" />
 
       {/* Team name + round info */}
       <View className="items-center pb-4">

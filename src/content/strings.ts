@@ -1,3 +1,5 @@
+import { pluralizeUkrainian } from '@shared/lib/pluralize';
+
 export const strings = {
   appName: 'Капелюх',
   home: {
@@ -91,12 +93,30 @@ export const strings = {
     tableRound: 'Тур',
     tableTotal: '🏅',
     stats: {
-      fastestGuess: (word: string, seconds: number) =>
-        `Найшвидше вгадали слово «${word}» — лише за ${seconds} секунд`,
-      mostSkippedWord: (word: string, count: number) =>
-        `Слово «${word}» пропускали найчастіше — ${count} разів`,
-      bestTurn: (teamName: string, count: number) =>
-        `Найпродуктивніший хід: Команда «${teamName}» відгадала ${count} слів`,
+      fastestGuess: (word: string, seconds: number) => {
+        const secWord = pluralizeUkrainian(seconds, {
+          one: 'секунду',
+          few: 'секунди',
+          many: 'секунд',
+        });
+        return `Найшвидше вгадали слово «${word}» — лише за ${seconds} ${secWord}`;
+      },
+      mostSkippedWord: (word: string, count: number) => {
+        const timesWord = pluralizeUkrainian(count, {
+          one: 'раз',
+          few: 'рази',
+          many: 'разів',
+        });
+        return `Слово «${word}» пропускали найчастіше — ${count} ${timesWord}`;
+      },
+      bestTurn: (teamName: string, count: number) => {
+        const wordsWord = pluralizeUkrainian(count, {
+          one: 'слово',
+          few: 'слова',
+          many: 'слів',
+        });
+        return `Найпродуктивніший хід: Команда «${teamName}» відгадала ${count} ${wordsWord}`;
+      },
     },
   },
   settings: {

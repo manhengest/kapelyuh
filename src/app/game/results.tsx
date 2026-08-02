@@ -61,7 +61,7 @@ export default function ResultsScreen() {
       <SafeAreaView className="flex-1">
         <ContentColumn className="flex-1">
           <ScrollView className="flex-1 px-5" contentContainerClassName="py-8">
-            <Text className="mb-1 text-center text-5xl font-bold leading-normal text-highlightText">
+            <Text className="mb-1 text-center text-5xl font-bold leading-normal text-black">
               {strings.results.matchComplete}
             </Text>
             <Text className="mb-6 text-center text-2xl text-slate-600">

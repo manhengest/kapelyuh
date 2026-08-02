@@ -80,14 +80,6 @@
   }
 
   .screen-header-action-btn {
-    @apply h-11 w-11 items-center justify-center rounded-full;
-  }
-
-  .screen-header-action-btn--back {
-    @apply bg-[rgba(255,255,255,0.6)];
-  }
-
-  .screen-header-action-btn--home {
-    @apply bg-[rgba(0,0,0,0.1)];
+    @apply h-11 w-11 items-center justify-center rounded-full bg-white/70;
   }
 }

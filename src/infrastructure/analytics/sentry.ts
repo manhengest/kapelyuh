@@ -12,19 +12,22 @@ export function getSentryRelease(): { release: string; dist: string } {
   return { release: `kapelyukh@${version}`, dist };
 }
 
+function isSentryAllowed(): boolean {
+  return !__DEV__ && Boolean(process.env.EXPO_PUBLIC_SENTRY_DSN);
+}
+
 export function initSentry(): void {
   if (initialized) {
     return;
   }
 
-  const dsn = process.env.EXPO_PUBLIC_SENTRY_DSN;
   const settings = getSettings();
   const { release, dist } = getSentryRelease();
 
   Sentry.init({
-    dsn,
-    enabled: Boolean(dsn) && settings.sentryEnabled,
-    debug: __DEV__,
+    dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+    enabled: isSentryAllowed() && settings.sentryEnabled,
+    debug: false,
     environment: __DEV__ ? 'development' : 'production',
     release,
     dist,
@@ -38,7 +41,7 @@ export function initSentry(): void {
 export function setSentryEnabled(enabled: boolean): void {
   const client = Sentry.getClient();
   if (client) {
-    client.getOptions().enabled = Boolean(process.env.EXPO_PUBLIC_SENTRY_DSN) && enabled;
+    client.getOptions().enabled = isSentryAllowed() && enabled;
   }
 }
 

@@ -59,7 +59,7 @@ src/
 
 ## Commands
 
-Before running any project command in the terminal, use Node **24.18.0** (see `.nvmrc`):
+Before running any project command in the terminal, use Node **24.18.1** (see `.nvmrc`):
 
 ```bash
 nvm use

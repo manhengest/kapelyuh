@@ -62,7 +62,11 @@ export default function SetupScreen() {
     <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
       <SafeAreaView className="flex-1">
         <ContentColumn className="flex-1">
-          <ScreenHeader title={strings.setup.title} onBack={() => router.replace('/')} />
+          <ScreenHeader
+            title={strings.setup.title}
+            backIcon="home"
+            onBack={() => router.replace('/')}
+          />
           <ScrollView className="flex-1 px-6" contentContainerClassName="pt-4">
             <View className="gap-3">
               <SettingsCard>

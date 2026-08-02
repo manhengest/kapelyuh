@@ -2,6 +2,7 @@ import { Image, Pressable, View } from 'react-native';
 
 import { playTap } from '@infrastructure/audio/sounds';
 import { ContentColumn } from '@ui/components/ContentColumn';
+import { HomeIcon } from '@ui/components/HomeIcon';
 import { Text } from '@ui/components/Text';
 
 const backArrowIcon = require('@assets/images/icons/back-arrow.png');
@@ -9,23 +10,30 @@ const backArrowIcon = require('@assets/images/icons/back-arrow.png');
 type ScreenHeaderProps = {
   title?: string;
   onBack?: () => void;
+  backIcon?: 'back' | 'home';
 };
 
-export function ScreenHeader({ title, onBack }: ScreenHeaderProps) {
+export function ScreenHeader({ title, onBack, backIcon = 'back' }: ScreenHeaderProps) {
+  const isHomeBack = backIcon === 'home';
+
   return (
     <ContentColumn>
       <View className="flex-row items-center justify-between px-4 pt-3">
         {onBack ? (
           <Pressable
             accessibilityRole="button"
-            accessibilityLabel="Назад"
+            accessibilityLabel={isHomeBack ? 'На головну' : 'Назад'}
             onPress={() => {
               playTap();
               onBack();
             }}
-            className="screen-header-action-btn screen-header-action-btn--back"
+            className={`screen-header-action-btn`}
           >
-            <Image source={backArrowIcon} style={{ width: 22, height: 18 }} resizeMode="contain" />
+            {isHomeBack ? (
+              <HomeIcon />
+            ) : (
+              <Image source={backArrowIcon} style={{ width: 22, height: 18 }} resizeMode="contain" />
+            )}
           </Pressable>
         ) : (
           <View className="h-11 w-11" />

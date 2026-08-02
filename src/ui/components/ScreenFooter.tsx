@@ -1,7 +1,9 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
+import { playTap } from '@infrastructure/audio/sounds';
 import { Button } from '@ui/components/Button';
 import { ContentColumn } from '@ui/components/ContentColumn';
+import { InfoIcon } from '@ui/components/InfoIcon';
 import { Text } from '@ui/components/Text';
 
 interface ScreenFooterProps {
@@ -11,6 +13,8 @@ interface ScreenFooterProps {
   disabled?: boolean;
   secondaryLabel?: string;
   secondaryOnPress?: () => void;
+  skipLabel?: string;
+  skipOnPress?: () => void;
 }
 
 export function ScreenFooter({
@@ -20,15 +24,35 @@ export function ScreenFooter({
   disabled,
   secondaryLabel,
   secondaryOnPress,
+  skipLabel,
+  skipOnPress,
 }: ScreenFooterProps) {
   return (
     <ContentColumn>
-      <View className="gap-3 px-5 pb-6">
-        {hint ? <Text className="text-md text-center text-highlightText">{hint}</Text> : null}
+      <View className="gap-3 px-5">
+        {hint ? (
+          <View className="mb-1 flex-row items-start justify-center gap-1.5">
+            <InfoIcon className='pt-[2px]' size={20} />
+            <Text className="shrink text-xl text-highlightText">{hint}</Text>
+          </View>
+        ) : null}
         {secondaryLabel && secondaryOnPress ? (
           <Button label={secondaryLabel} variant="outline" onPress={secondaryOnPress} />
         ) : null}
         <Button label={label} onPress={onPress} disabled={disabled} />
+        {skipLabel && skipOnPress ? (
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={skipLabel}
+            className="min-h-[30px] items-center justify-center py-2"
+            onPress={() => {
+              playTap();
+              skipOnPress();
+            }}
+          >
+            <Text className="text-md text-black underline">{skipLabel}</Text>
+          </Pressable>
+        ) : null}
       </View>
     </ContentColumn>
   );
