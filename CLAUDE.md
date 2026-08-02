@@ -65,15 +65,15 @@ Before running any project command in the terminal, use Node **24.18.1** (see `.
 nvm use
 ```
 
-| Command                           | When to use                                                                        |
-| --------------------------------- | ---------------------------------------------------------------------------------- |
-| `npm start`                       | Dev server (`scripts/dev.js`; use `--dev-client` after EAS dev build)              |
-| `npm run ios` / `npm run android` | Same as start, platform flag                                                       |
-| `npm run typecheck`               | After code changes — must pass                                                     |
-| `npm run lint`                    | ESLint with zero warnings                                                          |
-| `npm run format`                  | Prettier check                                                                     |
-| `npm test`                        | Jest — prefer single spec files during iteration                                   |
-| `npm run build:db`                | Regenerate `assets/data/kapelyukh.db` from `scripts/words.csv`                     |
+| Command                           | When to use                                                           |
+| --------------------------------- | --------------------------------------------------------------------- |
+| `npm start`                       | Dev server (`scripts/dev.js`; use `--dev-client` after EAS dev build) |
+| `npm run ios` / `npm run android` | Same as start, platform flag                                          |
+| `npm run typecheck`               | After code changes — must pass                                        |
+| `npm run lint`                    | ESLint with zero warnings                                             |
+| `npm run format`                  | Prettier check                                                        |
+| `npm test`                        | Jest — prefer single spec files during iteration                      |
+| `npm run build:db`                | Regenerate `assets/data/kapelyukh.db` from `scripts/words.csv`        |
 
 CI (`.github/workflows/ci.yml`) runs typecheck + lint + format + test on every PR. Run `typecheck` + `lint` + `test` before finishing non-trivial work.
 

@@ -50,11 +50,7 @@ function getSwipeProgress(translateX: number, threshold: number) {
   return progress > 1 ? 1 : progress;
 }
 
-function getRevealIconStyle(
-  translateX: number,
-  cardWidth: number,
-  direction: 'left' | 'right',
-) {
+function getRevealIconStyle(translateX: number, cardWidth: number, direction: 'left' | 'right') {
   'worklet';
   const width = cardWidth > 0 ? cardWidth : FALLBACK_CARD_WIDTH;
   const exitDistance = width * EXIT_DISTANCE_RATIO;
@@ -77,10 +73,7 @@ function getRevealIconStyle(
 }
 
 export const SwipeableWordCard = forwardRef<SwipeableWordCardHandle, SwipeableWordCardProps>(
-  function SwipeableWordCard(
-    { onSwipeGuess, onSwipeSkip, enabled = true, ...wordCardProps },
-    ref,
-  ) {
+  function SwipeableWordCard({ onSwipeGuess, onSwipeSkip, enabled = true, ...wordCardProps }, ref) {
     const reducedMotion = useReducedMotion();
     const exitDuration = reducedMotion ? EXIT_DURATION_REDUCED_MS : EXIT_DURATION_MS;
     const translateX = useSharedValue(0);
@@ -108,7 +101,8 @@ export const SwipeableWordCard = forwardRef<SwipeableWordCardHandle, SwipeableWo
 
           isExiting.value = true;
           const width = cardWidth.value > 0 ? cardWidth.value : FALLBACK_CARD_WIDTH;
-          const target = dir === 'right' ? width * EXIT_DISTANCE_RATIO : -width * EXIT_DISTANCE_RATIO;
+          const target =
+            dir === 'right' ? width * EXIT_DISTANCE_RATIO : -width * EXIT_DISTANCE_RATIO;
 
           translateX.value = withTiming(target, { duration: exitDuration }, (finished) => {
             if (finished) {

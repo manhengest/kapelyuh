@@ -32,7 +32,11 @@ export function ScreenHeader({ title, onBack, backIcon = 'back' }: ScreenHeaderP
             {isHomeBack ? (
               <HomeIcon />
             ) : (
-              <Image source={backArrowIcon} style={{ width: 22, height: 18 }} resizeMode="contain" />
+              <Image
+                source={backArrowIcon}
+                style={{ width: 22, height: 18 }}
+                resizeMode="contain"
+              />
             )}
           </Pressable>
         ) : (

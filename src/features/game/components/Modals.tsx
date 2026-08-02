@@ -130,7 +130,12 @@ export function ConfirmExitModal({ visible, onConfirm, onCancel }: ConfirmExitMo
           </Text>
           <View className="gap-3">
             <Button textClassName="text-xl" label={strings.pause.exit} onPress={onConfirm} />
-            <Button textClassName="text-xl" label={strings.common.back} variant="outline" onPress={onCancel} />
+            <Button
+              textClassName="text-xl"
+              label={strings.common.back}
+              variant="outline"
+              onPress={onCancel}
+            />
           </View>
         </View>
       </View>

@@ -11,13 +11,7 @@ type ActionButtonProps = {
   disabled: boolean;
 };
 
-function ActionButton({
-  label,
-  icon,
-  backgroundClassName,
-  onPress,
-  disabled,
-}: ActionButtonProps) {
+function ActionButton({ label, icon, backgroundClassName, onPress, disabled }: ActionButtonProps) {
   return (
     <View className="items-center gap-2">
       <Pressable

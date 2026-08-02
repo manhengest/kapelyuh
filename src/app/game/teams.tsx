@@ -118,11 +118,7 @@ function TeamsEditor({ settings, teamsFromStore, teamCount }: TeamsEditorProps) 
           ))}
         </View>
       </ScrollView>
-      <ScreenFooter
-        hint={strings.setup.teamHint}
-        label={strings.common.next}
-        onPress={onNext}
-      />
+      <ScreenFooter hint={strings.setup.teamHint} label={strings.common.next} onPress={onNext} />
     </>
   );
 }

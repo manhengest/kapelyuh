@@ -6,7 +6,11 @@ type InfoIconProps = {
   size?: number;
 };
 
-export function InfoIcon({ color = '#960856', size = 18, ...props }: React.ComponentProps<typeof Svg> & InfoIconProps) {
+export function InfoIcon({
+  color = '#960856',
+  size = 18,
+  ...props
+}: React.ComponentProps<typeof Svg> & InfoIconProps) {
   return (
     <View {...props}>
       <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">

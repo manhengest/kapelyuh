@@ -104,7 +104,9 @@ export default function HomeScreen() {
             </View>
           </View>
 
-          <View className={`w-full flex-col items-center max-w-[350px] px-6 ${isWideLayout ? 'gap-6' : 'gap-5'}`}>
+          <View
+            className={`w-full max-w-[350px] flex-col items-center px-6 ${isWideLayout ? 'gap-6' : 'gap-5'}`}
+          >
             <HardShadowPressable
               accessibilityRole="button"
               accessibilityLabel={strings.home.newGame}

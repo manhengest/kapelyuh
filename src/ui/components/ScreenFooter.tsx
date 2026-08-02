@@ -32,7 +32,7 @@ export function ScreenFooter({
       <View className="gap-3 px-5">
         {hint ? (
           <View className="mb-1 flex-row items-start justify-center gap-1.5">
-            <InfoIcon className='pt-[2px]' size={20} />
+            <InfoIcon className="pt-[2px]" size={20} />
             <Text className="shrink text-xl text-highlightText">{hint}</Text>
           </View>
         ) : null}
