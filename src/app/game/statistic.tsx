@@ -15,7 +15,7 @@ import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { StarIcon } from '@ui/components/StarIcon';
 import { AnimatedText, Text } from '@ui/components/Text';
 
-const mainBg = require('@assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.jpg');
 const statIconColor = '#FE7298';
 const statIconSize = 48;
 

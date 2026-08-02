@@ -10,7 +10,7 @@ import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { SettingsToggleRow } from '@ui/components/SettingsRow';
 
-const mainBg = require('@assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.jpg');
 
 export default function SettingsScreen() {
   const router = useRouter();

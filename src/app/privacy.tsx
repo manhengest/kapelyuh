@@ -8,7 +8,7 @@ import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
 
-const mainBg = require('@assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.jpg');
 
 export default function PrivacyScreen() {
   const router = useRouter();

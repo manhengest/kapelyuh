@@ -18,7 +18,7 @@ import { ContentColumn } from '@ui/components/ContentColumn';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { Text } from '@ui/components/Text';
 
-const mainBg = require('@assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.jpg');
 
 function WinnerMedal({ children }: { children: ReactNode }) {
   const reducedMotion = useReducedMotion();

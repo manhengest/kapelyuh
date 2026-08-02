@@ -2,13 +2,13 @@ import type { ImageSourcePropType } from 'react-native';
 
 import type { RoundType } from '@domain/game/types';
 
-/** Default screen background (`main-bg.png`). */
-export const bg = require('@assets/images/main-bg.png');
+/** Default screen background (`main-bg.jpg`). */
+export const bg = require('@assets/images/main-bg.jpg');
 
 const roundBackgroundByType = {
   elias: bg,
-  crocodile: require('@assets/images/bg-crocodile.png'),
-  association: require('@assets/images/bg-association.png'),
+  crocodile: require('@assets/images/bg-crocodile.jpg'),
+  association: require('@assets/images/bg-association.jpg'),
 } as const satisfies Record<RoundType, ImageSourcePropType>;
 
 export function getRoundBackground(roundType: RoundType | undefined): ImageSourcePropType {
@@ -20,7 +20,7 @@ export function getRoundBackground(roundType: RoundType | undefined): ImageSourc
 
 export const RoundPalette = {
   elias: { bg: '#F4A6C8', card: '#FFFFFF', text: '#1A1A1A', wordText: '#FF6B9D' },
-  crocodile: { bg: '#46d319', card: '#FFFFFF', text: '#1A1A1A', wordText: '#389a16' },
+  crocodile: { bg: '#46d319', card: '#FFFFFF', text: '#1A1A1A', wordText: '#388c18' },
   association: { bg: '#E8F36C', card: '#FFFFFF', text: '#1A1A1A', wordText: '#7C5C00' },
 } as const satisfies Record<
   RoundType,
@@ -36,7 +36,7 @@ export function getRoundPalette(roundType: RoundType | undefined) {
 
 export const RoundTitleStyle = {
   elias: { color: '#FB6694', fontSize: 80 },
-  crocodile: { color: '#389a16', fontSize: 60 },
+  crocodile: { color: '#388c18', fontSize: 60 },
   association: { color: '#7C5C00', fontSize: 65 },
 } as const satisfies Record<RoundType, { color: string; fontSize: number }>;
 

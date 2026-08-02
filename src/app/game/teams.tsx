@@ -16,7 +16,7 @@ import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
 
-const mainBg = require('@assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.jpg');
 
 function pickUniqueRandomName(usedNames: ReadonlySet<string>, fallbackIndex: number): string {
   const pool = TEAM_NAME_SUGGESTIONS.filter((name) => !usedNames.has(name));

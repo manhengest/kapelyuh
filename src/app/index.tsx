@@ -20,7 +20,7 @@ const newGameFragmentIcon = require('@assets/images/icons/landing/new-game-fragm
 const newGameIcon = require('@assets/images/icons/landing/new-game.png');
 const settingsIcon = require('@assets/images/icons/landing/settings.png');
 const textIcon = require('@assets/images/icons/landing/text.png');
-const mainBg = require('@assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.jpg');
 
 type LandingMenuButtonProps = {
   label: string;

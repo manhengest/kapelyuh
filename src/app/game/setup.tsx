@@ -13,7 +13,7 @@ import { HorizontalPicker } from '@ui/components/HorizontalPicker';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 
-const mainBg = require('@assets/images/main-bg.png');
+const mainBg = require('@assets/images/main-bg.jpg');
 
 const TURN_DURATIONS_SEC = [60, 90, 120] as const;
 const TEAM_COUNTS = [2, 3, 4, 5] as const;
