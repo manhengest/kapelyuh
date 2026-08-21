@@ -10,6 +10,7 @@ import { useGameActions, useGameState } from '@features/game/hooks';
 import { useAppSettings } from '@features/settings/store';
 import { ContentColumn } from '@ui/components/ContentColumn';
 import { HorizontalPicker } from '@ui/components/HorizontalPicker';
+import { HorizontalSlider, snapSliderValue } from '@ui/components/HorizontalSlider';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 
@@ -17,7 +18,9 @@ const mainBg = require('@assets/images/main-bg.jpg');
 
 const TURN_DURATIONS_SEC = [60, 90, 120] as const;
 const TEAM_COUNTS = [2, 3, 4, 5] as const;
-const WORD_COUNTS = [30, 60, 90, 120] as const;
+const WORD_COUNT_MIN = 30;
+const WORD_COUNT_MAX = 150;
+const WORD_COUNT_STEP = 10;
 
 function SettingsCard({ children }: { children: ReactNode }) {
   return (
@@ -42,10 +45,14 @@ export default function SetupScreen() {
   const { dispatch } = useGameActions();
   const appSettings = useAppSettings();
 
-  const [settings, setSettings] = useState<MatchSettings>(() => ({
-    ...(settingsFromStore ?? DEFAULT_MATCH_SETTINGS),
-    skipPenalty: appSettings.skipPenaltyEnabled ? -1 : 0,
-  }));
+  const [settings, setSettings] = useState<MatchSettings>(() => {
+    const base = settingsFromStore ?? DEFAULT_MATCH_SETTINGS;
+    return {
+      ...base,
+      skipPenalty: appSettings.skipPenaltyEnabled ? -1 : 0,
+      wordCount: snapSliderValue(base.wordCount, WORD_COUNT_MIN, WORD_COUNT_MAX, WORD_COUNT_STEP),
+    };
+  });
 
   const difficultyOptions = useMemo<Difficulty[]>(() => ['easy', 'medium', 'hard'], []);
   const difficultyLabels: Record<Difficulty, string> = {
@@ -88,9 +95,11 @@ export default function SetupScreen() {
                 />
               </SettingsCard>
               <SettingsCard>
-                <HorizontalPicker
+                <HorizontalSlider
                   label={strings.setup.wordCount}
-                  options={[...WORD_COUNTS]}
+                  min={WORD_COUNT_MIN}
+                  max={WORD_COUNT_MAX}
+                  step={WORD_COUNT_STEP}
                   value={settings.wordCount}
                   onChange={(wordCount) => setSettings((current) => ({ ...current, wordCount }))}
                 />

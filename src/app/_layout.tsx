@@ -54,7 +54,7 @@ function RootLayout() {
     >
       <GestureHandlerRootView style={{ flex: 1 }}>
         <GameRouteSync />
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
           <Stack.Screen name="index" options={{ animationTypeForReplace: 'pop' }} />
         </Stack>
       </GestureHandlerRootView>
