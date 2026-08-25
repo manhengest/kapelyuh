@@ -38,6 +38,7 @@ export interface Word {
   difficulty: Difficulty;
   categoryId: string;
   packId: string;
+  groupId?: string;
 }
 
 export interface Pack {

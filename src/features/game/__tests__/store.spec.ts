@@ -5,6 +5,12 @@ import { createInitialState } from '@domain/game/reducer';
 import { useGameStore } from '@features/game/store';
 import { saveFinishedSession } from '@infrastructure/db/sessions.repo';
 import { clearActiveMatch } from '@infrastructure/storage/activeMatch';
+import {
+  getUsageMap,
+  getWordUsage,
+  markWordsUsed,
+  resetWordUsage,
+} from '@infrastructure/storage/wordUsage';
 
 jest.mock('@infrastructure/db/sessions.repo', () => ({
   saveFinishedSession: jest.fn(async () => undefined),
@@ -25,6 +31,7 @@ describe('features/game/store session persistence', () => {
   beforeEach(() => {
     saveFinishedSessionMock.mockClear();
     clearActiveMatchMock.mockClear();
+    resetWordUsage();
     useGameStore.setState({
       state: {
         ...createInitialState(100),
@@ -53,6 +60,47 @@ describe('features/game/store session persistence', () => {
 
     expect(useGameStore.getState().state.status).toBe('end_of_match');
     expect(saveFinishedSessionMock).toHaveBeenCalledTimes(1);
+    expect(clearActiveMatchMock).toHaveBeenCalled();
+  });
+
+  it('marks session words used exactly once per match', () => {
+    useGameStore.getState().dispatch({ type: 'DISMISS_STAT_CAROUSEL', now: 200 });
+
+    expect(getWordUsage('w-1')).toBe(1);
+    expect(getWordUsage('w-2')).toBe(1);
+    expect(getWordUsage('w-3')).toBe(1);
+
+    // Explicit second mark with same session key is a no-op
+    markWordsUsed(['w-1', 'w-2', 'w-3'], '100');
+    expect(getWordUsage('w-1')).toBe(1);
+  });
+
+  it('does not mark words used when a match is abandoned', () => {
+    useGameStore.setState({
+      state: {
+        ...createInitialState(100),
+        status: 'in_turn',
+        settings: makeSettings(),
+        teams: [makeTeam('t1', 'A'), makeTeam('t2', 'B')],
+        rounds: [
+          {
+            type: 'elias',
+            sessionWordIds: ['w-1', 'w-2', 'w-3'],
+            remainingWordIds: ['w-2', 'w-3'],
+            guessedWordIds: ['w-1'],
+            turnIndex: 0,
+          },
+        ],
+      },
+    });
+
+    useGameStore.getState().abandonMatch();
+
+    expect(useGameStore.getState().state.status).toBe('idle');
+    expect(getWordUsage('w-1')).toBe(0);
+    expect(getWordUsage('w-2')).toBe(0);
+    expect(getWordUsage('w-3')).toBe(0);
+    expect(getUsageMap()).toEqual({});
     expect(clearActiveMatchMock).toHaveBeenCalled();
   });
 });

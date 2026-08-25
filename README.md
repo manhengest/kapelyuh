@@ -33,13 +33,17 @@ npx expo start --dev-client
 
 ## Скрипти
 
-| Команда             | Опис                                        |
-| ------------------- | ------------------------------------------- |
-| `npm run typecheck` | `tsc --noEmit`                              |
-| `npm run lint`      | ESLint                                      |
-| `npm run format`    | Prettier check                              |
-| `npm test`          | Jest                                        |
-| `npm run build:db`  | Збірка `kapelyukh.db` з `scripts/words.csv` |
+| Команда                  | Опис                                                                                |
+| ------------------------ | ----------------------------------------------------------------------------------- |
+| `npm run typecheck`      | `tsc --noEmit`                                                                      |
+| `npm run lint`           | ESLint                                                                              |
+| `npm run format`         | Prettier check                                                                      |
+| `npm test`               | Jest                                                                                |
+| `npm run words:validate` | Перевірка `scripts/words-master.csv` (schema v2)                                  |
+| `npm run words:audit`    | Аудит → `scripts/audit/word-audit-report.json`                                    |
+| `npm run words:build`    | Збірка `kapelyukh.db` з master (`status=core|pack`, стабільні id + optional group) |
+| `npm run validate:words` | Alias → `words:validate`                                                          |
+| `npm run build:db`       | Alias → `words:build`                                                             |
 
 ## Phase 5 — TestFlight beta (pre-upload gate)
 

@@ -60,6 +60,11 @@ describe('infrastructure/db/words.repo', () => {
     const map = await getWordTextMap();
     expect(map['w-2']).toBe('слон');
   });
+
+  it('returns empty list when pack ids are empty', async () => {
+    const words = await getAllWords([]);
+    expect(words).toEqual([]);
+  });
 });
 
 describe('infrastructure/db/sessions.repo', () => {

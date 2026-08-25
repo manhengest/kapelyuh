@@ -1,24 +1,29 @@
 import { shuffle } from '@domain/utils/shuffle';
 
 import type { Difficulty, Word } from './types';
+import { DEFAULT_MATCH_SETTINGS } from './types';
+
+export type RandomSource = () => number;
 
 export interface WordSelectorInput {
   words: Word[];
   difficulties: Difficulty[];
   wordCount: number;
-  excludedWordIds: readonly string[];
+  usage: Readonly<Record<string, number>>;
   enabledPackIds?: readonly string[];
-}
-
-export interface SessionWordQuery {
-  getRecentSessionWordIds(limitSessions: number): string[];
+  rng?: RandomSource;
 }
 
 const ALL_DIFFICULTIES: Difficulty[] = ['easy', 'medium', 'hard'];
+const CATEGORY_PENALTY = 0.5;
 
 function filterByPacks(words: Word[], enabledPackIds?: readonly string[]): Word[] {
-  if (!enabledPackIds || enabledPackIds.length === 0) {
-    return words;
+  if (enabledPackIds === undefined) {
+    return filterByPacks(words, DEFAULT_MATCH_SETTINGS.enabledPackIds);
+  }
+
+  if (enabledPackIds.length === 0) {
+    return [];
   }
 
   const packSet = new Set(enabledPackIds);
@@ -34,18 +39,99 @@ function filterByDifficulties(words: Word[], difficulties: Difficulty[]): Word[]
   return words.filter((word) => difficultySet.has(word.difficulty));
 }
 
-function excludeWords(words: Word[], excludedIds: readonly string[]): Word[] {
-  if (excludedIds.length === 0) {
-    return words;
-  }
-
-  const excluded = new Set(excludedIds);
-  return words.filter((word) => !excluded.has(word.id));
+function freshnessWeight(usageCount: number): number {
+  return 1 / (1 + usageCount);
 }
 
-function sampleProportional(words: Word[], difficulties: Difficulty[], count: number): Word[] {
+/**
+ * Weighted random draw without replacement.
+ * Applies group collision exclusion and soft category balancing.
+ */
+function weightedSample(
+  candidates: Word[],
+  count: number,
+  usage: Readonly<Record<string, number>>,
+  rng: RandomSource,
+): Word[] {
+  if (count <= 0 || candidates.length === 0) {
+    return [];
+  }
+
+  type Entry = { word: Word; weight: number };
+  const pool: Entry[] = candidates.map((word) => ({
+    word,
+    weight: freshnessWeight(usage[word.id] ?? 0),
+  }));
+
+  const selected: Word[] = [];
+  const blockedGroups = new Set<string>();
+  const categoryCounts = new Map<string, number>();
+
+  while (selected.length < count && pool.length > 0) {
+    let total = 0;
+    for (const entry of pool) {
+      const categoryCount = categoryCounts.get(entry.word.categoryId) ?? 0;
+      const categoryFactor = categoryCount > 0 ? Math.pow(CATEGORY_PENALTY, categoryCount) : 1;
+      total += entry.weight * categoryFactor;
+    }
+
+    if (total <= 0) {
+      break;
+    }
+
+    let cursor = rng() * total;
+    let pickIndex = pool.length - 1;
+    for (let i = 0; i < pool.length; i += 1) {
+      const entry = pool[i]!;
+      const categoryCount = categoryCounts.get(entry.word.categoryId) ?? 0;
+      const categoryFactor = categoryCount > 0 ? Math.pow(CATEGORY_PENALTY, categoryCount) : 1;
+      cursor -= entry.weight * categoryFactor;
+      if (cursor <= 0) {
+        pickIndex = i;
+        break;
+      }
+    }
+
+    const picked = pool.splice(pickIndex, 1)[0]!;
+    selected.push(picked.word);
+
+    if (picked.word.groupId) {
+      blockedGroups.add(picked.word.groupId);
+    }
+    categoryCounts.set(
+      picked.word.categoryId,
+      (categoryCounts.get(picked.word.categoryId) ?? 0) + 1,
+    );
+
+    if (blockedGroups.size > 0) {
+      for (let i = pool.length - 1; i >= 0; i -= 1) {
+        const groupId = pool[i]!.word.groupId;
+        if (groupId && blockedGroups.has(groupId)) {
+          pool.splice(i, 1);
+        }
+      }
+    }
+  }
+
+  if (selected.length < count) {
+    const selectedIds = new Set(selected.map((word) => word.id));
+    const leftovers = candidates.filter((word) => !selectedIds.has(word.id));
+    const filler = weightedSample(leftovers, count - selected.length, usage, rng);
+    selected.push(...filler);
+  }
+
+  return selected;
+}
+
+function sampleProportional(
+  words: Word[],
+  difficulties: Difficulty[],
+  count: number,
+  usage: Readonly<Record<string, number>>,
+  rng: RandomSource,
+): Word[] {
   if (difficulties.length <= 1) {
-    return shuffle(words).slice(0, count);
+    return weightedSample(words, count, usage, rng);
   }
 
   const buckets = new Map<Difficulty, Word[]>();
@@ -63,42 +149,40 @@ function sampleProportional(words: Word[], difficulties: Difficulty[], count: nu
   const perBucket = Math.floor(count / difficulties.length);
   let remainder = count % difficulties.length;
   const selected: Word[] = [];
+  const selectedIds = new Set<string>();
+  const blockedGroups = new Set<string>();
 
   for (const difficulty of difficulties) {
-    const bucket = shuffle(buckets.get(difficulty) ?? []);
+    const bucket = (buckets.get(difficulty) ?? []).filter((word) => {
+      if (selectedIds.has(word.id)) return false;
+      if (word.groupId && blockedGroups.has(word.groupId)) return false;
+      return true;
+    });
     const take = perBucket + (remainder > 0 ? 1 : 0);
     if (remainder > 0) {
       remainder -= 1;
     }
-    selected.push(...bucket.slice(0, take));
+    const picked = weightedSample(bucket, take, usage, rng);
+    for (const word of picked) {
+      selected.push(word);
+      selectedIds.add(word.id);
+      if (word.groupId) {
+        blockedGroups.add(word.groupId);
+      }
+    }
   }
 
   if (selected.length < count) {
-    const selectedIds = new Set(selected.map((word) => word.id));
-    const filler = shuffle(words.filter((word) => !selectedIds.has(word.id)));
-    selected.push(...filler.slice(0, count - selected.length));
+    const fillerPool = words.filter((word) => !selectedIds.has(word.id));
+    const filler = weightedSample(fillerPool, count - selected.length, usage, rng);
+    selected.push(...filler);
   }
 
-  return shuffle(selected).slice(0, count);
-}
-
-function fillPool(words: Word[], count: number, excludedIds: readonly string[]): Word[] {
-  let pool = excludeWords(words, excludedIds);
-
-  if (pool.length >= count) {
-    return pool;
-  }
-
-  pool = excludeWords(words, []);
-  if (pool.length >= count) {
-    return pool;
-  }
-
-  return words;
+  return shuffle(selected, rng).slice(0, count);
 }
 
 export function selectSessionWords(input: WordSelectorInput): string[] {
-  const { words, difficulties, wordCount, excludedWordIds, enabledPackIds } = input;
+  const { words, difficulties, wordCount, usage, enabledPackIds, rng = Math.random } = input;
 
   if (wordCount <= 0) {
     return [];
@@ -108,27 +192,17 @@ export function selectSessionWords(input: WordSelectorInput): string[] {
 
   let pool = filterByPacks(words, enabledPackIds);
   pool = filterByDifficulties(pool, activeDifficulties);
-  pool = fillPool(pool, wordCount, excludedWordIds);
 
   if (pool.length === 0) {
     return [];
   }
 
-  const selected = sampleProportional(pool, activeDifficulties, Math.min(wordCount, pool.length));
+  const selected = sampleProportional(
+    pool,
+    activeDifficulties,
+    Math.min(wordCount, pool.length),
+    usage,
+    rng,
+  );
   return selected.map((word) => word.id);
-}
-
-export function selectSessionWordsWithHistory(
-  words: Word[],
-  settings: Pick<WordSelectorInput, 'difficulties' | 'wordCount' | 'enabledPackIds'>,
-  query: SessionWordQuery,
-): string[] {
-  const excludedWordIds = query.getRecentSessionWordIds(3);
-  return selectSessionWords({
-    words,
-    difficulties: settings.difficulties,
-    wordCount: settings.wordCount,
-    excludedWordIds,
-    enabledPackIds: settings.enabledPackIds,
-  });
 }
