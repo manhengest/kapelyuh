@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
-import { useCallback, useRef, useState } from 'react';
-import { Pressable, View } from 'react-native';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { AppState, Pressable, View } from 'react-native';
 
 import { strings } from '@content/strings';
 import { ActionButtons } from '@features/game/components/ActionButtons';
@@ -8,18 +8,16 @@ import { CountdownRing } from '@features/game/components/CountdownRing';
 import { GameScreenShell } from '@features/game/components/GameScreenShell';
 import { AwardModal, PauseModal } from '@features/game/components/Modals';
 import { PauseIcon } from '@features/game/components/PauseIcon';
-import {
-  SwipeableWordCard,
-  type SwipeableWordCardHandle,
-} from '@features/game/components/SwipeableWordCard';
+import { WordCardStack, type WordCardStackHandle } from '@features/game/components/WordCardStack';
+import type { WordCardAction } from '@features/game/components/wordCardStackConfig';
 import {
   getRoundMeta,
   useGameActions,
   useGameSelectors,
   useGameState,
   useTimer,
-  useWordText,
 } from '@features/game/hooks';
+import { useGameStore } from '@features/game/store';
 import { useWordTextMap } from '@features/game/useWordTextMap';
 import { playGuess, playSkip } from '@infrastructure/audio/sounds';
 import { triggerHaptic } from '@infrastructure/haptics';
@@ -37,7 +35,6 @@ export default function TurnScreen() {
   const { currentTeam, currentRound } = useGameSelectors();
   const { dispatch, abandonMatch } = useGameActions();
   const { remainingMs, pause, resume, pauseModalVisible, setPauseModalVisible } = useTimer();
-  const word = useWordText(turn?.currentWordId);
   const palette = getRoundPalette(currentRound?.type);
   const roundMeta = getRoundMeta(currentRound?.type);
   const { wordTexts } = useWordTextMap();
@@ -46,49 +43,102 @@ export default function TurnScreen() {
 
   const [awardSelection, setAwardSelection] = useState<string | null | undefined>(undefined);
   const [awardModalVisible, setAwardModalVisible] = useState(false);
-  const [wordFeedback, setWordFeedback] = useState<'guess' | null>(null);
-  const wordCardRef = useRef<SwipeableWordCardHandle>(null);
+  const [actionBusy, setActionBusy] = useState(false);
+
+  const wordCardStackRef = useRef<WordCardStackHandle>(null);
+  const pendingActionRef = useRef<WordCardAction | null>(null);
 
   const isAwaitingAward = status === 'awaiting_award';
   const teamName = currentTeam?.name ?? '—';
+  const currentWordId = turn?.currentWordId ?? null;
 
-  const performGuess = useCallback(
-    (withFeedback: boolean) => {
-      if (isAwaitingAward) {
-        void triggerHaptic('success');
-        playGuess();
-        setAwardModalVisible(true);
+  const commitPendingAction = useCallback(
+    (action: WordCardAction) => {
+      const currentStatus = useGameStore.getState().state.status;
+      if (currentStatus !== 'in_turn') {
         return;
       }
-      void triggerHaptic('success');
-      playGuess();
-      if (withFeedback) {
-        setWordFeedback('guess');
-        setTimeout(() => setWordFeedback(null), 250);
-      }
-      dispatch({ type: 'GUESS_WORD' });
+      dispatch({ type: action === 'guess' ? 'GUESS_WORD' : 'SKIP_WORD' });
     },
-    [dispatch, isAwaitingAward],
+    [dispatch],
   );
 
-  const performSkip = useCallback(() => {
-    void triggerHaptic('warning');
-    playSkip();
-    // After timer expiry («слово для всіх»), Skip means the same as
-    // «Ніхто не вгадав» in the award modal — return word to hat and end turn.
+  const flushPendingAction = useCallback(() => {
+    const action = pendingActionRef.current;
+    if (!action) {
+      return;
+    }
+
+    pendingActionRef.current = null;
+    commitPendingAction(action);
+    wordCardStackRef.current?.resetExit();
+    setActionBusy(false);
+  }, [commitPendingAction]);
+
+  const onExitComplete = useCallback(
+    (action: WordCardAction) => {
+      pendingActionRef.current = null;
+      commitPendingAction(action);
+      setActionBusy(false);
+    },
+    [commitPendingAction],
+  );
+
+  const startWordAction = useCallback(
+    (action: WordCardAction) => {
+      if (actionBusy) {
+        return;
+      }
+
+      if (action === 'guess') {
+        void triggerHaptic('success');
+        playGuess();
+      } else {
+        void triggerHaptic('warning');
+        playSkip();
+      }
+
+      pendingActionRef.current = action;
+      const started = wordCardStackRef.current?.startExit(action);
+      if (started) {
+        setActionBusy(true);
+        return;
+      }
+
+      pendingActionRef.current = null;
+    },
+    [actionBusy],
+  );
+
+  const onGuess = useCallback(() => {
     if (isAwaitingAward) {
+      void triggerHaptic('success');
+      playGuess();
+      setAwardModalVisible(true);
+      return;
+    }
+    startWordAction('guess');
+  }, [isAwaitingAward, startWordAction]);
+
+  const onSkip = useCallback(() => {
+    if (isAwaitingAward) {
+      void triggerHaptic('warning');
+      playSkip();
       dispatch({ type: 'AWARD_WORD', toTeamId: null });
       return;
     }
-    dispatch({ type: 'SKIP_WORD' });
-  }, [dispatch, isAwaitingAward]);
+    startWordAction('skip');
+  }, [dispatch, isAwaitingAward, startWordAction]);
 
-  const onGuess = useCallback(() => performGuess(true), [performGuess]);
-  const onSkip = useCallback(() => {
-    wordCardRef.current?.triggerExit('left');
-  }, []);
-  const onSwipeGuess = useCallback(() => performGuess(false), [performGuess]);
-  const onSwipeSkip = useCallback(() => performSkip(), [performSkip]);
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextState) => {
+      if (nextState.match(/inactive|background/) && pendingActionRef.current) {
+        flushPendingAction();
+      }
+    });
+
+    return () => subscription.remove();
+  }, [flushPendingAction]);
 
   const onConfirmAward = () => {
     if (awardSelection === undefined) {
@@ -117,6 +167,7 @@ export default function TurnScreen() {
   }, [abandonMatch, router, setPauseModalVisible]);
 
   const showPauseButton = !pauseModalVisible;
+  const actionsDisabled = actionBusy || pauseModalVisible;
 
   return (
     <GameScreenShell roundType={currentRound?.type}>
@@ -154,18 +205,15 @@ export default function TurnScreen() {
 
       {/* Word card + pause */}
       <View className="flex-1 items-center justify-center pb-8">
-        <SwipeableWordCard
-          ref={wordCardRef}
-          key={word}
-          word={word}
+        <WordCardStack
+          ref={wordCardStackRef}
+          currentWordId={currentWordId}
+          remainingWordIds={queueWordIds}
+          wordTexts={wordTexts}
           backgroundColor={palette.card}
           textColor={palette.wordText}
           label={isAwaitingAward ? strings.turn.wordForAll : undefined}
-          hideFromAccessibility={false}
-          feedback={wordFeedback}
-          onSwipeGuess={onSwipeGuess}
-          onSwipeSkip={onSwipeSkip}
-          enabled={!pauseModalVisible}
+          onExitComplete={onExitComplete}
         />
         {showPauseButton ? (
           <Pressable
@@ -183,7 +231,12 @@ export default function TurnScreen() {
 
       {/* Action buttons */}
       <View className="pb-8">
-        <ActionButtons onGuess={onGuess} onSkip={onSkip} guessDisabled={false} />
+        <ActionButtons
+          onGuess={onGuess}
+          onSkip={onSkip}
+          guessDisabled={actionsDisabled}
+          skipDisabled={actionsDisabled}
+        />
       </View>
 
       <PauseModal

@@ -21,7 +21,6 @@ function ActionButton({ label, icon, backgroundClassName, onPress, disabled }: A
         onPress={onPress}
         className={`h-44 w-44 items-center justify-center rounded-3xl ${backgroundClassName}`}
         style={{
-          opacity: disabled ? 0.3 : 1,
           shadowColor: '#000',
           shadowOffset: { width: 5, height: 5 },
           shadowOpacity: 0.15,
