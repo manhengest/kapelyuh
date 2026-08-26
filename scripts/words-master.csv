@@ -672,9 +672,9 @@ w_cf052911d3,доміно,easy,games,core,
 w_3a7005c014,донька,easy,family,core,
 w_e291cba19a,допомога,easy,relationships,core,
 w_b2a5198ed5,дорога,easy,places,core,
-w_a2c536326a,дорожній знак,medium,transport,core,
-w_93a9f58bf6,дорожня подушка,medium,travel,core,
-w_4bf5180723,дорожня сумка,medium,travel,core,
+w_a2c536326a,дорожній знак,medium,transport,core,road
+w_93a9f58bf6,дорожня подушка,medium,travel,core,road
+w_4bf5180723,дорожня сумка,medium,travel,core,road
 w_4297d0474f,дорослий,easy,people,core,
 w_3308885925,доручення,easy,work,core,
 w_94755173e5,досада,easy,emotions,reject,
