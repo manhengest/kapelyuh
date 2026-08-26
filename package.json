@@ -1,7 +1,7 @@
 {
   "name": "kapelyukh",
   "main": "expo-router/entry",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": true,
   "engines": {
     "node": "24.18.1"
@@ -17,7 +17,14 @@
     "format:fix": "prettier --write .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "build:db": "tsx scripts/build-words-db.ts"
+    "build:db": "tsx scripts/build-words-db.ts",
+    "validate:words": "tsx scripts/validate-words.ts",
+    "words:validate": "tsx scripts/validate-words.ts",
+    "words:audit": "tsx scripts/audit-words.ts",
+    "words:playability": "tsx scripts/validate-words.ts --playability-report",
+    "words:build": "tsx scripts/build-words-db.ts",
+    "words:conflicts-html": "tsx scripts/build-conflict-picker.ts",
+    "words:apply-conflicts": "tsx scripts/apply-conflict-decisions.ts"
   },
   "dependencies": {
     "@expo-google-fonts/nunito": "^0.4.2",

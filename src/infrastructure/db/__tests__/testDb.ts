@@ -16,7 +16,7 @@ export function createTestDatabase(): Database.Database {
 
 export function seedTestWords(
   db: Database.Database,
-  words: { id: string; text: string; difficulty: string }[],
+  words: { id: string; text: string; difficulty: string; groupId?: string }[],
 ): void {
   db.prepare('INSERT INTO packs (id, name, source, created_at) VALUES (?, ?, ?, ?)').run(
     BUNDLED_PACK_ID,
@@ -26,11 +26,11 @@ export function seedTestWords(
   );
 
   const insert = db.prepare(
-    'INSERT INTO words (id, pack_id, text, difficulty, category_id) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO words (id, pack_id, text, difficulty, category_id, group_id) VALUES (?, ?, ?, ?, ?, ?)',
   );
 
   for (const word of words) {
-    insert.run(word.id, BUNDLED_PACK_ID, word.text, word.difficulty, 'test');
+    insert.run(word.id, BUNDLED_PACK_ID, word.text, word.difficulty, 'test', word.groupId ?? null);
   }
 }
 

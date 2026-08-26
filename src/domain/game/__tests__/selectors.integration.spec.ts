@@ -10,7 +10,7 @@ import {
   selectWinners,
 } from '@domain/game/selectors';
 import type { Word } from '@domain/game/types';
-import { selectSessionWordsWithHistory } from '@domain/game/wordSelector';
+import { selectSessionWords } from '@domain/game/wordSelector';
 
 import { awardWord, expireTimer, guessCurrentWord, makeTeam, startMatch } from './helpers';
 
@@ -21,7 +21,7 @@ describe('domain/game/selectors integration', () => {
   });
 
   it('selectRemainingWords includes the active card and queued words', () => {
-    let state = startMatch(['w1', 'w2', 'w3']);
+    const state = startMatch(['w1', 'w2', 'w3']);
 
     const remaining = selectRemainingWords(state, { w1: 'один', w2: 'два', w3: 'три' });
 
@@ -30,7 +30,7 @@ describe('domain/game/selectors integration', () => {
   });
 
   it('selectRemainingWordCount tracks queue plus active card', () => {
-    let state = startMatch(['w1', 'w2']);
+    const state = startMatch(['w1', 'w2']);
 
     expect(selectRemainingWordCount(state)).toBe(2);
   });
@@ -57,8 +57,8 @@ describe('domain/game/selectors integration', () => {
   });
 });
 
-describe('selectSessionWordsWithHistory', () => {
-  it('pulls exclusions from the query adapter', () => {
+describe('selectSessionWords freshness', () => {
+  it('prefers unused words when usage is provided', () => {
     const words: Word[] = [
       {
         id: 'w1',
@@ -76,12 +76,17 @@ describe('selectSessionWordsWithHistory', () => {
       },
     ];
 
-    const ids = selectSessionWordsWithHistory(
-      words,
-      { difficulties: ['easy'], wordCount: 1, enabledPackIds: ['bundled-default'] },
-      { getRecentSessionWordIds: () => ['w1'] },
-    );
-
-    expect(ids).toEqual(['w2']);
+    const counts = { w1: 0, w2: 0 };
+    for (let i = 0; i < 100; i += 1) {
+      const pick = selectSessionWords({
+        words,
+        difficulties: ['easy'],
+        wordCount: 1,
+        usage: { w1: 8 },
+        enabledPackIds: ['bundled-default'],
+      })[0] as 'w1' | 'w2';
+      counts[pick] += 1;
+    }
+    expect(counts.w2).toBeGreaterThan(counts.w1);
   });
 });

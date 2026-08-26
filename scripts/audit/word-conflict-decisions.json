@@ -1,0 +1,1113 @@
+{
+  "keepIds": [
+    "w_00d6c6ac50",
+    "w_01242e1fee",
+    "w_01d5cd7d30",
+    "w_023f6f7cac",
+    "w_046b88ff09",
+    "w_049c79f7c6",
+    "w_068a1ade53",
+    "w_06b7c3c339",
+    "w_070ba24f78",
+    "w_0726f20063",
+    "w_081811e055",
+    "w_09495f211d",
+    "w_0aa297bdba",
+    "w_0ccedf5e1a",
+    "w_0dc33e65a2",
+    "w_0ec9d7ddee",
+    "w_10fb4df210",
+    "w_11c279bf24",
+    "w_11dc301eee",
+    "w_1249d1b6d8",
+    "w_12d563f9c3",
+    "w_1367a26fd5",
+    "w_13ba1129bb",
+    "w_13f38466aa",
+    "w_147e7ba6cf",
+    "w_154d0d28a2",
+    "w_161431c395",
+    "w_1617c7b329",
+    "w_1743043853",
+    "w_187ebcc98e",
+    "w_190825d62b",
+    "w_199e1c8a1b",
+    "w_19e51732cb",
+    "w_19efacde3e",
+    "w_1a096335c2",
+    "w_1a5cc4815e",
+    "w_1a787a1b96",
+    "w_1a79bf277c",
+    "w_1bf63e01f2",
+    "w_1c1aeb01bd",
+    "w_1c32af3c28",
+    "w_1ce9a7be9b",
+    "w_1d1f983d92",
+    "w_1d3d7e6029",
+    "w_1f374d1c68",
+    "w_23046ac033",
+    "w_237975198d",
+    "w_242d36ff0f",
+    "w_251195bafd",
+    "w_25a77d2fe8",
+    "w_26373d64e0",
+    "w_266625bd08",
+    "w_26db4da4f2",
+    "w_270044b1d8",
+    "w_27fadf496b",
+    "w_28b5e2e964",
+    "w_2c25904c90",
+    "w_2dce239ca6",
+    "w_2de08edec6",
+    "w_2e08ea52d5",
+    "w_310978f9b7",
+    "w_315ef2733b",
+    "w_33130703a2",
+    "w_35d059db6a",
+    "w_35eb2c88f5",
+    "w_3613017503",
+    "w_3679bdac3a",
+    "w_385c1d8173",
+    "w_385ea637d4",
+    "w_38dde7b1ed",
+    "w_392439cd27",
+    "w_3a04967d1f",
+    "w_3a1b8d4457",
+    "w_3ac37f2db0",
+    "w_3be2bba4d0",
+    "w_3c38e282f8",
+    "w_3d292446a2",
+    "w_3ec1e93267",
+    "w_3fe79901b2",
+    "w_3fef2c7adb",
+    "w_40aeb5964b",
+    "w_40bf8d5c85",
+    "w_4116a1269c",
+    "w_4164bc53b9",
+    "w_4287f25b5e",
+    "w_429f1070a6",
+    "w_42b795db79",
+    "w_431e59e298",
+    "w_45a55450d0",
+    "w_46b3e82274",
+    "w_48907c5e6a",
+    "w_48ce421c71",
+    "w_4be25e7373",
+    "w_4c3a14c0e6",
+    "w_4cd14aa0dd",
+    "w_4d3e75af3e",
+    "w_4edd1ee8d3",
+    "w_5159c3ebe7",
+    "w_5163a4c5e2",
+    "w_51ab91bc03",
+    "w_52f5ef8de6",
+    "w_53f039528f",
+    "w_548ff1262a",
+    "w_56c9fdf681",
+    "w_57508aea21",
+    "w_57c602c200",
+    "w_5823d660b0",
+    "w_58f839fd5a",
+    "w_59a36a5a8d",
+    "w_5a4649c455",
+    "w_5b1e33e400",
+    "w_5dcff767b6",
+    "w_5e1b12bebf",
+    "w_60b1a449f6",
+    "w_61d8c3e62e",
+    "w_61e17f3ca4",
+    "w_6463cb7adb",
+    "w_647c389f9f",
+    "w_6482810830",
+    "w_64eafb5e4a",
+    "w_65e5f7a133",
+    "w_69ae0adddc",
+    "w_69e6efd3f4",
+    "w_6c2ab354a9",
+    "w_6cf92aec49",
+    "w_6d6d967ea3",
+    "w_6ecd128c64",
+    "w_703d32fdac",
+    "w_70c41945ee",
+    "w_7199304fd8",
+    "w_72e2b187c0",
+    "w_732d5bbd5b",
+    "w_73a6139b53",
+    "w_747bbcc8a1",
+    "w_74b42693b1",
+    "w_7546bc08a1",
+    "w_76b0d369da",
+    "w_778bf44835",
+    "w_78742c4f77",
+    "w_7a934a4788",
+    "w_7b3f064927",
+    "w_7bf4de9db4",
+    "w_7cb5e812df",
+    "w_7f0f743d43",
+    "w_7fd5a4b038",
+    "w_7fdbc96c53",
+    "w_80e75bc883",
+    "w_8148dbfca3",
+    "w_83a873e09e",
+    "w_8441fb3e7c",
+    "w_84459883f3",
+    "w_853dd122b0",
+    "w_88d38290a7",
+    "w_895ba01985",
+    "w_89d91e0a7e",
+    "w_8a7fdd03da",
+    "w_8a9a40896b",
+    "w_8ab0f54bf4",
+    "w_8b7900dfa9",
+    "w_8b9449b8fc",
+    "w_8bccd5442f",
+    "w_8c20c83673",
+    "w_8ea6dad7b4",
+    "w_8eceb30965",
+    "w_8f50e5a300",
+    "w_90d6817dbe",
+    "w_92fcb4825e",
+    "w_93379ac74a",
+    "w_957ec62605",
+    "w_95d5a030f4",
+    "w_9702c205a4",
+    "w_98a9cb5aa3",
+    "w_9a603ef52c",
+    "w_9e396ca9ac",
+    "w_9e7bad5534",
+    "w_9ec08819d3",
+    "w_a0622529b6",
+    "w_a1e007f6a2",
+    "w_a301c41a20",
+    "w_a31bb8e60b",
+    "w_a4a8e208cd",
+    "w_a5aabaa52c",
+    "w_a5c9455f1e",
+    "w_a62530428b",
+    "w_a78734de9e",
+    "w_a88594e980",
+    "w_a8b000d9a2",
+    "w_a8b5897e1b",
+    "w_a9251fa0bc",
+    "w_a9ddb7aa65",
+    "w_ab18d48783",
+    "w_acbe6a7e99",
+    "w_acd16db40c",
+    "w_aee8cbd5f6",
+    "w_af5cced8c1",
+    "w_b090953346",
+    "w_b0a78a121b",
+    "w_b2bf04a0f1",
+    "w_b4c7a7c766",
+    "w_b5ca894035",
+    "w_b5e153a351",
+    "w_b89e88d25a",
+    "w_b9cdc00732",
+    "w_bad6fc0f82",
+    "w_bda46c1c40",
+    "w_bda7427863",
+    "w_bf5010f515",
+    "w_c03938923b",
+    "w_c04805044a",
+    "w_c2fddd474c",
+    "w_c32c0f07bb",
+    "w_c3ccacd095",
+    "w_c8ae937b09",
+    "w_ca820bcd48",
+    "w_cc09d7e4d1",
+    "w_cd0f3ecc8d",
+    "w_cd325dd50b",
+    "w_ce1329b1b3",
+    "w_ce51cccd3f",
+    "w_ce605dbb3c",
+    "w_cebb5ca399",
+    "w_d06b258aa7",
+    "w_d36f54a084",
+    "w_d41e2b3b9d",
+    "w_d4fd4d393f",
+    "w_d57314e9ce",
+    "w_d57e8cf131",
+    "w_d5f6d0d8da",
+    "w_d703a70e97",
+    "w_d7073bee61",
+    "w_d9ceb52260",
+    "w_dbcf7dfe74",
+    "w_dd51fd5a1d",
+    "w_dd9fb050a8",
+    "w_de18ea6d4f",
+    "w_e0c095087f",
+    "w_e19a910cc9",
+    "w_e1e29b0319",
+    "w_e2c70b197a",
+    "w_e5a9ce91b7",
+    "w_e5e8c39ce9",
+    "w_e6a2702e12",
+    "w_eae10531be",
+    "w_eca3330a18",
+    "w_ed4830ed0f",
+    "w_eeae6abc32",
+    "w_eedcb9aa1d",
+    "w_f1fc5d2b24",
+    "w_f2cbfc7589",
+    "w_f44ea2c99b",
+    "w_f51226641b",
+    "w_f5204e9fa0",
+    "w_f55f64fe72",
+    "w_f69f79c642",
+    "w_f71da34ff3",
+    "w_f73e95ac12",
+    "w_f756f2bf75",
+    "w_f9de626f6b",
+    "w_fa68bc40a2",
+    "w_fac3d034af",
+    "w_fb8ed7c72a",
+    "w_fc802f07fb",
+    "w_fcae8eb3f2",
+    "w_fcf81dfa0a",
+    "w_fd4e258b47",
+    "w_ff136e43a1",
+    "w_ff4ff66970"
+  ],
+  "removeIds": [
+    "w_00eb46e619",
+    "w_07ddc9af45",
+    "w_0dd48118d7",
+    "w_164875cd10",
+    "w_2b281780b6",
+    "w_2cc56af3ee",
+    "w_2e4767fc27",
+    "w_2e7db2f43b",
+    "w_366a24ee22",
+    "w_36d13aa13a",
+    "w_39a82d81ea",
+    "w_3f770811bf",
+    "w_4560643f1a",
+    "w_4ba3432899",
+    "w_529bfb8705",
+    "w_6018d2078e",
+    "w_6914c9a027",
+    "w_6cd95cbf62",
+    "w_6dad633c53",
+    "w_707c027704",
+    "w_740ea3d762",
+    "w_763adbc6a8",
+    "w_7866326973",
+    "w_8326bb042f",
+    "w_88d376cc18",
+    "w_8cfbb11b25",
+    "w_950f0e7666",
+    "w_97ea19b1c0",
+    "w_9d22c917bf",
+    "w_9e87842e59",
+    "w_9f3ced6ad4",
+    "w_a99a9a1b93",
+    "w_af3dede866",
+    "w_c3ad769552",
+    "w_c3f0881f59",
+    "w_c557dc2145",
+    "w_ce892abfb0",
+    "w_cf019318ac",
+    "w_cf259cc4f1",
+    "w_da493125fe",
+    "w_ec62f4db05",
+    "w_ee41c2c422",
+    "w_f1eec1f1f3",
+    "w_fdc8d42f00",
+    "w_ff3ad05db3"
+  ],
+  "groupAssignments": [
+    {
+      "group": "__root",
+      "ids": [
+        "w_081811e055",
+        "w_6cf92aec49"
+      ]
+    },
+    {
+      "group": "apteka",
+      "ids": [
+        "w_147e7ba6cf",
+        "w_392439cd27",
+        "w_647c389f9f"
+      ]
+    },
+    {
+      "group": "bagaj",
+      "ids": [
+        "w_0ccedf5e1a",
+        "w_1367a26fd5"
+      ]
+    },
+    {
+      "group": "balet1",
+      "ids": [
+        "w_a78734de9e",
+        "w_bda7427863"
+      ]
+    },
+    {
+      "group": "baraban",
+      "ids": [
+        "w_9e396ca9ac",
+        "w_d9ceb52260"
+      ]
+    },
+    {
+      "group": "beret",
+      "ids": [
+        "w_b0a78a121b",
+        "w_e19a910cc9"
+      ]
+    },
+    {
+      "group": "biblioteka",
+      "ids": [
+        "w_61d8c3e62e",
+        "w_732d5bbd5b"
+      ]
+    },
+    {
+      "group": "bron",
+      "ids": [
+        "w_a5c9455f1e",
+        "w_d06b258aa7"
+      ]
+    },
+    {
+      "group": "card",
+      "ids": [
+        "w_4164bc53b9",
+        "w_4edd1ee8d3",
+        "w_8bccd5442f",
+        "w_b090953346"
+      ]
+    },
+    {
+      "group": "contract",
+      "ids": [
+        "w_58f839fd5a",
+        "w_d36f54a084"
+      ]
+    },
+    {
+      "group": "doslid",
+      "ids": [
+        "w_1c32af3c28",
+        "w_548ff1262a",
+        "w_dd9fb050a8"
+      ]
+    },
+    {
+      "group": "dynamik",
+      "ids": [
+        "w_45a55450d0",
+        "w_7199304fd8"
+      ]
+    },
+    {
+      "group": "dyvan",
+      "ids": [
+        "w_1f374d1c68",
+        "w_72e2b187c0"
+      ]
+    },
+    {
+      "group": "ekspert",
+      "ids": [
+        "w_e6a2702e12",
+        "w_f1fc5d2b24"
+      ]
+    },
+    {
+      "group": "elektryk",
+      "ids": [
+        "w_6482810830",
+        "w_8f50e5a300",
+        "w_d41e2b3b9d"
+      ]
+    },
+    {
+      "group": "father",
+      "ids": [
+        "w_1617c7b329",
+        "w_35d059db6a"
+      ]
+    },
+    {
+      "group": "finik",
+      "ids": [
+        "w_8ab0f54bf4",
+        "w_cd325dd50b"
+      ]
+    },
+    {
+      "group": "friday",
+      "ids": [
+        "w_38dde7b1ed",
+        "w_52f5ef8de6"
+      ]
+    },
+    {
+      "group": "gemini",
+      "ids": [
+        "w_a31bb8e60b",
+        "w_b5e153a351"
+      ]
+    },
+    {
+      "group": "grant",
+      "ids": [
+        "w_53f039528f",
+        "w_8441fb3e7c",
+        "w_e5a9ce91b7"
+      ]
+    },
+    {
+      "group": "grupa",
+      "ids": [
+        "w_78742c4f77",
+        "w_f9de626f6b"
+      ]
+    },
+    {
+      "group": "holub",
+      "ids": [
+        "w_35eb2c88f5",
+        "w_957ec62605"
+      ]
+    },
+    {
+      "group": "horoh",
+      "ids": [
+        "w_ab18d48783",
+        "w_b5ca894035",
+        "w_c04805044a"
+      ]
+    },
+    {
+      "group": "hospodar",
+      "ids": [
+        "w_acd16db40c",
+        "w_b9cdc00732"
+      ]
+    },
+    {
+      "group": "icona",
+      "ids": [
+        "w_48907c5e6a",
+        "w_bf5010f515"
+      ]
+    },
+    {
+      "group": "internet",
+      "ids": [
+        "w_0726f20063",
+        "w_61e17f3ca4"
+      ]
+    },
+    {
+      "group": "jilet",
+      "ids": [
+        "w_5a4649c455",
+        "w_f756f2bf75"
+      ]
+    },
+    {
+      "group": "jurnal",
+      "ids": [
+        "w_1a787a1b96",
+        "w_90d6817dbe"
+      ]
+    },
+    {
+      "group": "kamin",
+      "ids": [
+        "w_11dc301eee",
+        "w_9702c205a4"
+      ]
+    },
+    {
+      "group": "kapital",
+      "ids": [
+        "w_4be25e7373",
+        "w_92fcb4825e"
+      ]
+    },
+    {
+      "group": "kaseta",
+      "ids": [
+        "w_1bf63e01f2",
+        "w_5dcff767b6"
+      ]
+    },
+    {
+      "group": "kobza",
+      "ids": [
+        "w_93379ac74a",
+        "w_e0c095087f"
+      ]
+    },
+    {
+      "group": "kokon",
+      "ids": [
+        "w_068a1ade53",
+        "w_8ea6dad7b4"
+      ]
+    },
+    {
+      "group": "komar",
+      "ids": [
+        "w_9ec08819d3",
+        "w_fac3d034af"
+      ]
+    },
+    {
+      "group": "konvert",
+      "ids": [
+        "w_26db4da4f2",
+        "w_5823d660b0",
+        "w_de18ea6d4f"
+      ]
+    },
+    {
+      "group": "korova",
+      "ids": [
+        "w_40bf8d5c85",
+        "w_42b795db79",
+        "w_a301c41a20"
+      ]
+    },
+    {
+      "group": "kovzanna",
+      "ids": [
+        "w_154d0d28a2",
+        "w_1d3d7e6029"
+      ]
+    },
+    {
+      "group": "kozyrok",
+      "ids": [
+        "w_1743043853",
+        "w_33130703a2"
+      ]
+    },
+    {
+      "group": "kredyt",
+      "ids": [
+        "w_4287f25b5e",
+        "w_8148dbfca3"
+      ]
+    },
+    {
+      "group": "kryza",
+      "ids": [
+        "w_7b3f064927",
+        "w_fd4e258b47"
+      ]
+    },
+    {
+      "group": "kubyk",
+      "ids": [
+        "w_25a77d2fe8",
+        "w_5e1b12bebf",
+        "w_e5e8c39ce9"
+      ]
+    },
+    {
+      "group": "kumys",
+      "ids": [
+        "w_1a5cc4815e",
+        "w_d703a70e97"
+      ]
+    },
+    {
+      "group": "kylym",
+      "ids": [
+        "w_251195bafd",
+        "w_c3ccacd095"
+      ]
+    },
+    {
+      "group": "mandrivka",
+      "ids": [
+        "w_10fb4df210",
+        "w_c32c0f07bb"
+      ]
+    },
+    {
+      "group": "mantra",
+      "ids": [
+        "w_1c1aeb01bd",
+        "w_e2c70b197a"
+      ]
+    },
+    {
+      "group": "masaj",
+      "ids": [
+        "w_266625bd08",
+        "w_385ea637d4"
+      ]
+    },
+    {
+      "group": "mashina",
+      "ids": [
+        "w_09495f211d",
+        "w_a4a8e208cd"
+      ]
+    },
+    {
+      "group": "metal",
+      "ids": [
+        "w_3fe79901b2",
+        "w_56c9fdf681"
+      ]
+    },
+    {
+      "group": "napadnyk",
+      "ids": [
+        "w_190825d62b",
+        "w_8c20c83673"
+      ]
+    },
+    {
+      "group": "nastriy",
+      "ids": [
+        "w_51ab91bc03",
+        "w_a8b5897e1b"
+      ]
+    },
+    {
+      "group": "news",
+      "ids": [
+        "w_3a04967d1f",
+        "w_cd0f3ecc8d"
+      ]
+    },
+    {
+      "group": "norm",
+      "ids": [
+        "w_7fdbc96c53",
+        "w_acbe6a7e99"
+      ]
+    },
+    {
+      "group": "parka",
+      "ids": [
+        "w_1a096335c2",
+        "w_57508aea21",
+        "w_ed4830ed0f"
+      ]
+    },
+    {
+      "group": "pasika",
+      "ids": [
+        "w_0dc33e65a2",
+        "w_59a36a5a8d"
+      ]
+    },
+    {
+      "group": "peruka",
+      "ids": [
+        "w_7a934a4788",
+        "w_9e7bad5534"
+      ]
+    },
+    {
+      "group": "pidlyva",
+      "ids": [
+        "w_76b0d369da",
+        "w_af5cced8c1"
+      ]
+    },
+    {
+      "group": "pivden",
+      "ids": [
+        "w_1249d1b6d8",
+        "w_a8b000d9a2"
+      ]
+    },
+    {
+      "group": "plastyk",
+      "ids": [
+        "w_2e08ea52d5",
+        "w_d57e8cf131"
+      ]
+    },
+    {
+      "group": "poizd",
+      "ids": [
+        "w_1a79bf277c",
+        "w_5159c3ebe7"
+      ]
+    },
+    {
+      "group": "pokupets",
+      "ids": [
+        "w_242d36ff0f",
+        "w_8a7fdd03da"
+      ]
+    },
+    {
+      "group": "porada",
+      "ids": [
+        "w_199e1c8a1b",
+        "w_19efacde3e"
+      ]
+    },
+    {
+      "group": "praga",
+      "ids": [
+        "w_a62530428b",
+        "w_ce605dbb3c",
+        "w_ff136e43a1"
+      ]
+    },
+    {
+      "group": "probijka",
+      "ids": [
+        "w_eae10531be",
+        "w_fcae8eb3f2"
+      ]
+    },
+    {
+      "group": "prof",
+      "ids": [
+        "w_7bf4de9db4",
+        "w_ca820bcd48"
+      ]
+    },
+    {
+      "group": "programka",
+      "ids": [
+        "w_7fd5a4b038",
+        "w_88d38290a7",
+        "w_f55f64fe72"
+      ]
+    },
+    {
+      "group": "projector",
+      "ids": [
+        "w_4116a1269c",
+        "w_80e75bc883"
+      ]
+    },
+    {
+      "group": "proschenna",
+      "ids": [
+        "w_3679bdac3a",
+        "w_5b1e33e400",
+        "w_fcf81dfa0a"
+      ]
+    },
+    {
+      "group": "prybyranna",
+      "ids": [
+        "w_049c79f7c6",
+        "w_fc802f07fb"
+      ]
+    },
+    {
+      "group": "pryvyd",
+      "ids": [
+        "w_57c602c200",
+        "w_778bf44835"
+      ]
+    },
+    {
+      "group": "pult",
+      "ids": [
+        "w_74b42693b1",
+        "w_89d91e0a7e"
+      ]
+    },
+    {
+      "group": "pytivka",
+      "ids": [
+        "w_06b7c3c339",
+        "w_4d3e75af3e"
+      ]
+    },
+    {
+      "group": "raketa",
+      "ids": [
+        "w_161431c395",
+        "w_70c41945ee"
+      ]
+    },
+    {
+      "group": "ramka",
+      "ids": [
+        "w_703d32fdac",
+        "w_895ba01985"
+      ]
+    },
+    {
+      "group": "respad",
+      "ids": [
+        "w_27fadf496b",
+        "w_46b3e82274"
+      ]
+    },
+    {
+      "group": "robot",
+      "ids": [
+        "w_98a9cb5aa3",
+        "w_f69f79c642"
+      ]
+    },
+    {
+      "group": "rodych",
+      "ids": [
+        "w_11c279bf24",
+        "w_431e59e298",
+        "w_95d5a030f4"
+      ]
+    },
+    {
+      "group": "schpaga",
+      "ids": [
+        "w_6463cb7adb",
+        "w_ce51cccd3f"
+      ]
+    },
+    {
+      "group": "sekretar",
+      "ids": [
+        "w_2de08edec6",
+        "w_747bbcc8a1"
+      ]
+    },
+    {
+      "group": "slyva",
+      "ids": [
+        "w_7cb5e812df",
+        "w_8eceb30965"
+      ]
+    },
+    {
+      "group": "soroka",
+      "ids": [
+        "w_5163a4c5e2",
+        "w_853dd122b0"
+      ]
+    },
+    {
+      "group": "spiker",
+      "ids": [
+        "w_01242e1fee",
+        "w_f51226641b"
+      ]
+    },
+    {
+      "group": "spokusa",
+      "ids": [
+        "w_3d292446a2",
+        "w_fb8ed7c72a"
+      ]
+    },
+    {
+      "group": "stels",
+      "ids": [
+        "w_6ecd128c64",
+        "w_8b7900dfa9"
+      ]
+    },
+    {
+      "group": "storm",
+      "ids": [
+        "w_270044b1d8",
+        "w_aee8cbd5f6"
+      ]
+    },
+    {
+      "group": "stryj",
+      "ids": [
+        "w_6d6d967ea3",
+        "w_c03938923b"
+      ]
+    },
+    {
+      "group": "supernyk",
+      "ids": [
+        "w_28b5e2e964",
+        "w_69e6efd3f4"
+      ]
+    },
+    {
+      "group": "telegraph",
+      "ids": [
+        "w_a9ddb7aa65",
+        "w_f44ea2c99b"
+      ]
+    },
+    {
+      "group": "trans",
+      "ids": [
+        "w_23046ac033",
+        "w_60b1a449f6"
+      ]
+    },
+    {
+      "group": "treking",
+      "ids": [
+        "w_19e51732cb",
+        "w_2dce239ca6"
+      ]
+    },
+    {
+      "group": "trijka",
+      "ids": [
+        "w_69ae0adddc",
+        "w_ff4ff66970"
+      ]
+    },
+    {
+      "group": "trijna",
+      "ids": [
+        "w_023f6f7cac",
+        "w_187ebcc98e"
+      ]
+    },
+    {
+      "group": "truba",
+      "ids": [
+        "w_b89e88d25a",
+        "w_d5f6d0d8da"
+      ]
+    },
+    {
+      "group": "tuna",
+      "ids": [
+        "w_f2cbfc7589",
+        "w_f5204e9fa0"
+      ]
+    },
+    {
+      "group": "turnik",
+      "ids": [
+        "w_83a873e09e",
+        "w_a0622529b6"
+      ]
+    },
+    {
+      "group": "ukrman",
+      "ids": [
+        "w_3be2bba4d0",
+        "w_d7073bee61"
+      ]
+    },
+    {
+      "group": "vechir",
+      "ids": [
+        "w_237975198d",
+        "w_3ac37f2db0"
+      ]
+    },
+    {
+      "group": "vidminnyk",
+      "ids": [
+        "w_13ba1129bb",
+        "w_1d1f983d92"
+      ]
+    },
+    {
+      "group": "vinok",
+      "ids": [
+        "w_070ba24f78",
+        "w_d57314e9ce",
+        "w_eca3330a18"
+      ]
+    },
+    {
+      "group": "visytka",
+      "ids": [
+        "w_a88594e980",
+        "w_c2fddd474c"
+      ]
+    },
+    {
+      "group": "vokal",
+      "ids": [
+        "w_26373d64e0",
+        "w_a1e007f6a2"
+      ]
+    },
+    {
+      "group": "vorog",
+      "ids": [
+        "w_12d563f9c3",
+        "w_c8ae937b09"
+      ]
+    },
+    {
+      "group": "vypusk",
+      "ids": [
+        "w_046b88ff09",
+        "w_3613017503"
+      ]
+    },
+    {
+      "group": "vystava",
+      "ids": [
+        "w_ce1329b1b3",
+        "w_eeae6abc32"
+      ]
+    },
+    {
+      "group": "yalyna",
+      "ids": [
+        "w_310978f9b7",
+        "w_84459883f3"
+      ]
+    },
+    {
+      "group": "zastava",
+      "ids": [
+        "w_e1e29b0319",
+        "w_f73e95ac12"
+      ]
+    }
+  ],
+  "skippedClusterKeys": [
+    "банда|банка"
+  ],
+  "alreadyGroupedConfirmed": [
+    "applause_root",
+    "architect_root",
+    "astronaut_root",
+    "ball_root",
+    "bell_root",
+    "cup_gull",
+    "evolution_revolution",
+    "football_root",
+    "gate_crow",
+    "hen_jacket",
+    "intuition_root",
+    "lemon_drink",
+    "likar_root",
+    "machine_fruit",
+    "mouse_root",
+    "music_root",
+    "neighbor_root",
+    "orange_root",
+    "river_pen",
+    "salad_robe",
+    "school_chocolate",
+    "sculptor_root",
+    "shoe_root",
+    "shop_root",
+    "swamp_gold",
+    "teacher_root"
+  ],
+  "ungroupRequested": [],
+  "exportedAt": "2026-08-24T08:56:00.714Z",
+  "meta": {
+    "source": "scripts/words-master.csv",
+    "resolvedClusters": 171,
+    "reviewTool": "scripts/audit/word-conflict-picker.html"
+  },
+  "updatedAt": "2026-08-24T08:58:52.151Z",
+  "manualNotes": [
+    "apteka: аптека/аптекар/аптечка grouped manually"
+  ]
+}

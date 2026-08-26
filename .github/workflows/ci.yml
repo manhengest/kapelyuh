@@ -25,6 +25,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate words
+        run: npm run validate:words
+
+      - name: Build word database
+        run: npm run build:db
+
       - name: Typecheck
         run: npm run typecheck
 

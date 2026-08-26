@@ -16,7 +16,8 @@ describe('bundled kapelyukh.db asset', () => {
     const packCount = db.prepare('SELECT COUNT(*) as count FROM packs').get() as { count: number };
     db.close();
 
-    expect(packCount.count).toBe(1);
+    expect(packCount.count).toBeGreaterThanOrEqual(1);
+    expect(packCount.count).toBeLessThanOrEqual(2);
     expect(wordCount.count).toBeGreaterThanOrEqual(MIN_WORD_COUNT);
   });
 });

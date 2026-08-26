@@ -42,9 +42,4 @@ export type {
   Word,
 } from './types';
 export { DEFAULT_MATCH_SETTINGS, ROUND_TYPES, SCORE } from './types';
-export {
-  type SessionWordQuery,
-  type WordSelectorInput,
-  selectSessionWords,
-  selectSessionWordsWithHistory,
-} from './wordSelector';
+export { type WordSelectorInput, selectSessionWords } from './wordSelector';

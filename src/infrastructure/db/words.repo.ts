@@ -9,6 +9,7 @@ type WordRow = {
   difficulty: Word['difficulty'];
   category_id: string;
   pack_id: string;
+  group_id: string | null;
 };
 
 let wordsCache: Word[] | null = null;
@@ -21,6 +22,7 @@ function rowToWord(row: WordRow): Word {
     difficulty: row.difficulty,
     categoryId: row.category_id,
     packId: row.pack_id,
+    ...(row.group_id ? { groupId: row.group_id } : {}),
   };
 }
 
@@ -29,25 +31,18 @@ function buildPlaceholders(count: number): string {
 }
 
 export async function getAllWords(packIds: readonly string[]): Promise<Word[]> {
-  if (wordsCache) {
-    if (packIds.length === 0 || packIds.includes(BUNDLED_PACK_ID)) {
-      return wordsCache;
-    }
-    const packSet = new Set(packIds);
-    return wordsCache.filter((word) => packSet.has(word.packId));
+  if (!wordsCache) {
+    const db = getDatabase();
+    const rows = await db.getAllAsync<WordRow>(
+      `SELECT id, text, difficulty, category_id, pack_id, group_id FROM words ORDER BY id`,
+    );
+
+    wordsCache = rows.map(rowToWord);
+    textMapCache = Object.fromEntries(wordsCache.map((word) => [word.id, word.text]));
   }
 
-  const db = getDatabase();
-  const rows = await db.getAllAsync<WordRow>(
-    `SELECT id, text, difficulty, category_id, pack_id FROM words WHERE pack_id = ? ORDER BY id`,
-    BUNDLED_PACK_ID,
-  );
-
-  wordsCache = rows.map(rowToWord);
-  textMapCache = Object.fromEntries(wordsCache.map((word) => [word.id, word.text]));
-
-  if (packIds.length === 0 || packIds.includes(BUNDLED_PACK_ID)) {
-    return wordsCache;
+  if (packIds.length === 0) {
+    return [];
   }
 
   const packSet = new Set(packIds);
@@ -76,7 +71,7 @@ export async function getWordsByIds(wordIds: readonly string[]): Promise<Word[]>
   const db = getDatabase();
   const placeholders = buildPlaceholders(wordIds.length);
   const rows = await db.getAllAsync<WordRow>(
-    `SELECT id, text, difficulty, category_id, pack_id FROM words WHERE id IN (${placeholders})`,
+    `SELECT id, text, difficulty, category_id, pack_id, group_id FROM words WHERE id IN (${placeholders})`,
     ...wordIds,
   );
   return rows.map(rowToWord);

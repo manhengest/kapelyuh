@@ -56,3 +56,11 @@ example
 .cursor
 
 .env.local
+
+# Word-list scratch and regenerable audit artifacts
+scripts/batches/
+scripts/audit/word-audit-report.json
+scripts/audit/words-rejected.csv
+scripts/audit/word-conflict-picker.html
+scripts/audit/word-conflict-decisions.csv
+scripts/audit/FINAL_REPORT.md

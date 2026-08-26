@@ -7,12 +7,12 @@ Offline Ukrainian party game (React Native + Expo). Read this before planning or
 **Капелюх** is a feature-complete V1.0 iOS party game: one device, 2–N teams, one shared hat of words across three rounds (Еліас → Крокодил → Асоціація).
 
 | Area          | Status                                                                                                                                             |
-| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Version       | `package.json` `version` → `app.config.ts` → runtime via `getAppVersion()`; optional `APP_VERSION` in `.env.local`; iOS bundle `com.kapelyukh.app` |
 | Platforms     | iPhone primary; iPad supported (`supportsTablet` + centered `ContentColumn`)                                                                       |
 | Game loop     | Full: setup → teams → round-intro → turn → award → review → (next turn/round) → results → statistic                                                |
 | Persistence   | Active match autosaved to MMKV; finished sessions in SQLite; settings in MMKV                                                                      |
-| Words         | `scripts/words.csv` (~950 Ukrainian words) → `npm run build:db` → `assets/data/kapelyukh.db`                                                       |
+| Words         | `scripts/words-master.csv` → `npm run words:validate` → `npm run words:build` (`status=core                                                        | pack`) → `assets/data/kapelyukh.db`. Usage/freshness in MMKV (`wordUsage`). Legacy `scripts/words.csv` kept for reference |
 | Monetization  | No ads / no IAP. `infrastructure/purchases/stub.ts` always returns `isPro: false` (Pro → V1.1)                                                     |
 | Observability | Sentry (opt-in via Settings); crash reporting only                                                                                                 |
 | Distribution  | EAS profiles: `development`, `development-simulator`, `preview`, `production` + TestFlight submit                                                  |
@@ -65,17 +65,23 @@ Before running any project command in the terminal, use Node **24.18.1** (see `.
 nvm use
 ```
 
-| Command                           | When to use                                                           |
-| --------------------------------- | --------------------------------------------------------------------- |
-| `npm start`                       | Dev server (`scripts/dev.js`; use `--dev-client` after EAS dev build) |
-| `npm run ios` / `npm run android` | Same as start, platform flag                                          |
-| `npm run typecheck`               | After code changes — must pass                                        |
-| `npm run lint`                    | ESLint with zero warnings                                             |
-| `npm run format`                  | Prettier check                                                        |
-| `npm test`                        | Jest — prefer single spec files during iteration                      |
-| `npm run build:db`                | Regenerate `assets/data/kapelyukh.db` from `scripts/words.csv`        |
+| Command                                     | When to use                                                                                 |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `npm start`                                 | Dev server (`scripts/dev.js`; use `--dev-client` after EAS dev build)                       |
+| `npm run ios` / `npm run android`           | Same as start, platform flag                                                                |
+| `npm run typecheck`                         | After code changes — must pass                                                              |
+| `npm run lint`                              | ESLint with zero warnings                                                                   |
+| `npm run format`                            | Prettier check                                                                              |
+| `npm test`                                  | Jest — prefer single spec files during iteration                                            |
+| `npm run words:validate` / `validate:words` | CSV schema/dup/category validation; exit 1 on errors                                        |
+| `npm run words:playability`                 | Alias/Крокодил/Асоціація heuristic report → `scripts/audit/playability-report.json`; exit 0 |
+| `npm run words:validate -- --playability`   | Schema + playability gate (min 6/10 per round); exit 1 on failures                          |
+| `npm run words:audit`                       | Read-only audit → `scripts/audit/*`                                                         |
+| `npm run words:conflicts-html`              | Rebuild `scripts/audit/word-conflict-picker.html` from master CSV + audit heuristics        |
+| `npm run words:apply-conflicts`             | Apply `scripts/audit/word-conflict-decisions.json` to master CSV (`status=reject`, `group`) |
+| `npm run words:build` / `build:db`          | Regenerates `assets/data/kapelyukh.db` from master CSV                                      |
 
-CI (`.github/workflows/ci.yml`) runs typecheck + lint + format + test on every PR. Run `typecheck` + `lint` + `test` before finishing non-trivial work.
+CI (`.github/workflows/ci.yml`) runs `validate:words`, `build:db`, typecheck, lint, format, and test on every PR. Run `typecheck` + `lint` + `test` before finishing non-trivial work.
 
 ## Context7 — use for library docs
 
@@ -153,17 +159,21 @@ Import order is enforced: builtin → external → internal, alphabetized, blank
 
 ## Documentation map
 
-| Path                   | Contents                                                      |
-| ---------------------- | ------------------------------------------------------------- |
-| `README.md`            | Setup, EAS dev build, scripts, TestFlight gate                |
-| `PRIVACY.md`           | User agreement / privacy copy (Ukrainian)                     |
-| `docs/`                | Beta/TestFlight, Sentry, word-list sign-off, design brief, TZ |
-| `docs/design-brief.md` | Visual / UX brief                                             |
-| `design/`              | Approved screen reference PNGs                                |
-| `.cursor/plans/`       | Ad-hoc feature plans (not a single roadmap)                   |
-| `scripts/words.csv`    | Word list source for SQLite build                             |
+| Path                       | Contents                                                                         |
+| -------------------------- | -------------------------------------------------------------------------------- |
+| `README.md`                | Setup, EAS dev build, scripts, TestFlight gate                                   |
+| `PRIVACY.md`               | User agreement / privacy copy (Ukrainian)                                        |
+| `docs/`                    | Beta/TestFlight, Sentry, word-list sign-off, design brief, TZ                    |
+| `docs/design-brief.md`     | Visual / UX brief                                                                |
+| `design/`                  | Approved screen reference PNGs                                                   |
+| `.cursor/plans/`           | Ad-hoc feature plans (not a single roadmap)                                      |
+| `scripts/words-master.csv` | Word list source for SQLite build (`id,text,difficulty,category,status,group`)   |
+| `scripts/audit/`           | Conflict decisions (`word-conflict-decisions.json`); other files are regenerable |
+| `scripts/words.csv`        | Legacy 3-column list, kept for git history                                       |
+| `docs/word-categories.md`  | Canonical 36 English category slugs                                              |
+| `docs/word-curation-playbook.md` | Rules for adding/rejecting/grouping words; read before generating a pack |
 
-When docs and code disagree, **code is the source of truth** — update docs if you change behavior. (Example: `docs/word-list-signoff.md` word counts may lag `scripts/words.csv`.)
+When docs and code disagree, **code is the source of truth** — update docs if you change behavior. (Example: `docs/word-list-signoff.md` word counts may lag `scripts/words-master.csv`.)
 
 ## Agent workflow
 
@@ -179,6 +189,7 @@ When docs and code disagree, **code is the source of truth** — update docs if 
 - **Don't put React in domain** — ESLint will reject it; extract pure functions instead.
 - **Don't add i18n** — permanently out of scope.
 - **Timer logic** — use absolute timestamps and `useAppStatePause`; never interval-only timers.
-- **Word DB** — after editing `words.csv`, run `npm run build:db` and commit the regenerated `assets/data/kapelyukh.db`. App boot requires that asset (`SQLiteProvider` + `assetSource`).
+- **Word DB** — after editing `words-master.csv`, run `npm run words:validate` and `npm run words:build` and commit the regenerated `assets/data/kapelyukh.db`. App boot requires that asset (`SQLiteProvider` + `assetSource`). Word freshness lives in MMKV (`src/infrastructure/storage/wordUsage.ts`), never in the CSV/DB.
+- **Word curation** — before generating, rejecting, or regrouping words, read [`docs/word-curation-playbook.md`](docs/word-curation-playbook.md). It encodes the deletion / difficulty / status / group rules distilled from the manual curation pass.
 - **Styles** — edit `global.css` for shared component classes and `tailwind.config.js` for tokens; use Tailwind utilities in TSX for one-off layout.
 - **Pro / IAP** — do not wire StoreKit or RevenueCat in V1; keep the purchases stub.

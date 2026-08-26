@@ -9,6 +9,7 @@ import {
   getActiveMatch,
   setActiveMatch,
 } from '@infrastructure/storage/activeMatch';
+import { markWordsUsed } from '@infrastructure/storage/wordUsage';
 
 type DispatchEvent = {
   [K in GameEvent as K['type']]: Omit<K, 'now'> & { now?: number };
@@ -42,6 +43,9 @@ function persistMatch(state: GameState): void {
 
 function handleMatchEnd(prev: GameState, next: GameState): void {
   if (next.status === 'end_of_match' && prev.status !== 'end_of_match') {
+    const sessionWordIds = next.rounds[0]?.sessionWordIds ?? [];
+    markWordsUsed(sessionWordIds, String(next.createdAt));
+
     void saveFinishedSession(next).catch((error: unknown) => {
       console.error('Failed to save finished session', error);
     });

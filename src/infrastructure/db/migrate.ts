@@ -17,7 +17,12 @@ export async function migrateDbIfNeeded(db: SQLiteDatabase): Promise<void> {
     await db.execAsync(CREATE_SCHEMA_SQL);
   }
 
-  // Future migrations: if (currentVersion === 1) { ... }
+  if (currentVersion === 1) {
+    await db.execAsync('ALTER TABLE words ADD COLUMN group_id TEXT');
+    await db.execAsync(
+      'CREATE INDEX IF NOT EXISTS idx_words_group ON words(group_id) WHERE group_id IS NOT NULL',
+    );
+  }
 
   await db.execAsync(`PRAGMA user_version = ${DATABASE_VERSION}`);
 }
