@@ -86,45 +86,68 @@ const ABSTRACTISH_CATEGORIES = new Set([
   'history',
 ]);
 
-/** Curator overrides for words the heuristics mis-score. Key = normalizeTextKey(text). */
+/**
+ * Curator overrides from scripts/audit/playability-calibration.md.
+ * Abstract-ish categories fail crocodile by default; this list opts in visual hooks
+ * and opts out rare/unrecognizable cards. Key = normalizeTextKey(text).
+ */
 const OVERRIDES: Record<string, PlayabilityOverride> = {
-  хабар: {
+  // Visual-hook abstracts / traits / civic scenes — pass
+  варіант: { alias: 8, crocodile: 6, association: 7, reason: 'hook: mime a choice between options' },
+  думка: { alias: 8, crocodile: 7, association: 7, reason: 'hook: tapping temple / thinking' },
+  ідея: { alias: 10, crocodile: 8, association: 6, reason: 'hook: lightbulb over the head' },
+  акуратність: {
     alias: 7,
     crocodile: 6,
     association: 7,
-    reason: 'visual hook: mime passing an envelope / bribe',
+    reason: 'hook: mime cleaning / lining things up',
   },
-  евакуація: {
+  працьовитість: { alias: 7, crocodile: 6, association: 8, reason: 'hook: mime working hard' },
+  асиметрія: { alias: 7, crocodile: 7, association: 8, reason: 'hook: crooked / lopsided pose' },
+  хабар: { alias: 8, crocodile: 8, association: 8, reason: 'hook: passing an envelope' },
+  корупція: { alias: 7, crocodile: 6, association: 7, reason: 'hook: envelope under the table' },
+  арешт: { alias: 8, crocodile: 8, association: 8, reason: 'hook: hands cuffed behind back' },
+  барикада: { alias: 6, crocodile: 6, association: 6, reason: 'hook: stacking furniture / blocking' },
+  бюрократія: {
     alias: 7,
     crocodile: 6,
-    association: 7,
-    reason: 'visual hook: run out with bag, alarm gesture',
+    association: 6,
+    reason: 'hook: queue at a window, stamp, papers',
   },
-  корупція: {
-    alias: 7,
-    crocodile: 6,
-    association: 7,
-    reason: 'visual hook: envelope under table, handshake',
-  },
-  варіант: { alias: 5, crocodile: 3, association: 5, reason: 'pure abstract, no pantomime anchor' },
-  критерій: { alias: 4, crocodile: 3, association: 4, reason: 'pure abstract, no pantomime anchor' },
-  сенс: { alias: 4, crocodile: 3, association: 4, reason: 'pure abstract, no pantomime anchor' },
-  'сенс життя': {
-    alias: 5,
-    crocodile: 4,
-    association: 5,
-    reason: 'abstract phrase, weak pantomime anchor',
-  },
-  парадигма: { alias: 4, crocodile: 3, association: 4, reason: 'academic abstract, no pantomime anchor' },
-  гедонізм: { alias: 4, crocodile: 3, association: 4, reason: '-ізм abstract, no pantomime anchor' },
-  децентралізація: {
-    alias: 5,
-    crocodile: 4,
-    association: 5,
-    reason: '-ція jargon, no stable pantomime anchor',
-  },
-  стоїцизм: { alias: 4, crocodile: 3, association: 4, reason: '-ізм abstract, no pantomime anchor' },
-  свобода: { alias: 7, crocodile: 5, association: 7, reason: 'weak pantomime: arms spread, easy to miss' },
+  евакуація: { alias: 7, crocodile: 7, association: 7, reason: 'hook: run out with a bag, alarm' },
+
+  // No visual hook (and often no association) — fail
+  знання: { alias: 7, crocodile: 5, association: 5, reason: 'no stable pantomime or association' },
+  критерій: { alias: 6, crocodile: 3, association: 3, reason: 'no visual or associative hook' },
+  логіка: { alias: 6, crocodile: 2, association: 4, reason: 'no visual hook' },
+  мета: { alias: 8, crocodile: 5, association: 8, reason: 'alias ok, no pantomime anchor' },
+  назва: { alias: 6, crocodile: 2, association: 8, reason: 'alias/association ok, no pantomime' },
+  життя: { alias: 8, crocodile: 3, association: 8, reason: 'too abstract to mime' },
+  принцип: { alias: 6, crocodile: 3, association: 3, reason: 'no visual or associative hook' },
+  аналогія: { alias: 3, crocodile: 3, association: 3, reason: 'rare academic, no hook' },
+  аргумент: { alias: 6, crocodile: 3, association: 4, reason: 'no pantomime anchor' },
+  асоціація: { alias: 6, crocodile: 3, association: 6, reason: 'no pantomime anchor' },
+  альтруїзм: { alias: 1, crocodile: 1, association: 1, reason: 'rare -ізм, nobody mimes this' },
+  амбітність: { alias: 1, crocodile: 1, association: 1, reason: 'rare form, not party vocabulary' },
+  субсидія: { alias: 6, crocodile: 3, association: 6, reason: 'civic jargon, no pantomime' },
+  щирість: { alias: 5, crocodile: 3, association: 6, reason: 'trait form, weak mime' },
+  абсурд: { alias: 6, crocodile: 3, association: 6, reason: 'no pantomime anchor' },
+  сенс: { alias: 4, crocodile: 3, association: 4, reason: 'pure abstract' },
+  'сенс життя': { alias: 5, crocodile: 4, association: 5, reason: 'abstract phrase, weak mime' },
+  парадигма: { alias: 4, crocodile: 3, association: 4, reason: 'academic abstract' },
+  гедонізм: { alias: 4, crocodile: 3, association: 4, reason: '-ізм, no pantomime' },
+  децентралізація: { alias: 4, crocodile: 3, association: 4, reason: '-ція jargon, no pantomime' },
+  стоїцизм: { alias: 4, crocodile: 3, association: 4, reason: '-ізм, no pantomime' },
+  алегорія: { alias: 4, crocodile: 3, association: 4, reason: 'literary jargon' },
+  алюзія: { alias: 4, crocodile: 3, association: 4, reason: 'literary jargon' },
+  аномалія: { alias: 4, crocodile: 3, association: 4, reason: 'no pantomime anchor' },
+  гіпотеза: { alias: 4, crocodile: 3, association: 4, reason: 'science abstract, no pantomime' },
+  свобода: { alias: 7, crocodile: 5, association: 7, reason: 'weak mime: arms spread' },
+
+  // Recognition fail: average adult does not know the referent
+  альпака: { alias: 5, crocodile: 4, association: 6, reason: 'exotic animal, low recognition' },
+  ламантин: { alias: 5, crocodile: 5, association: 5, reason: 'exotic animal, low recognition' },
+  лобзик: { alias: 5, crocodile: 5, association: 5, reason: 'niche tool, low recognition' },
 };
 
 function clampScore(value: number): number {
@@ -135,10 +158,11 @@ function applyMorphology(word: CsvWord, scores: RoundScores, reasons: string[]):
   const text = word.text.toLowerCase();
   let { alias, crocodile, association } = scores;
 
-  if (/(?:ість|изм|ізм)$/u.test(text)) {
-    crocodile -= 2;
-    alias -= 1;
-    reasons.push('morphology: abstract suffix (-ість/-ізм)');
+  if (/(?:изм|ізм)$/u.test(text)) {
+    alias -= 3;
+    crocodile -= 3;
+    association -= 2;
+    reasons.push('morphology: -ізм (academic / rare)');
   }
 
   if (/ція$/u.test(text) && ABSTRACTISH_CATEGORIES.has(word.category)) {
@@ -152,10 +176,12 @@ function applyMorphology(word: CsvWord, scores: RoundScores, reasons: string[]):
     reasons.push('morphology: compound phrase (scene possible)');
   }
 
-  if (word.difficulty === 'hard') {
+  // Hard is "less common", not "unrecognizable". Only abstract-ish cards get a
+  // difficulty tax; concrete hard words (жонглювання, керлінг) stay mimeable.
+  if (word.difficulty === 'hard' && ABSTRACTISH_CATEGORIES.has(word.category)) {
     alias -= 1;
     crocodile -= 1;
-    reasons.push('difficulty: hard');
+    reasons.push('difficulty: hard abstract-ish');
   }
 
   return {
