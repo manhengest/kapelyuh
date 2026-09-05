@@ -78,6 +78,10 @@ export function nextRound(state: GameState, now = BASE_TIME + 120_000): GameStat
   return gameReducer(state, { type: 'NEXT_ROUND', now });
 }
 
+export function undoToReview(state: GameState, now = BASE_TIME + 60_000): GameState {
+  return gameReducer(state, { type: 'UNDO_TO_REVIEW', now });
+}
+
 export function getTeamScore(state: GameState, teamId: string): number {
   const team = state.teams.find((entry) => entry.id === teamId);
   if (!team) {

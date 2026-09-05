@@ -17,7 +17,11 @@ type DispatchEvent = {
 
 export type NavDirection = 'forward' | 'backward';
 
-const BACKWARD_EVENTS = new Set<GameEvent['type']>(['BACK_TO_SETTINGS', 'BACK_TO_TEAMS']);
+const BACKWARD_EVENTS = new Set<GameEvent['type']>([
+  'BACK_TO_SETTINGS',
+  'BACK_TO_TEAMS',
+  'UNDO_TO_REVIEW',
+]);
 
 type GameStore = {
   state: GameState;
@@ -61,7 +65,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   hydrate: () => {
     const saved = getActiveMatch();
     set({
-      state: saved ?? createInitialState(),
+      state: saved
+        ? { ...saved, reviewCheckpoint: saved.reviewCheckpoint ?? null }
+        : createInitialState(),
       hydrated: true,
     });
   },

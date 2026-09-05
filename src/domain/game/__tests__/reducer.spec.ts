@@ -2,6 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 
 import {
   createInitialState,
+  deriveWordOutcome,
   gameReducer,
   isActiveMatch,
   SCORE,
@@ -27,6 +28,7 @@ import {
   skipCurrentWord,
   startMatch,
   submitReview,
+  undoToReview,
 } from './helpers';
 
 describe('domain/game/reducer', () => {
@@ -146,12 +148,15 @@ describe('domain/game/reducer', () => {
 
     state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
     expect(state.status).toBe('stat_carousel');
-    expect(state.statCardsRemaining).toBe(2);
+    expect(state.statCardsRemaining).toBe(3);
 
     state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME });
     expect(state.status).toBe('stat_carousel');
 
     state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME + 10 });
+    expect(state.status).toBe('stat_carousel');
+
+    state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME + 20 });
     expect(state.status).toBe('end_of_match');
   });
 
@@ -430,5 +435,137 @@ describe('domain/game/reducer team setup', () => {
       crocodile: 0,
       association: 0,
     });
+  });
+});
+
+describe('domain/game/reducer undo to review', () => {
+  it('restores the previous review after NEXT_TURN', () => {
+    let state = startMatch(['w1', 'w2', 'w3']);
+    state = guessCurrentWord(state);
+    state = expireTimer(state);
+    state = awardWord(state, null);
+
+    const reviewTurn = state.turn;
+    const teamIndex = state.currentTeamIndex;
+    const eliasScore = getCurrentRoundScore(state, 't1');
+
+    state = submitReview(state, {});
+    expect(state.reviewCheckpoint).not.toBeNull();
+
+    state = nextTurn(state);
+    expect(state.status).toBe('round_intro');
+    expect(state.turn).toBeNull();
+    expect(state.currentTeamIndex).toBe(1);
+
+    state = undoToReview(state);
+    expect(state.status).toBe('review');
+    expect(state.turn).toEqual(reviewTurn);
+    expect(state.currentTeamIndex).toBe(teamIndex);
+    expect(getCurrentRoundScore(state, 't1')).toBe(eliasScore);
+    expect(state.reviewCheckpoint).toBeNull();
+    expect(state.turnHistory).toHaveLength(0);
+  });
+
+  it('restores guessed words after a foul was submitted', () => {
+    let state = startMatch(['w1', 'w2', 'w3']);
+    state = guessCurrentWord(state);
+    const fouledWordId = state.turn?.events.find((event) => event.kind === 'guessed')?.wordId;
+    expect(fouledWordId).toBeTruthy();
+
+    state = expireTimer(state);
+    state = awardWord(state, null);
+    expect(deriveWordOutcome(state.turn!.events, fouledWordId!)).toBe('guessed');
+
+    state = submitReview(state, { [fouledWordId!]: 'skipped' });
+    expect(deriveWordOutcome(state.turn!.events, fouledWordId!)).toBe('skipped');
+    expect(getCurrentRoundScore(state, 't1')).toBe(0);
+
+    state = nextTurn(state);
+    state = undoToReview(state);
+
+    expect(state.status).toBe('review');
+    expect(deriveWordOutcome(state.turn!.events, fouledWordId!)).toBe('guessed');
+    expect(getCurrentRoundScore(state, 't1')).toBe(1);
+    expect(state.rounds[0]?.guessedWordIds).toContain(fouledWordId);
+    expect(state.rounds[0]?.remainingWordIds).not.toContain(fouledWordId);
+  });
+
+  it('restores round and team after NEXT_ROUND with carry-over', () => {
+    let state = startMatch(['w1', 'w2']);
+    state = guessCurrentWord(state, BASE_TIME + 10_000);
+    state = guessCurrentWord(state, BASE_TIME + 20_000);
+    expect(state.currentRoundIndex).toBe(0);
+    expect(state.currentTeamIndex).toBe(0);
+    expect(state.carryOverMs).toBe(40_000);
+
+    state = submitReview(state, {});
+    state = nextRound(state);
+    expect(state.status).toBe('round_intro');
+    expect(state.currentRoundIndex).toBe(1);
+    expect(state.currentTeamIndex).toBe(0);
+    expect(state.rounds).toHaveLength(2);
+
+    state = undoToReview(state);
+    expect(state.status).toBe('review');
+    expect(state.currentRoundIndex).toBe(0);
+    expect(state.currentTeamIndex).toBe(0);
+    expect(state.carryOverMs).toBe(40_000);
+    expect(state.rounds).toHaveLength(1);
+  });
+
+  it('restores the finishing team after NEXT_ROUND without carry-over', () => {
+    let state = startMatch(['w1']);
+    state = expireTimer(state);
+    state = awardWord(state, 't2');
+    expect(state.currentTeamIndex).toBe(0);
+
+    state = submitReview(state, {});
+    state = nextRound(state);
+    expect(state.currentTeamIndex).toBe(1);
+
+    state = undoToReview(state);
+    expect(state.status).toBe('review');
+    expect(state.currentRoundIndex).toBe(0);
+    expect(state.currentTeamIndex).toBe(0);
+  });
+
+  it('no-ops UNDO_TO_REVIEW after the next turn has started', () => {
+    let state = startMatch(['w1', 'w2', 'w3']);
+    state = guessCurrentWord(state);
+    state = expireTimer(state);
+    state = awardWord(state, null);
+    state = submitReview(state, {});
+    state = nextTurn(state);
+    state = gameReducer(state, { type: 'ROUND_INTRO_ACK', now: BASE_TIME + 80_000 });
+
+    expect(state.status).toBe('in_turn');
+    expect(state.reviewCheckpoint).toBeNull();
+
+    const undone = undoToReview(state, BASE_TIME + 81_000);
+    expect(undone.status).toBe('in_turn');
+    expect(undone.reviewCheckpoint).toBeNull();
+  });
+
+  it('no-ops UNDO_TO_REVIEW on the first round intro', () => {
+    let state = createInitialState(BASE_TIME);
+    state = gameReducer(state, { type: 'START_SETUP', now: BASE_TIME });
+    state = gameReducer(state, {
+      type: 'SETTINGS_COMPLETED',
+      settings: makeSettings(),
+      now: BASE_TIME,
+    });
+    state = gameReducer(state, {
+      type: 'TEAMS_COMPLETED',
+      teams: [makeTeam('t1', 'A'), makeTeam('t2', 'B')],
+      sessionWordIds: ['w1'],
+      now: BASE_TIME,
+    });
+
+    expect(state.status).toBe('round_intro');
+    expect(state.reviewCheckpoint).toBeNull();
+
+    const undone = undoToReview(state);
+    expect(undone.status).toBe('round_intro');
+    expect(undone).toEqual(state);
   });
 });

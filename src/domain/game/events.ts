@@ -16,6 +16,7 @@ export type GameEvent =
   | { type: 'REVIEW_SUBMITTED'; overrides: Record<string, 'guessed' | 'skipped'>; now: number }
   | { type: 'NEXT_TURN'; now: number }
   | { type: 'NEXT_ROUND'; now: number }
+  | { type: 'UNDO_TO_REVIEW'; now: number }
   | { type: 'OPEN_STAT_CAROUSEL'; now: number }
   | { type: 'DISMISS_STAT_CAROUSEL'; now: number }
   | { type: 'ABANDON_MATCH'; now: number };

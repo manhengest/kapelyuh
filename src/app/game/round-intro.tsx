@@ -77,9 +77,14 @@ export default function RoundIntroScreen() {
   const roundIntroIconStyle = getRoundIntroIconStyle(roundType);
   const hatIconStyle = getHatIconStyle(roundType);
   const gameStarted = state.turnHistory.length > 0;
+  const canUndoReview = state.reviewCheckpoint != null;
   const [confirmVisible, setConfirmVisible] = useState(false);
 
   const onBack = () => {
+    if (canUndoReview) {
+      dispatch({ type: 'UNDO_TO_REVIEW' });
+      return;
+    }
     if (gameStarted) {
       setConfirmVisible(true);
       return;

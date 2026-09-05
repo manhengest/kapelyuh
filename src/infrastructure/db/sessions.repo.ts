@@ -1,3 +1,4 @@
+import { selectMatchDurationMs } from '@domain/game/selectors';
 import type { GameState, SessionHistoryEntry } from '@domain/game/types';
 import { createId } from '@shared/lib/id';
 
@@ -13,7 +14,9 @@ export function buildSessionEntry(state: GameState): SessionHistoryEntry & { wor
   return {
     id: createId('session'),
     finishedAt: state.updatedAt,
-    durationMs: state.updatedAt - state.createdAt,
+    durationMs:
+      selectMatchDurationMs(state.turnHistory, state.createdAt) ??
+      Math.max(0, state.updatedAt - state.createdAt),
     teams: state.teams.map((team) => ({ name: team.name, scores: team.scores })),
     settings: state.settings,
     wordIds,

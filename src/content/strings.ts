@@ -117,6 +117,44 @@ export const strings = {
         });
         return `Найпродуктивніший хід: Команда «${teamName}» відгадала ${count} ${wordsWord}`;
       },
+      matchDuration: (durationMs: number) => {
+        const totalSeconds = Math.max(0, Math.round(durationMs / 1000));
+        if (totalSeconds < 60) {
+          const secWord = pluralizeUkrainian(totalSeconds, {
+            one: 'секунду',
+            few: 'секунди',
+            many: 'секунд',
+          });
+          return `Гра тривала ${totalSeconds} ${secWord}`;
+        }
+
+        if (totalSeconds < 3600) {
+          const minutes = Math.floor(totalSeconds / 60);
+          const minWord = pluralizeUkrainian(minutes, {
+            one: 'хвилину',
+            few: 'хвилини',
+            many: 'хвилин',
+          });
+          return `Гра тривала ${minutes} ${minWord}`;
+        }
+
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const hourWord = pluralizeUkrainian(hours, {
+          one: 'годину',
+          few: 'години',
+          many: 'годин',
+        });
+        if (minutes === 0) {
+          return `Гра тривала ${hours} ${hourWord}`;
+        }
+        const minWord = pluralizeUkrainian(minutes, {
+          one: 'хвилину',
+          few: 'хвилини',
+          many: 'хвилин',
+        });
+        return `Гра тривала ${hours} ${hourWord} ${minutes} ${minWord}`;
+      },
     },
   },
   settings: {

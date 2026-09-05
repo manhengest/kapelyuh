@@ -3,6 +3,7 @@ import { describe, expect, it } from '@jest/globals';
 import {
   collectTurnEventsFromHistory,
   formatGuessDurationSeconds,
+  selectMatchDurationMs,
   selectMatchStatCardCount,
   selectMatchStats,
   selectReviewBanner,
@@ -160,6 +161,23 @@ describe('domain/game/selectors', () => {
     expect(selectMatchStatCardCount({ ...stats, fastestGuess: null, mostSkippedWord: null })).toBe(
       1,
     );
+    expect(selectMatchStatCardCount({ ...stats, matchDurationMs: 60_000 })).toBe(4);
+    expect(
+      selectMatchStatCardCount({
+        fastestGuess: null,
+        slowestGuess: null,
+        leastSkippedTeam: null,
+        mostSkippedWord: null,
+        bestTurn: null,
+        matchDurationMs: 60_000,
+      }),
+    ).toBe(1);
+  });
+
+  it('selectMatchDurationMs uses last turn end minus createdAt', () => {
+    expect(selectMatchDurationMs(turnHistory, 0)).toBe(100_000);
+    expect(selectMatchDurationMs(turnHistory, 20_000)).toBe(80_000);
+    expect(selectMatchDurationMs([], 0)).toBeNull();
   });
 
   it('collectTurnEventsFromHistory flattens completed turns', () => {

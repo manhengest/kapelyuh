@@ -10,13 +10,10 @@ export default function GameLayout() {
       screenOptions={{
         headerShown: false,
         gestureEnabled: false,
+        animationTypeForReplace: navDirection === 'backward' ? 'pop' : 'push',
       }}
     >
       <Stack.Screen name="setup" options={{ animationTypeForReplace: 'pop' }} />
-      <Stack.Screen
-        name="teams"
-        options={{ animationTypeForReplace: navDirection === 'backward' ? 'pop' : 'push' }}
-      />
     </Stack>
   );
 }

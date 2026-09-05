@@ -19,7 +19,7 @@ const mainBg = require('@assets/images/main-bg.jpg');
 const statIconColor = '#FE7298';
 const statIconSize = 48;
 
-type StatCardKind = 'fast' | 'skip' | 'best' | 'fallback';
+type StatCardKind = 'fast' | 'skip' | 'best' | 'duration' | 'fallback';
 
 type StatCard = {
   kind: StatCardKind;
@@ -29,6 +29,7 @@ type StatCard = {
 function StatCardIcon({ kind }: { kind: StatCardKind }) {
   switch (kind) {
     case 'fast':
+    case 'duration':
       return <ClockIcon color={statIconColor} size={statIconSize} />;
     case 'skip':
       return (
@@ -78,6 +79,12 @@ export default function StatisticScreen() {
           matchStats.bestTurn.teamName,
           matchStats.bestTurn.totalWordsGuessed,
         ),
+      });
+    }
+    if (matchStats.matchDurationMs != null) {
+      cards.push({
+        kind: 'duration',
+        text: strings.results.stats.matchDuration(matchStats.matchDurationMs),
       });
     }
     return cards.length > 0

@@ -139,6 +139,18 @@ export function formatGuessDurationSeconds(durationMs: number): number {
   return Math.max(1, Math.round(durationMs / 1000));
 }
 
+export function selectMatchDurationMs(
+  turnHistory: CompletedTurn[],
+  createdAt: number,
+): number | null {
+  const lastTurn = turnHistory.at(-1);
+  if (!lastTurn) {
+    return null;
+  }
+
+  return Math.max(0, lastTurn.endedAt - createdAt);
+}
+
 export function selectMatchStatCardCount(stats: MatchStats): number {
   let count = 0;
   if (stats.fastestGuess) {
@@ -148,6 +160,9 @@ export function selectMatchStatCardCount(stats: MatchStats): number {
     count += 1;
   }
   if (stats.bestTurn) {
+    count += 1;
+  }
+  if (stats.matchDurationMs != null) {
     count += 1;
   }
   return count > 0 ? count : 1;
@@ -253,6 +268,7 @@ export function selectMatchStats(
     leastSkippedTeam,
     mostSkippedWord,
     bestTurn,
+    matchDurationMs: null,
   };
 }
 

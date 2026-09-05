@@ -98,6 +98,16 @@ export interface CompletedTurn {
   endedAt: number;
 }
 
+export interface ReviewCheckpoint {
+  teams: Team[];
+  rounds: RoundState[];
+  currentRoundIndex: 0 | 1 | 2;
+  currentTeamIndex: number;
+  turn: TurnState;
+  turnHistory: CompletedTurn[];
+  carryOverMs: number | null;
+}
+
 export interface GameState {
   status: GameStatus;
   settings: MatchSettings;
@@ -108,6 +118,7 @@ export interface GameState {
   turn: TurnState | null;
   turnHistory: CompletedTurn[];
   carryOverMs: number | null;
+  reviewCheckpoint: ReviewCheckpoint | null;
   statCardsRemaining: number;
   createdAt: number;
   updatedAt: number;
@@ -136,4 +147,5 @@ export interface MatchStats {
   leastSkippedTeam: { teamName: string; skipCount: number } | null;
   mostSkippedWord: { wordText: string; skipCount: number } | null;
   bestTurn: { teamName: string; totalWordsGuessed: number } | null;
+  matchDurationMs: number | null;
 }

@@ -2,11 +2,12 @@ import { shuffle } from '@domain/utils/shuffle';
 
 import type { GameEvent } from './events';
 import { applyReviewOverrides, clampScore, computeTurnScore, deriveWordOutcome } from './scoring';
-import { selectMatchStatCardCount, selectMatchStats } from './selectors';
+import { selectMatchDurationMs, selectMatchStatCardCount, selectMatchStats } from './selectors';
 import type {
   CompletedTurn,
   GameState,
   MatchSettings,
+  ReviewCheckpoint,
   RoundState,
   RoundType,
   Team,
@@ -27,6 +28,7 @@ export function createInitialState(now = 0): GameState {
     turn: null,
     turnHistory: [],
     carryOverMs: null,
+    reviewCheckpoint: null,
     statCardsRemaining: STAT_CARD_COUNT,
     createdAt: now,
     updatedAt: now,
@@ -349,6 +351,22 @@ function collectReviewReturnedWordIds(
   return returnedWordIds;
 }
 
+function captureReviewCheckpoint(state: GameState): ReviewCheckpoint | null {
+  if (!state.turn) {
+    return null;
+  }
+
+  return {
+    teams: state.teams,
+    rounds: state.rounds,
+    currentRoundIndex: state.currentRoundIndex,
+    currentTeamIndex: state.currentTeamIndex,
+    turn: state.turn,
+    turnHistory: state.turnHistory,
+    carryOverMs: state.carryOverMs,
+  };
+}
+
 function handleReviewSubmitted(
   state: GameState,
   overrides: Record<string, 'guessed' | 'skipped'>,
@@ -359,16 +377,17 @@ function handleReviewSubmitted(
     return state;
   }
 
+  const reviewCheckpoint = captureReviewCheckpoint(state);
   const round = getCurrentRound(state);
   const returnedWordIds = collectReviewReturnedWordIds(turn.events, overrides);
   const delta = applyReviewOverrides(turn.events, overrides, state.settings.skipPenalty);
 
   if (delta === 0 && returnedWordIds.length === 0) {
-    return touch(state, now);
+    return touch({ ...state, reviewCheckpoint }, now);
   }
 
   const returnedSet = new Set(returnedWordIds);
-  let nextState = state;
+  let nextState: GameState = { ...state, reviewCheckpoint };
 
   if (delta !== 0) {
     nextState = {
@@ -456,6 +475,7 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
           currentTeamIndex: 0,
           turn: null,
           turnHistory: [],
+          reviewCheckpoint: null,
           statCardsRemaining: STAT_CARD_COUNT,
           createdAt: event.now,
         },
@@ -465,7 +485,7 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
 
     case 'ROUND_INTRO_ACK':
       assertStatus(state, ['round_intro']);
-      return startTurnState(state, event.now);
+      return startTurnState({ ...state, reviewCheckpoint: null }, event.now);
 
     case 'GUESS_WORD':
       assertStatus(state, ['in_turn']);
@@ -569,6 +589,29 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
       );
     }
 
+    case 'UNDO_TO_REVIEW': {
+      if (state.status !== 'round_intro' || !state.reviewCheckpoint) {
+        return state;
+      }
+
+      const checkpoint = state.reviewCheckpoint;
+      return touch(
+        {
+          ...state,
+          status: 'review',
+          teams: checkpoint.teams,
+          rounds: checkpoint.rounds,
+          currentRoundIndex: checkpoint.currentRoundIndex,
+          currentTeamIndex: checkpoint.currentTeamIndex,
+          turn: checkpoint.turn,
+          turnHistory: checkpoint.turnHistory,
+          carryOverMs: checkpoint.carryOverMs,
+          reviewCheckpoint: null,
+        },
+        event.now,
+      );
+    }
+
     case 'NEXT_ROUND': {
       assertStatus(state, ['review']);
       const withHistory = appendTurnHistory(state, event.now);
@@ -601,7 +644,10 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
     case 'OPEN_STAT_CAROUSEL': {
       assertStatus(state, ['review']);
       const withHistory = appendTurnHistory(state, event.now);
-      const matchStats = selectMatchStats(withHistory.turnHistory, withHistory.teams, {});
+      const matchStats = {
+        ...selectMatchStats(withHistory.turnHistory, withHistory.teams, {}),
+        matchDurationMs: selectMatchDurationMs(withHistory.turnHistory, withHistory.createdAt),
+      };
       const cardCount = selectMatchStatCardCount(matchStats);
       return touch(
         {
