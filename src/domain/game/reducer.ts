@@ -50,6 +50,25 @@ function createRound(type: RoundType, sessionWordIds: string[]): RoundState {
   };
 }
 
+function startFirstRound(state: GameState, sessionWordIds: string[], now: number): GameState {
+  const firstRound = createRound(ROUND_TYPES[0], sessionWordIds);
+
+  return touch(
+    {
+      ...state,
+      status: 'round_intro',
+      rounds: [firstRound],
+      currentRoundIndex: 0,
+      currentTeamIndex: 0,
+      turn: null,
+      turnHistory: [],
+      reviewCheckpoint: null,
+      statCardsRemaining: STAT_CARD_COUNT,
+    },
+    now,
+  );
+}
+
 function initTeams(teams: Team[]): Team[] {
   return teams.map((team) => ({
     ...team,
@@ -455,7 +474,7 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
       return touch({ ...state, status: 'setup_settings' }, event.now);
 
     case 'BACK_TO_TEAMS':
-      if (state.status !== 'round_intro') {
+      if (state.status !== 'round_intro' && state.status !== 'building_hat') {
         return state;
       }
       return touch({ ...state, status: 'setup_teams' }, event.now);
@@ -463,22 +482,24 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
     case 'TEAMS_COMPLETED': {
       assertStatus(state, ['setup_teams']);
       const teams = initTeams(event.teams);
-      const firstRound = createRound(ROUND_TYPES[0], event.sessionWordIds);
+      const withTeams = { ...state, teams, createdAt: event.now };
+      if (state.settings.wordSource === 'custom') {
+        return touch({ ...withTeams, status: 'building_hat', rounds: [] }, event.now);
+      }
+      return startFirstRound(withTeams, event.sessionWordIds, event.now);
+    }
 
-      return touch(
+    case 'HAT_COMPLETED': {
+      assertStatus(state, ['building_hat']);
+      return startFirstRound(
         {
           ...state,
-          status: 'round_intro',
-          teams,
-          rounds: [firstRound],
-          currentRoundIndex: 0,
-          currentTeamIndex: 0,
-          turn: null,
-          turnHistory: [],
-          reviewCheckpoint: null,
-          statCardsRemaining: STAT_CARD_COUNT,
-          createdAt: event.now,
+          settings: {
+            ...state.settings,
+            wordCount: event.sessionWordIds.length,
+          },
         },
+        event.sessionWordIds,
         event.now,
       );
     }

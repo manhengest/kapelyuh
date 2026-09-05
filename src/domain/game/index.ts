@@ -42,6 +42,7 @@ export type {
   TurnEvent,
   TurnState,
   Word,
+  WordSource,
 } from './types';
 export { DEFAULT_MATCH_SETTINGS, ROUND_TYPES, SCORE } from './types';
 export { type WordSelectorInput, selectSessionWords } from './wordSelector';

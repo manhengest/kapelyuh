@@ -4,7 +4,7 @@ import { ImageBackground, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from '@content/strings';
-import type { Difficulty, MatchSettings } from '@domain/game/types';
+import type { Difficulty, MatchSettings, WordSource } from '@domain/game/types';
 import { DEFAULT_MATCH_SETTINGS } from '@domain/game/types';
 import { useGameActions, useGameState } from '@features/game/hooks';
 import { useAppSettings } from '@features/settings/store';
@@ -13,6 +13,7 @@ import { HorizontalPicker } from '@ui/components/HorizontalPicker';
 import { HorizontalSlider, snapSliderValue } from '@ui/components/HorizontalSlider';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
+import { Text } from '@ui/components/Text';
 
 const mainBg = require('@assets/images/main-bg.jpg');
 
@@ -60,6 +61,12 @@ export default function SetupScreen() {
     medium: strings.setup.difficultyMedium,
     hard: strings.setup.difficultyHard,
   };
+  const wordSourceOptions = useMemo<WordSource[]>(() => ['bundled', 'custom'], []);
+  const wordSourceLabels: Record<WordSource, string> = {
+    bundled: strings.setup.wordSourceBundled,
+    custom: strings.setup.wordSourceCustom,
+  };
+  const isCustomHat = settings.wordSource === 'custom';
 
   const onNext = () => {
     dispatch({ type: 'SETTINGS_COMPLETED', settings });
@@ -76,6 +83,20 @@ export default function SetupScreen() {
           />
           <ScrollView className="flex-1 px-6" contentContainerClassName="pt-4">
             <View className="gap-3">
+              <SettingsCard>
+                <HorizontalPicker
+                  label={strings.setup.wordSet}
+                  options={wordSourceOptions}
+                  value={settings.wordSource}
+                  onChange={(wordSource) => setSettings((current) => ({ ...current, wordSource }))}
+                  formatOption={(source) => wordSourceLabels[source]}
+                />
+                {isCustomHat ? (
+                  <Text className="mt-3 text-center text-base text-highlightText">
+                    {strings.setup.customHatHint}
+                  </Text>
+                ) : null}
+              </SettingsCard>
               <SettingsCard>
                 <HorizontalPicker
                   label={strings.setup.turnDuration}
@@ -103,18 +124,25 @@ export default function SetupScreen() {
                   value={settings.wordCount}
                   onChange={(wordCount) => setSettings((current) => ({ ...current, wordCount }))}
                 />
+                {isCustomHat ? (
+                  <Text className="mt-2 text-center text-base text-highlightText">
+                    {strings.setup.customWordCountNote}
+                  </Text>
+                ) : null}
               </SettingsCard>
-              <SettingsCard>
-                <HorizontalPicker
-                  label={strings.setup.difficulty}
-                  options={difficultyOptions}
-                  value={settings.difficulties[0]}
-                  onChange={(difficulty) =>
-                    setSettings((current) => ({ ...current, difficulties: [difficulty] }))
-                  }
-                  formatOption={(d) => difficultyLabels[d]}
-                />
-              </SettingsCard>
+              {isCustomHat ? null : (
+                <SettingsCard>
+                  <HorizontalPicker
+                    label={strings.setup.difficulty}
+                    options={difficultyOptions}
+                    value={settings.difficulties[0]}
+                    onChange={(difficulty) =>
+                      setSettings((current) => ({ ...current, difficulties: [difficulty] }))
+                    }
+                    formatOption={(d) => difficultyLabels[d]}
+                  />
+                </SettingsCard>
+              )}
             </View>
           </ScrollView>
           <ScreenFooter

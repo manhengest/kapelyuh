@@ -110,8 +110,8 @@ export function HorizontalSlider({
 
   return (
     <View className="w-full">
-      <View className="mb-[14px] flex-row items-center justify-between gap-3">
-        <Text className="flex-1 text-2xl font-bold">{label}</Text>
+      <View className="flex-row items-center justify-between gap-3">
+        <Text className="flex-1 text-xl font-bold">{label}</Text>
         <Text className="text-2xl font-bold text-pink">{snappedValue}</Text>
       </View>
       <View

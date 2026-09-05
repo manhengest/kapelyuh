@@ -6,6 +6,11 @@ import { useGameStore } from '@features/game/store';
 import { saveFinishedSession } from '@infrastructure/db/sessions.repo';
 import { clearActiveMatch } from '@infrastructure/storage/activeMatch';
 import {
+  addCustomWord,
+  clearCustomWords,
+  getCustomWords,
+} from '@infrastructure/storage/customWords';
+import {
   getUsageMap,
   getWordUsage,
   markWordsUsed,
@@ -32,6 +37,7 @@ describe('features/game/store session persistence', () => {
     saveFinishedSessionMock.mockClear();
     clearActiveMatchMock.mockClear();
     resetWordUsage();
+    clearCustomWords();
     useGameStore.setState({
       state: {
         ...createInitialState(100),
@@ -102,5 +108,71 @@ describe('features/game/store session persistence', () => {
     expect(getWordUsage('w-3')).toBe(0);
     expect(getUsageMap()).toEqual({});
     expect(clearActiveMatchMock).toHaveBeenCalled();
+  });
+
+  it('skips usage marking and clears custom words when a custom match ends', () => {
+    expect(addCustomWord('футбол')).toBe('added');
+    useGameStore.setState({
+      state: {
+        ...createInitialState(100),
+        status: 'stat_carousel',
+        statCardsRemaining: 1,
+        settings: makeSettings({ wordSource: 'custom' }),
+        teams: [makeTeam('t1', 'A'), makeTeam('t2', 'B')],
+        rounds: [
+          {
+            type: 'elias',
+            sessionWordIds: ['custom_1'],
+            remainingWordIds: [],
+            guessedWordIds: ['custom_1'],
+            turnIndex: 0,
+          },
+        ],
+        currentRoundIndex: 2,
+      },
+    });
+
+    useGameStore.getState().dispatch({ type: 'DISMISS_STAT_CAROUSEL', now: 200 });
+
+    expect(getWordUsage('custom_1')).toBe(0);
+    expect(getCustomWords()).toEqual({});
+    expect(saveFinishedSessionMock).toHaveBeenCalledTimes(1);
+  });
+
+  it('clears leftover custom words when entering building_hat', () => {
+    expect(addCustomWord('старий')).toBe('added');
+    useGameStore.setState({
+      state: {
+        ...createInitialState(100),
+        status: 'setup_teams',
+        settings: makeSettings({ wordSource: 'custom' }),
+      },
+    });
+
+    useGameStore.getState().dispatch({
+      type: 'TEAMS_COMPLETED',
+      teams: [makeTeam('t1', 'A'), makeTeam('t2', 'B')],
+      sessionWordIds: [],
+      now: 200,
+    });
+
+    expect(useGameStore.getState().state.status).toBe('building_hat');
+    expect(getCustomWords()).toEqual({});
+  });
+
+  it('clears custom words when a match is abandoned', () => {
+    expect(addCustomWord('футбол')).toBe('added');
+    useGameStore.setState({
+      state: {
+        ...createInitialState(100),
+        status: 'building_hat',
+        settings: makeSettings({ wordSource: 'custom' }),
+        teams: [makeTeam('t1', 'A'), makeTeam('t2', 'B')],
+      },
+    });
+
+    useGameStore.getState().abandonMatch();
+
+    expect(getCustomWords()).toEqual({});
   });
 });

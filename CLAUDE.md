@@ -10,7 +10,7 @@ Offline Ukrainian party game (React Native + Expo). Read this before planning or
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | Version       | `package.json` `version` → `app.config.ts` → runtime via `getAppVersion()`; optional `APP_VERSION` in `.env.local`; iOS bundle `com.kapelyukh.app` |
 | Platforms     | iPhone primary; iPad supported (`supportsTablet` + centered `ContentColumn`)                                                                       |
-| Game loop     | Full: setup → teams → round-intro → turn → award → review → (next turn/round) → results → statistic                                                |
+| Game loop     | Full: setup → teams → building-hat (custom) → round-intro → turn → award → review → (next turn/round) → results → statistic                        |
 | Persistence   | Active match autosaved to MMKV; finished sessions in SQLite; settings in MMKV                                                                      |
 | Words         | `scripts/words-master.csv` → `npm run words:validate` → `npm run words:build` (`status=core                                                        | pack`) → `assets/data/kapelyukh.db`. Usage/freshness in MMKV (`wordUsage`). Legacy `scripts/words.csv` kept for reference |
 | Monetization  | No ads / no IAP. `infrastructure/purchases/stub.ts` always returns `isPro: false` (Pro → V1.1)                                                     |
@@ -18,7 +18,7 @@ Offline Ukrainian party game (React Native + Expo). Read this before planning or
 | Distribution  | EAS profiles: `development`, `development-simulator`, `preview`, `production` + TestFlight submit                                                  |
 | Release gate  | Phase 5/6 docs in `docs/` (beta matrix, TestFlight, word-list sign-off) — treat as process, not code truth                                         |
 
-**Screens (`src/app/`):** home, rules, settings, about, privacy; game: setup, teams, round-intro, turn, review, results, statistic.
+**Screens (`src/app/`):** home, rules, settings, about, privacy; game: setup, teams, building-hat, round-intro, turn, review, results, statistic.
 
 **Not in V1:** accounts, network gameplay, custom word packs UI, IAP, Android release focus (package id exists, iOS is the shipping target).
 
@@ -159,19 +159,19 @@ Import order is enforced: builtin → external → internal, alphabetized, blank
 
 ## Documentation map
 
-| Path                       | Contents                                                                         |
-| -------------------------- | -------------------------------------------------------------------------------- |
-| `README.md`                | Setup, EAS dev build, scripts, TestFlight gate                                   |
-| `PRIVACY.md`               | User agreement / privacy copy (Ukrainian)                                        |
-| `docs/`                    | Beta/TestFlight, Sentry, word-list sign-off, design brief, TZ                    |
-| `docs/design-brief.md`     | Visual / UX brief                                                                |
-| `design/`                  | Approved screen reference PNGs                                                   |
-| `.cursor/plans/`           | Ad-hoc feature plans (not a single roadmap)                                      |
-| `scripts/words-master.csv` | Word list source for SQLite build (`id,text,difficulty,category,status,group`)   |
-| `scripts/audit/`           | Conflict decisions (`word-conflict-decisions.json`); other files are regenerable |
-| `scripts/words.csv`        | Legacy 3-column list, kept for git history                                       |
-| `docs/word-categories.md`  | Canonical 36 English category slugs                                              |
-| `docs/word-curation-playbook.md` | Rules for adding/rejecting/grouping words; read before generating a pack |
+| Path                             | Contents                                                                         |
+| -------------------------------- | -------------------------------------------------------------------------------- |
+| `README.md`                      | Setup, EAS dev build, scripts, TestFlight gate                                   |
+| `PRIVACY.md`                     | User agreement / privacy copy (Ukrainian)                                        |
+| `docs/`                          | Beta/TestFlight, Sentry, word-list sign-off, design brief, TZ                    |
+| `docs/design-brief.md`           | Visual / UX brief                                                                |
+| `design/`                        | Approved screen reference PNGs                                                   |
+| `.cursor/plans/`                 | Ad-hoc feature plans (not a single roadmap)                                      |
+| `scripts/words-master.csv`       | Word list source for SQLite build (`id,text,difficulty,category,status,group`)   |
+| `scripts/audit/`                 | Conflict decisions (`word-conflict-decisions.json`); other files are regenerable |
+| `scripts/words.csv`              | Legacy 3-column list, kept for git history                                       |
+| `docs/word-categories.md`        | Canonical 36 English category slugs                                              |
+| `docs/word-curation-playbook.md` | Rules for adding/rejecting/grouping words; read before generating a pack         |
 
 When docs and code disagree, **code is the source of truth** — update docs if you change behavior. (Example: `docs/word-list-signoff.md` word counts may lag `scripts/words-master.csv`.)
 
@@ -193,3 +193,17 @@ When docs and code disagree, **code is the source of truth** — update docs if 
 - **Word curation** — before generating, rejecting, or regrouping words, read [`docs/word-curation-playbook.md`](docs/word-curation-playbook.md). It encodes the deletion / difficulty / status / group rules distilled from the manual curation pass.
 - **Styles** — edit `global.css` for shared component classes and `tailwind.config.js` for tokens; use Tailwind utilities in TSX for one-off layout.
 - **Pro / IAP** — do not wire StoreKit or RevenueCat in V1; keep the purchases stub.
+
+## Agent skills
+
+### Issue tracker
+
+GitHub Issues on `manhengest/kapelyuh` via `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+Default five-role vocabulary (`needs-triage`, `needs-info`, `ready-for-agent`, `ready-for-human`, `wontfix`). See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context layout (`CONTEXT.md` + `docs/adr/` at repo root). See `docs/agents/domain.md`.

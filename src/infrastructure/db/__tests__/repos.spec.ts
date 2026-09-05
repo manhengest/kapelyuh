@@ -5,6 +5,7 @@ import { createInitialState } from '@domain/game/reducer';
 import type { GameState } from '@domain/game/types';
 import { setDatabase } from '@infrastructure/db/databaseRef';
 import {
+  buildSessionEntry,
   getRecentSessionWordIds,
   pruneOldSessions,
   saveFinishedSession,
@@ -86,5 +87,13 @@ describe('infrastructure/db/sessions.repo', () => {
     await pruneOldSessions(20);
     const recent = await getRecentSessionWordIds(25);
     expect(recent.length).toBeLessThanOrEqual(20);
+  });
+
+  it('stores empty word ids for custom wordSource matches', () => {
+    const entry = buildSessionEntry({
+      ...finishedState(['custom_1', 'custom_2'], 1_500),
+      settings: makeSettings({ wordSource: 'custom', wordCount: 2 }),
+    });
+    expect(entry.wordIds).toEqual([]);
   });
 });

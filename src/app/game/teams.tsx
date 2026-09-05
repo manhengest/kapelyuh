@@ -73,6 +73,10 @@ function TeamsEditor({ settings, teamsFromStore, teamCount }: TeamsEditorProps) 
   };
 
   const onNext = async () => {
+    if (settings.wordSource === 'custom') {
+      dispatch({ type: 'TEAMS_COMPLETED', teams, sessionWordIds: [] });
+      return;
+    }
     const sessionWordIds = await selectSessionWordIds(settings);
     dispatch({ type: 'TEAMS_COMPLETED', teams, sessionWordIds });
   };

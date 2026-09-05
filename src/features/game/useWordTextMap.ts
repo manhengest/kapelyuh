@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { getWordTextMap } from '@infrastructure/db/words.repo';
+import { getCustomWords } from '@infrastructure/storage/customWords';
 
 const EMPTY_MAP: Record<string, string> = {};
 
@@ -18,7 +19,7 @@ export function useWordTextMap(): {
       try {
         const map = await getWordTextMap();
         if (!cancelled) {
-          setWordTexts(map);
+          setWordTexts({ ...map, ...getCustomWords() });
         }
       } finally {
         if (!cancelled) {

@@ -2,10 +2,13 @@ export type RoundType = 'elias' | 'crocodile' | 'association';
 
 export type Difficulty = 'easy' | 'medium' | 'hard';
 
+export type WordSource = 'bundled' | 'custom';
+
 export type GameStatus =
   | 'idle'
   | 'setup_settings'
   | 'setup_teams'
+  | 'building_hat'
   | 'round_intro'
   | 'in_turn'
   | 'awaiting_award'
@@ -30,6 +33,7 @@ export const DEFAULT_MATCH_SETTINGS: MatchSettings = {
   difficulties: ['easy'],
   enabledPackIds: ['bundled-default'],
   skipPenalty: 0,
+  wordSource: 'bundled',
 };
 
 export interface Word {
@@ -62,6 +66,7 @@ export interface MatchSettings {
   difficulties: Difficulty[];
   enabledPackIds: string[];
   skipPenalty: 0 | -1;
+  wordSource: WordSource;
 }
 
 export type TurnEvent =

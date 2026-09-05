@@ -569,3 +569,96 @@ describe('domain/game/reducer undo to review', () => {
     expect(undone).toEqual(state);
   });
 });
+
+describe('domain/game/reducer custom hat', () => {
+  function startCustomSetup(now = BASE_TIME): ReturnType<typeof createInitialState> {
+    let state = createInitialState(now);
+    state = gameReducer(state, { type: 'START_SETUP', now });
+    state = gameReducer(state, {
+      type: 'SETTINGS_COMPLETED',
+      settings: makeSettings({ wordSource: 'custom', wordCount: 30 }),
+      now,
+    });
+    return state;
+  }
+
+  it('routes TEAMS_COMPLETED to building_hat without creating a round', () => {
+    let state = startCustomSetup();
+    state = gameReducer(state, {
+      type: 'TEAMS_COMPLETED',
+      teams: [makeTeam('t1', 'A'), makeTeam('t2', 'B')],
+      sessionWordIds: [],
+      now: BASE_TIME,
+    });
+
+    expect(state.status).toBe('building_hat');
+    expect(state.rounds).toEqual([]);
+    expect(state.createdAt).toBe(BASE_TIME);
+    expect(state.teams).toHaveLength(2);
+    expect(isActiveMatch(state)).toBe(true);
+  });
+
+  it('leaves bundled TEAMS_COMPLETED on round_intro', () => {
+    let state = createInitialState(BASE_TIME);
+    state = gameReducer(state, { type: 'START_SETUP', now: BASE_TIME });
+    state = gameReducer(state, {
+      type: 'SETTINGS_COMPLETED',
+      settings: makeSettings(),
+      now: BASE_TIME,
+    });
+    state = gameReducer(state, {
+      type: 'TEAMS_COMPLETED',
+      teams: [makeTeam('t1', 'A'), makeTeam('t2', 'B')],
+      sessionWordIds: ['w1', 'w2'],
+      now: BASE_TIME,
+    });
+
+    expect(state.status).toBe('round_intro');
+    expect(state.rounds[0]?.sessionWordIds).toEqual(['w1', 'w2']);
+  });
+
+  it('HAT_COMPLETED starts the first round and keeps createdAt from teams', () => {
+    let state = startCustomSetup();
+    state = gameReducer(state, {
+      type: 'TEAMS_COMPLETED',
+      teams: [makeTeam('t1', 'A'), makeTeam('t2', 'B')],
+      sessionWordIds: [],
+      now: BASE_TIME,
+    });
+    state = gameReducer(state, {
+      type: 'HAT_COMPLETED',
+      sessionWordIds: ['custom_1', 'custom_2', 'custom_3'],
+      now: BASE_TIME + 5_000,
+    });
+
+    expect(state.status).toBe('round_intro');
+    expect(state.createdAt).toBe(BASE_TIME);
+    expect(state.settings.wordCount).toBe(3);
+    expect(state.rounds[0]?.type).toBe('elias');
+    expect(state.rounds[0]?.sessionWordIds).toEqual(['custom_1', 'custom_2', 'custom_3']);
+  });
+
+  it('BACK_TO_TEAMS from building_hat returns to setup_teams', () => {
+    let state = startCustomSetup();
+    state = gameReducer(state, {
+      type: 'TEAMS_COMPLETED',
+      teams: [makeTeam('t1', 'A'), makeTeam('t2', 'B')],
+      sessionWordIds: [],
+      now: BASE_TIME,
+    });
+    state = gameReducer(state, { type: 'BACK_TO_TEAMS', now: BASE_TIME + 1 });
+
+    expect(state.status).toBe('setup_teams');
+  });
+
+  it('rejects HAT_COMPLETED outside building_hat', () => {
+    const state = startCustomSetup();
+    expect(() =>
+      gameReducer(state, {
+        type: 'HAT_COMPLETED',
+        sessionWordIds: ['custom_1'],
+        now: BASE_TIME,
+      }),
+    ).toThrow('Invalid transition from status "setup_teams"');
+  });
+});

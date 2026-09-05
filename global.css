@@ -44,7 +44,7 @@
   }
 
   .picker-option {
-    @apply rounded-2xl border border-pickerBorder bg-pickerSurface px-[17px] py-[14px];
+    @apply rounded-2xl border border-pickerBorder bg-pickerSurface px-2 py-3;
   }
 
   .picker-option--selected {
@@ -60,7 +60,7 @@
   }
 
   .picker-title {
-    @apply mb-[14px] text-2xl font-bold;
+    @apply mb-[10px] text-xl font-bold;
   }
 
   .landing-new-game-btn {

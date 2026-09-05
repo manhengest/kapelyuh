@@ -2,13 +2,14 @@ import { create } from 'zustand';
 
 import type { GameEvent } from '@domain/game/events';
 import { createInitialState, gameReducer, isActiveMatch } from '@domain/game/reducer';
-import type { GameState } from '@domain/game/types';
+import { DEFAULT_MATCH_SETTINGS, type GameState } from '@domain/game/types';
 import { saveFinishedSession } from '@infrastructure/db/sessions.repo';
 import {
   clearActiveMatch,
   getActiveMatch,
   setActiveMatch,
 } from '@infrastructure/storage/activeMatch';
+import { clearCustomWords } from '@infrastructure/storage/customWords';
 import { markWordsUsed } from '@infrastructure/storage/wordUsage';
 
 type DispatchEvent = {
@@ -45,10 +46,25 @@ function persistMatch(state: GameState): void {
   }
 }
 
+function hydrateState(saved: GameState): GameState {
+  return {
+    ...saved,
+    reviewCheckpoint: saved.reviewCheckpoint ?? null,
+    settings: {
+      ...DEFAULT_MATCH_SETTINGS,
+      ...saved.settings,
+      wordSource: saved.settings.wordSource ?? 'bundled',
+    },
+  };
+}
+
 function handleMatchEnd(prev: GameState, next: GameState): void {
   if (next.status === 'end_of_match' && prev.status !== 'end_of_match') {
-    const sessionWordIds = next.rounds[0]?.sessionWordIds ?? [];
-    markWordsUsed(sessionWordIds, String(next.createdAt));
+    if (next.settings.wordSource !== 'custom') {
+      const sessionWordIds = next.rounds[0]?.sessionWordIds ?? [];
+      markWordsUsed(sessionWordIds, String(next.createdAt));
+    }
+    clearCustomWords();
 
     void saveFinishedSession(next).catch((error: unknown) => {
       console.error('Failed to save finished session', error);
@@ -65,9 +81,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   hydrate: () => {
     const saved = getActiveMatch();
     set({
-      state: saved
-        ? { ...saved, reviewCheckpoint: saved.reviewCheckpoint ?? null }
-        : createInitialState(),
+      state: saved ? hydrateState(saved) : createInitialState(),
       hydrated: true,
     });
   },
@@ -77,6 +91,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const now = event.now ?? Date.now();
     const next = gameReducer(prev, { ...event, now } as GameEvent);
     handleMatchEnd(prev, next);
+    if (event.type === 'TEAMS_COMPLETED' && next.status === 'building_hat') {
+      clearCustomWords();
+    }
     set({ state: next, navDirection: BACKWARD_EVENTS.has(event.type) ? 'backward' : 'forward' });
     persistMatch(next);
     return next;
@@ -86,6 +103,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   abandonMatch: () => {
     const next = gameReducer(get().state, { type: 'ABANDON_MATCH', now: Date.now() });
+    clearCustomWords();
     set({ state: next, pauseModalVisible: false });
     clearActiveMatch();
   },

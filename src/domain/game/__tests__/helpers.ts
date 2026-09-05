@@ -19,6 +19,7 @@ export function makeSettings(overrides: Partial<MatchSettings> = {}): MatchSetti
     difficulties: ['easy'],
     enabledPackIds: ['bundled-default'],
     skipPenalty: 0,
+    wordSource: 'bundled',
     ...overrides,
   };
 }

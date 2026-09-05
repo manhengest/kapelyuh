@@ -93,7 +93,12 @@ const ABSTRACTISH_CATEGORIES = new Set([
  */
 const OVERRIDES: Record<string, PlayabilityOverride> = {
   // Visual-hook abstracts / traits / civic scenes — pass
-  варіант: { alias: 8, crocodile: 6, association: 7, reason: 'hook: mime a choice between options' },
+  варіант: {
+    alias: 8,
+    crocodile: 6,
+    association: 7,
+    reason: 'hook: mime a choice between options',
+  },
   думка: { alias: 8, crocodile: 7, association: 7, reason: 'hook: tapping temple / thinking' },
   ідея: { alias: 10, crocodile: 8, association: 6, reason: 'hook: lightbulb over the head' },
   акуратність: {
@@ -107,7 +112,12 @@ const OVERRIDES: Record<string, PlayabilityOverride> = {
   хабар: { alias: 8, crocodile: 8, association: 8, reason: 'hook: passing an envelope' },
   корупція: { alias: 7, crocodile: 6, association: 7, reason: 'hook: envelope under the table' },
   арешт: { alias: 8, crocodile: 8, association: 8, reason: 'hook: hands cuffed behind back' },
-  барикада: { alias: 6, crocodile: 6, association: 6, reason: 'hook: stacking furniture / blocking' },
+  барикада: {
+    alias: 6,
+    crocodile: 6,
+    association: 6,
+    reason: 'hook: stacking furniture / blocking',
+  },
   бюрократія: {
     alias: 7,
     crocodile: 6,
@@ -217,7 +227,9 @@ function applyOverride(
 export function scorePlayability(word: CsvWord): PlayabilityScore {
   const reasons: string[] = [];
   const base = CATEGORY_BASE[word.category] ?? DEFAULT_BASE;
-  reasons.push(`category base (${word.category}): ${base.alias}/${base.crocodile}/${base.association}`);
+  reasons.push(
+    `category base (${word.category}): ${base.alias}/${base.crocodile}/${base.association}`,
+  );
 
   let scores = applyMorphology(word, { ...base }, reasons);
   const key = normalizeTextKey(word.text);
@@ -225,8 +237,7 @@ export function scorePlayability(word: CsvWord): PlayabilityScore {
   scores = overridden;
 
   const min = Math.min(scores.alias, scores.crocodile, scores.association);
-  const pass =
-    passOverride !== undefined ? passOverride : min >= PLAYABILITY_MIN;
+  const pass = passOverride !== undefined ? passOverride : min >= PLAYABILITY_MIN;
 
   return {
     alias: scores.alias,

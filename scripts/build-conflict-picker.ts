@@ -304,7 +304,10 @@ function buildClusters(words: CsvWord[]): Cluster[] {
 
   conflictClusters.sort((a, b) => a.key.localeCompare(b.key, 'uk'));
 
-  return [...alreadyGrouped.sort((a, b) => (a.existingGroup ?? '').localeCompare(b.existingGroup ?? '')), ...conflictClusters];
+  return [
+    ...alreadyGrouped.sort((a, b) => (a.existingGroup ?? '').localeCompare(b.existingGroup ?? '')),
+    ...conflictClusters,
+  ];
 }
 
 function renderHtml(clusters: Cluster[], generatedAt: string): string {

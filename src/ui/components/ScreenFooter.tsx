@@ -29,7 +29,7 @@ export function ScreenFooter({
 }: ScreenFooterProps) {
   return (
     <ContentColumn>
-      <View className="gap-3 px-5">
+      <View className="gap-3 px-5 pt-2">
         {hint ? (
           <View className="mb-1 flex-row items-start justify-center gap-1.5">
             <InfoIcon size={20} />
@@ -44,7 +44,7 @@ export function ScreenFooter({
           <Pressable
             accessibilityRole="button"
             accessibilityLabel={skipLabel}
-            className="min-h-[30px] items-center justify-center py-2"
+            className="min-h-[48px] items-center justify-center py-2"
             onPress={() => {
               playTap();
               skipOnPress();

@@ -10,7 +10,8 @@ type SessionRow = {
 };
 
 export function buildSessionEntry(state: GameState): SessionHistoryEntry & { wordIds: string[] } {
-  const wordIds = state.rounds[0]?.sessionWordIds ?? [];
+  const wordIds =
+    state.settings.wordSource === 'custom' ? [] : (state.rounds[0]?.sessionWordIds ?? []);
   return {
     id: createId('session'),
     finishedAt: state.updatedAt,

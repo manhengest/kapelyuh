@@ -211,6 +211,7 @@ export function useTimer() {
 export const STATUS_ROUTE: Partial<Record<GameStatus, string>> = {
   setup_settings: '/game/setup',
   setup_teams: '/game/teams',
+  building_hat: '/game/building-hat',
   round_intro: '/game/round-intro',
   in_turn: '/game/turn',
   awaiting_award: '/game/turn',

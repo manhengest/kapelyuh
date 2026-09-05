@@ -111,9 +111,7 @@ describe('scripts/word-playability', () => {
   });
 
   it('treats 6 as the pass floor', () => {
-    const borderline = scorePlayability(
-      word({ text: 'варіант', category: 'abstract' }),
-    );
+    const borderline = scorePlayability(word({ text: 'варіант', category: 'abstract' }));
     expect(borderline.crocodile).toBe(PLAYABILITY_MIN);
     expect(borderline.pass).toBe(true);
 

@@ -6,6 +6,7 @@ export type GameEvent =
   | { type: 'BACK_TO_SETTINGS'; now: number }
   | { type: 'BACK_TO_TEAMS'; now: number }
   | { type: 'TEAMS_COMPLETED'; teams: Team[]; sessionWordIds: string[]; now: number }
+  | { type: 'HAT_COMPLETED'; sessionWordIds: string[]; now: number }
   | { type: 'ROUND_INTRO_ACK'; now: number }
   | { type: 'GUESS_WORD'; now: number }
   | { type: 'SKIP_WORD'; now: number }

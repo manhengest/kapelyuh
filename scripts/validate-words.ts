@@ -130,11 +130,7 @@ export function validateWords(
   return { errors, warnings };
 }
 
-function printValidationReport(
-  words: CsvWord[],
-  errors: string[],
-  warnings: string[],
-): void {
+function printValidationReport(words: CsvWord[], errors: string[], warnings: string[]): void {
   const byStatus = countBy(words, (word) => word.status);
   const byDifficultyAll = countBy(words, (word) => word.difficulty);
   const core = words.filter((word) => word.status === 'core');

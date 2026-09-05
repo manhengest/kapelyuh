@@ -53,7 +53,7 @@ example
 # IDE
 .idea/
 .claude
-.cursor
+.agents
 
 .env.local
 
