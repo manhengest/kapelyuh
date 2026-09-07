@@ -1,113 +1,228 @@
-import { useMemo } from 'react';
-import { Image, ImageBackground, View } from 'react-native';
+import { View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from '@content/strings';
 import { formatGuessDurationSeconds } from '@domain/game/selectors';
-import { skipIcon } from '@features/game/components/turnActionIcons';
+import type { RecapCard } from '@domain/game/types';
 import { useGameActions, useGameSelectors, useGameState } from '@features/game/hooks';
-import { useGameStore } from '@features/game/store';
-import { ClockIcon } from '@ui/components/ClockIcon';
-import { ContentColumn } from '@ui/components/ContentColumn';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
-import { StarIcon } from '@ui/components/StarIcon';
-import { AnimatedText, Text } from '@ui/components/Text';
+import { ScreenShell } from '@ui/components/ScreenShell';
+import { ShadowCard } from '@ui/components/ShadowCard';
+import { Text } from '@ui/components/Text';
 
-const mainBg = require('@assets/images/main-bg.jpg');
-const statIconColor = '#FE7298';
-const statIconSize = 48;
-
-type StatCardKind = 'fast' | 'skip' | 'best' | 'duration' | 'fallback';
-
-type StatCard = {
-  kind: StatCardKind;
-  text: string;
+const RECAP_EMOJI: Record<RecapCard['kind'], string> = {
+  close_game: '🔥',
+  blowout: '😎',
+  fastest: '🧠',
+  hardest: '🥵',
+  slowest: '🫠',
+  best_turn: '⚡️',
+  summary: '🏆',
 };
 
-function StatCardIcon({ kind }: { kind: StatCardKind }) {
-  switch (kind) {
-    case 'fast':
-    case 'duration':
-      return <ClockIcon color={statIconColor} size={statIconSize} />;
-    case 'skip':
+function recapAccessibilityLabel(card: RecapCard): string {
+  const copy = strings.results.recap;
+  switch (card.kind) {
+    case 'close_game':
+      return [copy.closeTitle, String(card.gap), copy.scoreGapCaption(card.gap)].join('. ');
+    case 'blowout':
+      return [copy.blowoutTitle, String(card.gap), copy.scoreGapCaption(card.gap)].join('. ');
+    case 'fastest': {
+      const seconds = formatGuessDurationSeconds(card.durationMs);
+      return [
+        copy.fastestTitle,
+        copy.onWord,
+        copy.quotedWord(card.wordText),
+        copy.spentAll,
+        String(seconds),
+        copy.secondsUnit(seconds),
+      ].join('. ');
+    }
+    case 'hardest':
+      return [
+        copy.hardestTitle,
+        copy.quotedWord(card.wordText),
+        copy.hardestSkips(card.skipsBeforeFirst),
+        copy.hardestAttempt(card.attemptIndex),
+      ].join('. ');
+    case 'slowest': {
+      const seconds = formatGuessDurationSeconds(card.durationMs);
+      return [
+        copy.slowestTitle,
+        copy.onWord,
+        copy.quotedWord(card.wordText),
+        copy.spent,
+        String(seconds),
+        copy.secondsUnit(seconds),
+      ].join('. ');
+    }
+    case 'best_turn':
+      return [
+        copy.bestTurnTitle,
+        String(card.totalWordsGuessed),
+        copy.bestTurnCaption(card.totalWordsGuessed),
+        copy.bestTurnTeam(card.teamName),
+      ].join('. ');
+    case 'summary':
+      return [
+        copy.summaryTitle,
+        `${copy.durationLabel}: ${copy.durationValue(card.durationMs ?? 0)}`,
+        `${copy.guessedLabel}: ${copy.guessedValue(card.guessedCount)}`,
+        `${copy.skippedLabel}: ${copy.skippedValue(card.skippedCount)}`,
+        `${copy.turnsLabel}: ${copy.turnsValue(card.turnCount)}`,
+      ].join('. ');
+  }
+}
+
+function RecapCardBody({ card }: { card: RecapCard }) {
+  const copy = strings.results.recap;
+  const emoji = RECAP_EMOJI[card.kind];
+
+  switch (card.kind) {
+    case 'summary': {
+      const rows = [
+        { label: copy.durationLabel, value: copy.durationValue(card.durationMs ?? 0) },
+        { label: copy.guessedLabel, value: copy.guessedValue(card.guessedCount) },
+        { label: copy.skippedLabel, value: copy.skippedValue(card.skippedCount) },
+        { label: copy.turnsLabel, value: copy.turnsValue(card.turnCount) },
+      ];
+      const lastIndex = rows.length - 1;
       return (
-        <Image
-          source={skipIcon}
-          style={{ width: statIconSize, height: statIconSize }}
-          resizeMode="contain"
-        />
+        <>
+          <Text className="recap-summary-title">{copy.summaryTitle}</Text>
+          {rows.map((row, index) => (
+            <View key={row.label}>
+              {index > 0 ? <View className="recap-summary-divider" /> : null}
+              <View
+                className={
+                  index === lastIndex
+                    ? 'recap-summary-row recap-summary-row--last'
+                    : 'recap-summary-row'
+                }
+              >
+                <Text className="recap-summary-label">{row.label}</Text>
+                <Text className="recap-summary-value">{row.value}</Text>
+              </View>
+            </View>
+          ))}
+        </>
       );
-    case 'best':
-      return <StarIcon color={statIconColor} size={statIconSize} />;
-    default:
-      return null;
+    }
+    case 'close_game':
+      return (
+        <>
+          <Text className="recap-emoji">{emoji}</Text>
+          <Text className="recap-kicker">{copy.closeTitle}</Text>
+          <View className="recap-hero-wrap">
+            <Text className="recap-hero" numberOfLines={1}>
+              {card.gap}
+            </Text>
+          </View>
+          <Text className="recap-caption">{copy.scoreGapCaption(card.gap)}</Text>
+        </>
+      );
+    case 'blowout':
+      return (
+        <>
+          <Text className="recap-emoji">{emoji}</Text>
+          <Text className="recap-kicker">{copy.blowoutTitle}</Text>
+          <View className="recap-hero-wrap">
+            <Text className="recap-hero" numberOfLines={1}>
+              {card.gap}
+            </Text>
+          </View>
+          <Text className="recap-caption">{copy.scoreGapCaption(card.gap)}</Text>
+        </>
+      );
+    case 'fastest': {
+      const seconds = formatGuessDurationSeconds(card.durationMs);
+      return (
+        <>
+          <Text className="recap-emoji">{emoji}</Text>
+          <Text className="recap-kicker">{copy.fastestTitle}</Text>
+          <Text className="recap-label">{copy.onWord}</Text>
+          <Text className="recap-word" numberOfLines={2} adjustsFontSizeToFit>
+            {copy.quotedWord(card.wordText)}
+          </Text>
+          <Text className="recap-label">{copy.spentAll}</Text>
+          <View className="recap-hero-wrap">
+            <Text className="recap-hero" numberOfLines={1}>
+              {seconds}
+            </Text>
+          </View>
+          <Text className="recap-caption">{copy.secondsUnit(seconds)}</Text>
+        </>
+      );
+    }
+    case 'hardest':
+      return (
+        <>
+          <Text className="recap-emoji">{emoji}</Text>
+          <Text className="recap-kicker">{copy.hardestTitle}</Text>
+          <Text className="recap-hero-word" numberOfLines={2} adjustsFontSizeToFit>
+            {copy.quotedWord(card.wordText)}
+          </Text>
+          <Text className="recap-detail">{copy.hardestSkips(card.skipsBeforeFirst)}</Text>
+          <Text className="recap-detail">{copy.hardestAttempt(card.attemptIndex)}</Text>
+        </>
+      );
+    case 'slowest': {
+      const seconds = formatGuessDurationSeconds(card.durationMs);
+      return (
+        <>
+          <Text className="recap-emoji">{emoji}</Text>
+          <Text className="recap-kicker">{copy.slowestTitle}</Text>
+          <Text className="recap-label">{copy.onWord}</Text>
+          <Text className="recap-word" numberOfLines={2} adjustsFontSizeToFit>
+            {copy.quotedWord(card.wordText)}
+          </Text>
+          <Text className="recap-label">{copy.spent}</Text>
+          <View className="recap-hero-wrap">
+            <Text className="recap-hero" numberOfLines={1}>
+              {seconds}
+            </Text>
+          </View>
+          <Text className="recap-caption">{copy.secondsUnit(seconds)}</Text>
+        </>
+      );
+    }
+    case 'best_turn':
+      return (
+        <>
+          <Text className="recap-emoji">{emoji}</Text>
+          <Text className="recap-kicker">{copy.bestTurnTitle}</Text>
+          <View className="recap-hero-wrap">
+            <Text className="recap-hero" numberOfLines={1}>
+              {card.totalWordsGuessed}
+            </Text>
+          </View>
+          <Text className="recap-caption">{copy.bestTurnCaption(card.totalWordsGuessed)}</Text>
+          <Text className="recap-detail">{copy.bestTurnTeam(card.teamName)}</Text>
+        </>
+      );
   }
 }
 
 export default function StatisticScreen() {
   const statCardsRemaining = useGameState().statCardsRemaining;
-  const { matchStats } = useGameSelectors();
+  const { recapCards } = useGameSelectors();
   const { dispatch } = useGameActions();
   const cardOpacity = useSharedValue(1);
 
-  const statCards = useMemo((): StatCard[] => {
-    const cards: StatCard[] = [];
-    if (matchStats.fastestGuess) {
-      cards.push({
-        kind: 'fast',
-        text: strings.results.stats.fastestGuess(
-          matchStats.fastestGuess.wordText,
-          formatGuessDurationSeconds(matchStats.fastestGuess.durationMs),
-        ),
-      });
-    }
-    if (matchStats.mostSkippedWord) {
-      cards.push({
-        kind: 'skip',
-        text: strings.results.stats.mostSkippedWord(
-          matchStats.mostSkippedWord.wordText,
-          matchStats.mostSkippedWord.skipCount,
-        ),
-      });
-    }
-    if (matchStats.bestTurn) {
-      cards.push({
-        kind: 'best',
-        text: strings.results.stats.bestTurn(
-          matchStats.bestTurn.teamName,
-          matchStats.bestTurn.totalWordsGuessed,
-        ),
-      });
-    }
-    if (matchStats.matchDurationMs != null) {
-      cards.push({
-        kind: 'duration',
-        text: strings.results.stats.matchDuration(matchStats.matchDurationMs),
-      });
-    }
-    return cards.length > 0
-      ? cards
-      : [{ kind: 'fallback', text: 'Гарна гра! Дякуємо, що грали разом.' }];
-  }, [matchStats]);
+  const totalCards = recapCards.length;
+  const recapIndex = totalCards - statCardsRemaining;
+  const currentIndex = Math.min(Math.max(recapIndex, 0), Math.max(totalCards - 1, 0));
+  const currentCard = recapCards[currentIndex];
 
-  const totalCards = statCards.length;
-  const statIndex = totalCards - statCardsRemaining;
-  const currentCard = statCards[Math.min(statIndex, totalCards - 1)];
-
-  const dismissStat = () => {
+  const dismissRecap = () => {
     cardOpacity.value = withTiming(0.95, { duration: 90 });
     cardOpacity.value = withTiming(1, { duration: 90 });
     dispatch({ type: 'DISMISS_STAT_CAROUSEL' });
   };
 
   const skipToPodium = () => {
-    let remaining = useGameStore.getState().state.statCardsRemaining;
-    while (remaining > 0) {
-      dispatch({ type: 'DISMISS_STAT_CAROUSEL' });
-      remaining -= 1;
-    }
+    dispatch({ type: 'SKIP_STAT_CAROUSEL' });
   };
 
   const carouselStyle = useAnimatedStyle(() => ({
@@ -116,35 +231,55 @@ export default function StatisticScreen() {
   }));
 
   return (
-    <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
-      <SafeAreaView className="flex-1">
-        <ContentColumn className="flex-1">
-          <ScreenHeader title={strings.results.statisticTitle} />
-          <View className="flex-1 justify-center px-6">
-            <View className="rounded-3xl bg-white/80 px-8 py-6">
-              <Text className="mb-4 text-center text-sm uppercase tracking-widest text-slate-400">
-                {Math.min(statIndex + 1, totalCards)} / {totalCards}
-              </Text>
-              <Animated.View style={carouselStyle} className="items-center">
-                {currentCard.kind !== 'fallback' && (
-                  <View className="mb-4">
-                    <StatCardIcon kind={currentCard.kind} />
-                  </View>
-                )}
-                <AnimatedText className="text-center text-xl font-bold leading-9 text-black">
-                  {currentCard.text}
-                </AnimatedText>
-              </Animated.View>
+    <ScreenShell>
+      <ScreenHeader title={strings.results.recap.screenTitle} />
+      <View className="flex-1 px-5 pt-10">
+        <Animated.View
+          style={carouselStyle}
+          accessible
+          accessibilityRole="summary"
+          accessibilityLabel={currentCard ? recapAccessibilityLabel(currentCard) : undefined}
+          accessibilityHint={
+            totalCards > 1
+              ? strings.results.recap.cardProgress(currentIndex + 1, totalCards)
+              : undefined
+          }
+        >
+          <ShadowCard>
+            <View
+              className={
+                currentCard?.kind === 'summary' ? 'recap-card recap-card--summary' : 'recap-card'
+              }
+            >
+              {currentCard ? <RecapCardBody card={currentCard} /> : null}
             </View>
+          </ShadowCard>
+        </Animated.View>
+        {totalCards > 1 ? (
+          <View
+            accessible
+            accessibilityRole="text"
+            accessibilityLabel={strings.results.recap.cardProgress(
+              currentIndex + 1,
+              totalCards,
+            )}
+            className="recap-dots"
+          >
+            {recapCards.map((card, index) => (
+              <View
+                key={card.kind}
+                className={index === currentIndex ? 'recap-dot--active' : 'recap-dot'}
+              />
+            ))}
           </View>
-          <ScreenFooter
-            label={strings.results.statNext}
-            onPress={dismissStat}
-            skipLabel={strings.results.statSkip}
-            skipOnPress={skipToPodium}
-          />
-        </ContentColumn>
-      </SafeAreaView>
-    </ImageBackground>
+        ) : null}
+      </View>
+      <ScreenFooter
+        label={strings.results.recap.next}
+        onPress={dismissRecap}
+        skipLabel={strings.results.recap.skip}
+        skipOnPress={skipToPodium}
+      />
+    </ScreenShell>
   );
 }

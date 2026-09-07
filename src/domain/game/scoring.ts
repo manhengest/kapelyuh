@@ -58,9 +58,28 @@ export function computeTurnScore(events: TurnEvent[], skipPenalty: 0 | -1): numb
     if (event.kind === 'skipped') {
       score += skipPenalty;
     }
+    score = Math.max(0, score);
   }
 
   return score;
+}
+
+function eventsWithOverrides(
+  events: TurnEvent[],
+  overrides: Record<string, 'guessed' | 'skipped'>,
+): TurnEvent[] {
+  return events.map((event) => {
+    if (event.kind !== 'guessed' && event.kind !== 'skipped') {
+      return event;
+    }
+
+    const outcome = overrides[event.wordId];
+    if (outcome == null || outcome === event.kind) {
+      return event;
+    }
+
+    return { kind: outcome, wordId: event.wordId, at: event.at };
+  });
 }
 
 /**
@@ -71,25 +90,10 @@ export function applyReviewOverrides(
   overrides: Record<string, 'guessed' | 'skipped'>,
   skipPenalty: 0 | -1,
 ): number {
-  const wordIds = getTurnWordIds(events, null);
-  let delta = 0;
-
-  for (const wordId of wordIds) {
-    const original = deriveWordOutcome(events, wordId);
-    if (original === 'awarded' || original === 'none') {
-      continue;
-    }
-
-    const finalOutcome = overrides[wordId] ?? original;
-    const originalScore = scoreForOutcome(original, skipPenalty);
-    const finalScore =
-      original === 'guessed' && finalOutcome === 'skipped'
-        ? 0
-        : scoreForOutcome(finalOutcome, skipPenalty);
-    delta += finalScore - originalScore;
-  }
-
-  return delta;
+  return (
+    computeTurnScore(eventsWithOverrides(events, overrides), skipPenalty) -
+    computeTurnScore(events, skipPenalty)
+  );
 }
 
 export function clampScore(score: number): number {

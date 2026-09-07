@@ -80,6 +80,14 @@ export const strings = {
     associationForbidden: ['однокореневі слова', 'міміку та жести', 'більше одного слова'],
     carryOverContinues: (name: string) => `Команда ${name} продовжує`,
     carryOverTimeLeft: (sec: number) => `Залишилось ${sec} сек`,
+    hatRemaining: (count: number) => {
+      const wordsWord = pluralizeUkrainian(count, {
+        one: 'слово',
+        few: 'слова',
+        many: 'слів',
+      });
+      return `В капелюсі ${count} ${wordsWord}`;
+    },
   },
   turn: {
     guess: 'Вгадав',
@@ -110,39 +118,79 @@ export const strings = {
   },
   results: {
     matchComplete: 'Гру завершено',
-    statisticTitle: 'Статистика гри',
     congrats: 'Вітаємо команди!',
     playAgain: 'Зіграти ще!',
-    statSkip: 'Пропустити',
-    statNext: 'Далі',
     tableRound: 'Тур',
     tableTotal: '🏅',
-    stats: {
-      fastestGuess: (word: string, seconds: number) => {
-        const secWord = pluralizeUkrainian(seconds, {
-          one: 'секунду',
-          few: 'секунди',
-          many: 'секунд',
-        });
-        return `Найшвидше вгадали слово «${word}» — лише за ${seconds} ${secWord}`;
-      },
-      mostSkippedWord: (word: string, count: number) => {
+    tableTeam: 'Команда',
+    tableTotalLabel: 'Всього',
+    tableRoundLegend: 'Тури: Еліас · Крокодил · Асоціація',
+    winnerLabel: 'Переможці',
+    tieLabel: 'Нічия',
+    friendshipWins: 'Перемогла дружба 🤗',
+    roundLabels: {
+      elias: 'Еліас',
+      crocodile: 'Крокодил',
+      association: 'Асоціація',
+    },
+    pointsUnit: (points: number) =>
+      pluralizeUkrainian(points, {
+        one: 'бал',
+        few: 'бали',
+        many: 'балів',
+      }),
+    recap: {
+      screenTitle: 'Підсумки гри',
+      next: 'Далі',
+      skip: 'Пропустити',
+      fastestTitle: 'Найшвидший мозок',
+      hardestTitle: 'Найважче слово',
+      slowestTitle: 'Це було боляче',
+      bestTurnTitle: 'Найпродуктивніший хід',
+      closeTitle: 'Оце була заруба',
+      blowoutTitle: 'Без шансів',
+      summaryTitle: 'Статистика гри',
+      onWord: 'На слово',
+      spent: 'витратили',
+      spentAll: 'витратили всього',
+      quotedWord: (word: string) => `«${word}»`,
+      hardestSkips: (count: number) => {
         const timesWord = pluralizeUkrainian(count, {
           one: 'раз',
           few: 'рази',
           many: 'разів',
         });
-        return `Слово «${word}» пропускали найчастіше — ${count} ${timesWord}`;
+        return `Пропустили ${count} ${timesWord}`;
       },
-      bestTurn: (teamName: string, count: number) => {
+      hardestAttempt: (index: number) => `Відгадали лише з ${index}-ї спроби`,
+      bestTurnTeam: (teamName: string) => `Команда «${teamName}»`,
+      bestTurnCaption: (count: number) => {
         const wordsWord = pluralizeUkrainian(count, {
           one: 'слово',
           few: 'слова',
           many: 'слів',
         });
-        return `Найпродуктивніший хід: Команда «${teamName}» відгадала ${count} ${wordsWord}`;
+        return `${wordsWord} за один хід`;
       },
-      matchDuration: (durationMs: number) => {
+      scoreGapCaption: (gap: number) => {
+        const pointsWord = pluralizeUkrainian(gap, {
+          one: 'бал',
+          few: 'бали',
+          many: 'балів',
+        });
+        return `${pointsWord} різниці між командами`;
+      },
+      secondsUnit: (seconds: number) =>
+        pluralizeUkrainian(seconds, {
+          one: 'секунду',
+          few: 'секунди',
+          many: 'секунд',
+        }),
+      durationLabel: 'Ця гра тривала',
+      guessedLabel: 'Відгадано',
+      skippedLabel: 'Пропущено',
+      turnsLabel: 'Зіграно ходів',
+      durationValue: (durationMs: number) => {
         const totalSeconds = Math.max(0, Math.round(durationMs / 1000));
         if (totalSeconds < 60) {
           const secWord = pluralizeUkrainian(totalSeconds, {
@@ -150,7 +198,7 @@ export const strings = {
             few: 'секунди',
             many: 'секунд',
           });
-          return `Гра тривала ${totalSeconds} ${secWord}`;
+          return `${totalSeconds} ${secWord}`;
         }
 
         if (totalSeconds < 3600) {
@@ -160,7 +208,7 @@ export const strings = {
             few: 'хвилини',
             many: 'хвилин',
           });
-          return `Гра тривала ${minutes} ${minWord}`;
+          return `${minutes} ${minWord}`;
         }
 
         const hours = Math.floor(totalSeconds / 3600);
@@ -171,34 +219,68 @@ export const strings = {
           many: 'годин',
         });
         if (minutes === 0) {
-          return `Гра тривала ${hours} ${hourWord}`;
+          return `${hours} ${hourWord}`;
         }
         const minWord = pluralizeUkrainian(minutes, {
           one: 'хвилину',
           few: 'хвилини',
           many: 'хвилин',
         });
-        return `Гра тривала ${hours} ${hourWord} ${minutes} ${minWord}`;
+        return `${hours} ${hourWord} ${minutes} ${minWord}`;
       },
+      guessedValue: (count: number) => {
+        const wordsWord = pluralizeUkrainian(count, {
+          one: 'слово',
+          few: 'слова',
+          many: 'слів',
+        });
+        return `${count} ${wordsWord}`;
+      },
+      skippedValue: (count: number) => {
+        const wordsWord = pluralizeUkrainian(count, {
+          one: 'слово',
+          few: 'слова',
+          many: 'слів',
+        });
+        return `${count} ${wordsWord}`;
+      },
+      turnsValue: (count: number) => `${count}`,
+      cardProgress: (index: number, total: number) => `Картка ${index} з ${total}`,
     },
   },
   settings: {
     title: 'Налаштування',
+    sectionPlay: 'У грі',
+    sectionScore: 'Рахунок',
+    sectionApp: 'Застосунок',
     sound: 'Звук',
     soundDescription: 'Звукові ефекти під час гри',
     haptics: 'Вібрація',
     hapticsDescription: 'Тактильний відгук на дії',
     sentry: 'Звіти про збої',
     sentryDescription: 'Анонімні звіти для покращення стабільності',
-    skipPenalty: 'Штраф за пропуск слова',
-    skipPenaltyDescription: '−1 бал команді за кожне пропущене слово',
+    skipPenalty: 'Штраф за пропуск',
+    skipPenaltyDescription: '−1 бал за пропуск, рахунок ходу не нижче 0',
     about: 'Про гру',
     play: 'Грати',
   },
   about: {
     title: 'Про гру',
-    description:
-      '«Капелюх» — офлайн party game для iPhone. Один пристрій, три тури, одна колода слів. Без реклами, без акаунтів, без інтернету.',
+    summaryTitle: 'Коротко',
+    facts: [
+      {
+        title: 'Один телефон',
+        body: 'Передавайте пристрій між командами. Інтернет не потрібен.',
+      },
+      {
+        title: 'Три тури',
+        body: 'Еліас, Крокодил, Асоціація — ті самі слова в капелюсі.',
+      },
+      {
+        title: 'Без зайвого',
+        body: 'Немає реклами, акаунтів і покупок.',
+      },
+    ],
     version: (version: string) => `Версія ${version}`,
     privacy: 'Політика конфіденційності',
   },
@@ -228,50 +310,72 @@ export const strings = {
   rules: {
     skipAll: 'Все зрозуміло',
     wantToPlay: 'Хочу грати!',
-    steps: [
-      {
-        title: 'Базові правила',
-        body: 'Учасники діляться на рівні команди, команди ходять по черзі, кожен член команди по черзі пояснює своїй команді слова згідно з правилами раунду.\n\nОдин телефон передається між гравцями - не показуй слово іншим учасникам гри!\n\nЯкщо слово не вгадали - воно повертається до капелюха.',
-        tipLabel: 'УВАГА',
-        tip: 'Той самий набір слів проходить три тури з різними правилами.',
-      },
-      {
-        title: 'Як пояснювати?',
-        body: 'Три тури, на кожному будуть ті самі слова:\n\nЕліас - поясни слово на екрані не використовуючи однокореневі слова та переклад іноземною мовою;\n\nКрокодил - поясни слово жестам;\n\nАсоціація - поясни слово одним асоціативним словом не використовуючи однокореневі слова та переклад іноземною мовою.',
-        tipLabel: 'ПОРАДА',
-        tip: 'Чим знайоміші слова до третього туру, тим веселіше!',
-      },
-      {
-        title: 'Хто перемагає?',
-        body: 'За кожне вгадане слово +1 бал. Пропуск може коштувати −1, якщо це увімкнено. Перемагає команда з найбільшою сумою балів.',
-        tipLabel: 'УВАГА',
-        tip: 'Якщо час вийшов на слові — воно стає «Словом для всіх».',
-      },
-      {
-        title: 'Підготовка до гри',
-        body: 'Збери друзів, поділись на команди (мінімум 2 команди по 2 людини), обери налаштування — і грай!',
-        tipLabel: 'ПОРАДА',
-        tip: 'Краще грати в тихому колі, щоб усі чули пояснювача.',
-      },
-      {
-        title: 'Свій капелюх',
-        body: 'На екрані «Нова гра» можна обрати «Свій капелюх» замість базового набору. Після команд гравці по черзі пишуть слова на одному телефоні.\n\nМінімум 30 слів. Якщо набрали достатньо і хочете почати раніше — натисніть «Досить, починаємо». Ці самі слова граються у всіх трьох турах.',
-        tipLabel: 'ПОРАДА',
-        tip: 'Пишіть слова зі своєї компанії: імена, жарти, інсайти. Чим особистіше — тим веселіше в третьому турі.',
-      },
-      {
-        title: 'Капелюх пустий?',
-        body: 'Коли слова закінчуються, капелюх стає пустим і команди переходять до наступного раунду.',
-        tipLabel: '',
-        tip: '',
-      },
-      {
-        title: 'Капелюх пустий, а час ще не вийшов?',
-        body: 'Якщо слова закінчуються, а час ще не вийшов, команда переходить до наступного раунду із залишком часу.',
-        tipLabel: '',
-        tip: '',
-      },
-    ],
+    basics: {
+      title: 'Базові правила',
+      items: [
+        'Діліться на рівні команди. Ходите по черзі — кожен пояснює слова своїй команді.',
+        'Один телефон передається між гравцями. Не показуй слово іншим!',
+        'Якщо слово не вгадали — воно повертається до капелюха.',
+      ],
+      calloutLabel: 'Увага',
+      callout: 'Той самий набір слів проходить три тури з різними правилами.',
+    },
+    explain: {
+      title: 'Як пояснювати?',
+      intro: 'Три тури, ті самі слова:',
+      rounds: [
+        {
+          key: 'elias',
+          name: 'Еліас',
+          body: 'Поясни слово словами. Без однокореневих слів і перекладу.',
+        },
+        {
+          key: 'crocodile',
+          name: 'Крокодил',
+          body: 'Поясни слово лише жестами. Без звуків.',
+        },
+        {
+          key: 'association',
+          name: 'Асоціація',
+          body: 'Поясни одним асоціативним словом. Без однокореневих і перекладу.',
+        },
+      ],
+      tipLabel: 'Порада',
+      tip: 'Чим знайоміші слова до третього туру, тим веселіше!',
+    },
+    scoring: {
+      title: 'Хто перемагає?',
+      guess: 'за кожне вгадане слово',
+      skip: 'за пропуск, якщо штраф увімкнено',
+      winner: 'Перемагає команда з найбільшою сумою балів.',
+      calloutLabel: 'Увага',
+      callout: 'Якщо час вийшов на слові — воно стає «Словом для всіх».',
+    },
+    prep: {
+      title: 'Перед грою',
+      body: 'Збери друзів, поділись на команди (мінімум 2×2), обери налаштування — і грай!',
+      tipLabel: 'Порада',
+      tip: 'Краще грати в тихому колі, щоб усі чули пояснювача.',
+    },
+    customHat: {
+      title: 'Свій капелюх',
+      body: 'У «Новій грі» оберіть «Свій капелюх». Гравці по черзі пишуть слова на одному телефоні.',
+      tipLabel: 'Порада',
+      tip: 'Пишіть слова зі своєї компанії: імена, жарти, меми, ніяких обмежень.',
+    },
+    emptyHat: {
+      title: 'Капелюх пустий',
+      items: [
+        {
+          title: 'Слова закінчились',
+          body: 'Команди переходять до наступного раунду.',
+        },
+        {
+          title: 'Час ще є',
+          body: 'Команда забирає залишок часу в наступний раунд.',
+        },
+      ],
+    },
   },
 } as const;
 

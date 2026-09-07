@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useRef, type ReactNode } from 'react';
-import { ImageBackground, ScrollView, View } from 'react-native';
+import { useEffect, useMemo, useRef, type ReactNode } from 'react';
+import { Image, ScrollView, View } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import Animated, {
   useAnimatedStyle,
@@ -8,19 +8,34 @@ import Animated, {
   withSequence,
   withTiming,
 } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { strings } from '@content/strings';
 import { useGameActions, useGameSelectors, useGameState } from '@features/game/hooks';
 import { playEnd } from '@infrastructure/audio/sounds';
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
-import { ContentColumn } from '@ui/components/ContentColumn';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
+import { ScreenShell } from '@ui/components/ScreenShell';
+import { ShadowCard } from '@ui/components/ShadowCard';
 import { Text } from '@ui/components/Text';
 
-const mainBg = require('@assets/images/main-bg.jpg');
+const ROUND_COLUMNS = [
+  {
+    key: 'elias',
+    icon: require('@assets/images/icons/round-intro/elias-round-icon.png.png'),
+  },
+  {
+    key: 'crocodile',
+    icon: require('@assets/images/icons/round-intro/crocodile-round-icon.png'),
+  },
+  {
+    key: 'association',
+    icon: require('@assets/images/icons/round-intro/association-round-icon.png'),
+  },
+] as const;
 
-function WinnerMedal({ children }: { children: ReactNode }) {
+const ROUND_ICON_STYLE = { width: 26, height: 26 } as const;
+
+function WinnerReveal({ children }: { children: ReactNode }) {
   const reducedMotion = useReducedMotion();
   const scale = useSharedValue(reducedMotion ? 1 : 0.5);
 
@@ -56,70 +71,143 @@ export default function ResultsScreen() {
     }
   }, [status]);
 
-  return (
-    <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
-      <SafeAreaView className="flex-1">
-        <ContentColumn className="flex-1">
-          <ScrollView className="flex-1 px-5" contentContainerClassName="py-8">
-            <Text className="mb-1 text-center text-5xl font-bold leading-normal text-black">
-              {strings.results.matchComplete}
-            </Text>
-            <Text className="mb-6 text-center text-2xl text-slate-600">
-              {strings.results.congrats}
-            </Text>
+  const rankedRows = useMemo(() => {
+    const sorted = [...scoreboard].sort((a, b) => b.total - a.total);
 
-            {winners.map((winner) => (
-              <WinnerMedal key={winner.id}>
-                <View className="mb-6 items-center rounded-3xl bg-yellow-100 px-4 py-6">
-                  <Text className="text-4xl">🏅</Text>
-                  <Text className="mt-2 text-3xl font-bold text-black">{winner.name}</Text>
-                  <Text className="text-lg text-highlightText">
-                    {winner.scores.elias + winner.scores.crocodile + winner.scores.association}{' '}
-                    балів
+    return sorted.map((row) => ({
+      ...row,
+      place: sorted.findIndex((other) => other.total === row.total) + 1,
+    }));
+  }, [scoreboard]);
+
+  const winnerTotal = rankedRows[0]?.total ?? 0;
+  const winnerNames = winners.map((winner) => winner.name).join(' · ');
+  /** Teams sharing the top score means nobody took the match. */
+  const isDraw = winners.length > 1;
+  const winnerLabel = isDraw ? strings.results.tieLabel : strings.results.winnerLabel;
+  const headline = isDraw ? strings.results.friendshipWins : winnerNames;
+
+  return (
+    <ScreenShell
+      overlay={
+        !reducedMotion ? (
+          <ConfettiCannon count={120} origin={{ x: 0, y: 0 }} fadeOut autoStart />
+        ) : null
+      }
+    >
+      <ScrollView
+        className="flex-1"
+        contentContainerClassName="gap-5 px-5 pb-32 pt-6"
+        showsVerticalScrollIndicator={false}
+      >
+        <View>
+          <Text className="results-title">{strings.results.matchComplete}</Text>
+          <Text className="results-subtitle">{strings.results.congrats}</Text>
+        </View>
+
+        {winners.length > 0 ? (
+          <WinnerReveal>
+            <ShadowCard>
+              <View
+                accessible
+                accessibilityRole="summary"
+                accessibilityLabel={`${winnerLabel}: ${headline}${isDraw ? `, ${winnerNames}` : ''}, ${winnerTotal} ${strings.results.pointsUnit(winnerTotal)}`}
+                className="results-winner-card"
+              >
+                {isDraw ? null : (
+                  <View className="results-winner-badge">
+                    <Text className="results-winner-emoji">🏆</Text>
+                  </View>
+                )}
+                <Text className="results-winner-label">{winnerLabel}</Text>
+                <Text className="results-winner-name" numberOfLines={2}>
+                  {headline}
+                </Text>
+                {isDraw ? (
+                  <Text className="results-winner-teams" numberOfLines={2}>
+                    {winnerNames}
+                  </Text>
+                ) : null}
+                <Text className="results-winner-score">{winnerTotal}</Text>
+                <Text className="results-winner-score-unit">
+                  {strings.results.pointsUnit(winnerTotal)}
+                </Text>
+              </View>
+            </ShadowCard>
+          </WinnerReveal>
+        ) : null}
+
+        <View className="gap-2">
+          <ShadowCard>
+            <View className="panel-card">
+              <View className="results-table-head">
+                <View className="h-7 w-7" />
+                <Text className="results-table-head-team">{strings.results.tableTeam}</Text>
+                {ROUND_COLUMNS.map((column) => (
+                  <View key={column.key} className="results-table-col">
+                    <Image
+                      accessibilityLabel={`${strings.results.tableRound} ${strings.results.roundLabels[column.key]}`}
+                      source={column.icon}
+                      style={ROUND_ICON_STYLE}
+                      resizeMode="contain"
+                    />
+                  </View>
+                ))}
+                <View className="results-table-total-col">
+                  <Text accessibilityLabel={strings.results.tableTotalLabel} className="text-base">
+                    {strings.results.tableTotal}
                   </Text>
                 </View>
-              </WinnerMedal>
-            ))}
-
-            <View className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-              <View className="flex-row px-3 py-2">
-                <Text className="flex-1 text-lg font-bold text-black">Команда</Text>
-                <Text className="w-10 text-center text-lg font-bold text-black">I</Text>
-                <Text className="w-10 text-center text-lg font-bold text-black">II</Text>
-                <Text className="w-10 text-center text-lg font-bold text-black">III</Text>
-                <Text className="w-10 text-center text-lg">🏅</Text>
               </View>
-              {scoreboard.map((row) => (
-                <View key={row.teamId} className="flex-row border-t border-slate-200 px-3 py-2">
-                  <Text className="flex-1 text-lg text-highlightText">{row.name}</Text>
-                  <Text className="w-10 text-center text-lg text-highlightText">
-                    {row.scores.elias}
-                  </Text>
-                  <Text className="w-10 text-center text-lg text-highlightText">
-                    {row.scores.crocodile}
-                  </Text>
-                  <Text className="w-10 text-center text-lg text-highlightText">
-                    {row.scores.association}
-                  </Text>
-                  <Text className="w-10 text-center text-lg font-semibold text-highlightText">
-                    {row.total}
-                  </Text>
+
+              {rankedRows.map((row, index) => (
+                <View key={row.teamId}>
+                  {index > 0 ? <View className="results-table-divider" /> : null}
+                  <View
+                    accessible
+                    accessibilityRole="text"
+                    accessibilityLabel={`${row.place}. ${row.name}, ${row.total} ${strings.results.pointsUnit(row.total)}`}
+                    className={
+                      row.place === 1
+                        ? 'results-table-row results-table-row--leader'
+                        : 'results-table-row'
+                    }
+                  >
+                    <View
+                      className={
+                        row.place === 1
+                          ? 'results-table-rank results-table-rank--leader'
+                          : 'results-table-rank'
+                      }
+                    >
+                      <Text className="results-table-rank-text">{row.place}</Text>
+                    </View>
+                    <Text className="results-table-team" numberOfLines={1}>
+                      {row.name}
+                    </Text>
+                    {ROUND_COLUMNS.map((column) => (
+                      <View key={column.key} className="results-table-col">
+                        <Text className="results-table-score">{row.scores[column.key]}</Text>
+                      </View>
+                    ))}
+                    <View className="results-table-total-col">
+                      <Text className="results-table-total">{row.total}</Text>
+                    </View>
+                  </View>
                 </View>
               ))}
             </View>
-          </ScrollView>
-          <ScreenFooter
-            label={strings.home.newGame}
-            onPress={() => {
-              abandonMatch();
-              router.replace('/');
-            }}
-          />
-        </ContentColumn>
-      </SafeAreaView>
-      {!reducedMotion ? (
-        <ConfettiCannon count={120} origin={{ x: 0, y: 0 }} fadeOut autoStart />
-      ) : null}
-    </ImageBackground>
+          </ShadowCard>
+          <Text className="results-legend">{strings.results.tableRoundLegend}</Text>
+        </View>
+      </ScrollView>
+      <ScreenFooter
+        label={strings.home.newGame}
+        onPress={() => {
+          abandonMatch();
+          router.replace('/');
+        }}
+      />
+    </ScreenShell>
   );
 }

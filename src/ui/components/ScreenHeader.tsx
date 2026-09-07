@@ -18,7 +18,7 @@ export function ScreenHeader({ title, onBack, backIcon = 'back' }: ScreenHeaderP
 
   return (
     <ContentColumn>
-      <View className="flex-row items-center justify-between px-4 pt-3">
+      <View className="flex-row items-center justify-between px-4 pb-2">
         {onBack ? (
           <Pressable
             accessibilityRole="button"

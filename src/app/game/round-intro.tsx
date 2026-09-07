@@ -65,7 +65,8 @@ function getRoundHint(roundType: 'elias' | 'crocodile' | 'association' | undefin
 
 export default function RoundIntroScreen() {
   const router = useRouter();
-  const { currentRound, currentTeam, isCarryOver, upcomingTurnDurationMs } = useGameSelectors();
+  const { currentRound, currentTeam, isCarryOver, upcomingTurnDurationMs, remainingWordCount } =
+    useGameSelectors();
   const { dispatch, abandonMatch } = useGameActions();
   const state = useGameState();
   const roundIndex = state.currentRoundIndex;
@@ -101,7 +102,7 @@ export default function RoundIntroScreen() {
     <GameScreenShell roundType={roundType}>
       <ScreenHeader onBack={onBack} />
 
-      <ScrollView className="flex-1" contentContainerClassName="px-5 pt-2 pb-4">
+      <ScrollView className="flex-1" contentContainerClassName="px-5 pb-48 pt-2">
         {/* Round number badge */}
         <View className="mb-10 items-center">
           <View>
@@ -209,6 +210,12 @@ export default function RoundIntroScreen() {
             <Text className="text-lg font-bold text-primaryText">{wordCount} слів</Text>
           </View>
         </View>
+
+        {remainingWordCount < 5 ? (
+          <Text className="-mt-4 mb-8 text-center text-xl font-semibold text-highlightText">
+            {strings.rounds.hatRemaining(remainingWordCount)}
+          </Text>
+        ) : null}
       </ScrollView>
 
       <ScreenFooter

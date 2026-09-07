@@ -35,9 +35,7 @@ export default function ReviewScreen() {
     const skipPenalty = gameState.settings.skipPenalty;
     const base = computeTurnScore(turn.events, skipPenalty);
     const delta = applyReviewOverrides(turn.events, overrides, skipPenalty);
-    const raw = base + delta;
-    // With skip penalty, turn net can go negative; display never drops below 0.
-    return skipPenalty ? Math.max(0, raw) : raw;
+    return base + delta;
   }, [gameState.turn, gameState.settings.skipPenalty, overrides]);
   const [confirmVisible, setConfirmVisible] = useState(false);
 
@@ -120,7 +118,7 @@ export default function ReviewScreen() {
         </Text>
       </View>
 
-      <ScrollView className="mb-4 flex-1 px-5" contentContainerClassName="pb-6">
+      <ScrollView className="flex-1 px-5" contentContainerClassName="pb-32">
         {words.length === 0 ? (
           <Text style={{ color: palette.text }} className="mb-4 text-center text-base">
             {strings.review.emptyTurn}

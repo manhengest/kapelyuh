@@ -11,6 +11,7 @@ export default function GameLayout() {
         headerShown: false,
         gestureEnabled: false,
         animationTypeForReplace: navDirection === 'backward' ? 'pop' : 'push',
+        contentStyle: { backgroundColor: 'transparent' },
       }}
     >
       <Stack.Screen name="setup" options={{ animationTypeForReplace: 'pop' }} />

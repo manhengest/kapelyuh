@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { ImageBackground, Pressable, ScrollView, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Pressable, ScrollView, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 import { TEAM_NAME_SUGGESTIONS } from '@content/randomNames';
@@ -11,12 +10,10 @@ import { selectSessionWordIds } from '@features/game/words';
 import { playTap } from '@infrastructure/audio/sounds';
 import { triggerHaptic } from '@infrastructure/haptics';
 import { createId } from '@shared/lib/id';
-import { ContentColumn } from '@ui/components/ContentColumn';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
+import { ScreenShell } from '@ui/components/ScreenShell';
 import { Text } from '@ui/components/Text';
-
-const mainBg = require('@assets/images/main-bg.jpg');
 
 function pickUniqueRandomName(usedNames: ReadonlySet<string>, fallbackIndex: number): string {
   const pool = TEAM_NAME_SUGGESTIONS.filter((name) => !usedNames.has(name));
@@ -83,7 +80,7 @@ function TeamsEditor({ settings, teamsFromStore, teamCount }: TeamsEditorProps) 
 
   return (
     <>
-      <ScrollView className="flex-1 px-8" contentContainerClassName="pt-4">
+      <ScrollView className="flex-1 px-8" contentContainerClassName="pb-48 pt-4">
         <View className="gap-3">
           {teams.map((team) => (
             <Pressable
@@ -138,21 +135,17 @@ export default function TeamsScreen() {
   const teamCount = settings.teamCount;
 
   return (
-    <ImageBackground source={mainBg} resizeMode="cover" style={{ flex: 1 }}>
-      <SafeAreaView className="flex-1">
-        <ContentColumn className="flex-1">
-          <ScreenHeader
-            title={strings.setup.teamsTitle}
-            onBack={() => dispatch({ type: 'BACK_TO_SETTINGS' })}
-          />
-          <TeamsEditor
-            key={teamsEditorKey(teamsFromStore, teamCount)}
-            settings={settings}
-            teamsFromStore={teamsFromStore}
-            teamCount={teamCount}
-          />
-        </ContentColumn>
-      </SafeAreaView>
-    </ImageBackground>
+    <ScreenShell>
+      <ScreenHeader
+        title={strings.setup.teamsTitle}
+        onBack={() => dispatch({ type: 'BACK_TO_SETTINGS' })}
+      />
+      <TeamsEditor
+        key={teamsEditorKey(teamsFromStore, teamCount)}
+        settings={settings}
+        teamsFromStore={teamsFromStore}
+        teamCount={teamCount}
+      />
+    </ScreenShell>
   );
 }

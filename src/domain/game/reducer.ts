@@ -2,7 +2,7 @@ import { shuffle } from '@domain/utils/shuffle';
 
 import type { GameEvent } from './events';
 import { applyReviewOverrides, clampScore, computeTurnScore, deriveWordOutcome } from './scoring';
-import { selectMatchDurationMs, selectMatchStatCardCount, selectMatchStats } from './selectors';
+import { selectRecapCards } from './selectors';
 import type {
   CompletedTurn,
   GameState,
@@ -14,8 +14,6 @@ import type {
   TurnState,
 } from './types';
 import { CARRY_OVER_MIN_MS, DEFAULT_MATCH_SETTINGS, ROUND_TYPES, SCORE } from './types';
-
-const STAT_CARD_COUNT = 3;
 
 export function createInitialState(now = 0): GameState {
   return {
@@ -29,7 +27,7 @@ export function createInitialState(now = 0): GameState {
     turnHistory: [],
     carryOverMs: null,
     reviewCheckpoint: null,
-    statCardsRemaining: STAT_CARD_COUNT,
+    statCardsRemaining: 0,
     createdAt: now,
     updatedAt: now,
     schemaVersion: 1,
@@ -63,7 +61,7 @@ function startFirstRound(state: GameState, sessionWordIds: string[], now: number
       turn: null,
       turnHistory: [],
       reviewCheckpoint: null,
-      statCardsRemaining: STAT_CARD_COUNT,
+      statCardsRemaining: 0,
     },
     now,
   );
@@ -312,6 +310,21 @@ function handleAward(state: GameState, toTeamId: string | null, now: number): Ga
   }
 
   const round = getCurrentRound(state);
+
+  // Acting team claimed the word-for-all — same as a late guess so review can list it.
+  if (toTeamId === turn.teamId) {
+    const nextTurn: TurnState = {
+      ...turn,
+      events: [...turn.events, { kind: 'guessed', wordId, at: now }],
+      currentWordId: null,
+    };
+    const guessedWordIds = round.guessedWordIds.includes(wordId)
+      ? round.guessedWordIds
+      : [...round.guessedWordIds, wordId];
+    let nextState = updateRound({ ...state, turn: nextTurn }, { guessedWordIds });
+    nextState = applyLiveTurnScore(nextState, nextTurn);
+    return finalizeTurnToReview(touch(nextState, now), nextTurn, now);
+  }
 
   const nextTurn: TurnState = {
     ...turn,
@@ -665,11 +678,12 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
     case 'OPEN_STAT_CAROUSEL': {
       assertStatus(state, ['review']);
       const withHistory = appendTurnHistory(state, event.now);
-      const matchStats = {
-        ...selectMatchStats(withHistory.turnHistory, withHistory.teams, {}),
-        matchDurationMs: selectMatchDurationMs(withHistory.turnHistory, withHistory.createdAt),
-      };
-      const cardCount = selectMatchStatCardCount(matchStats);
+      const cardCount = selectRecapCards(
+        withHistory.turnHistory,
+        withHistory.teams,
+        {},
+        withHistory.createdAt,
+      ).length;
       return touch(
         {
           ...withHistory,
@@ -688,6 +702,11 @@ export function gameReducer(state: GameState, event: GameEvent): GameState {
         return touch({ ...state, statCardsRemaining: remaining }, event.now);
       }
 
+      return touch({ ...state, status: 'end_of_match', statCardsRemaining: 0 }, event.now);
+    }
+
+    case 'SKIP_STAT_CAROUSEL': {
+      assertStatus(state, ['stat_carousel']);
       return touch({ ...state, status: 'end_of_match', statCardsRemaining: 0 }, event.now);
     }
 

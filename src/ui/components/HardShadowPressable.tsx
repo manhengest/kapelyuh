@@ -28,11 +28,11 @@ export function HardShadowPressable({
   return (
     <Pressable
       disabled={disabled}
-      className={`${fullWidth ? 'w-full' : ''} ${className}`.trim()}
+      className={`${fullWidth ? 'w-full bg-transparent' : 'bg-transparent'} ${className}`.trim()}
       {...props}
     >
       {({ pressed }) => (
-        <View className={`relative w-full ${containerClassName}`}>
+        <View className={`relative w-full bg-transparent ${containerClassName}`}>
           <View
             pointerEvents="none"
             className={`absolute inset-x-0 ${shadowClassName}`}

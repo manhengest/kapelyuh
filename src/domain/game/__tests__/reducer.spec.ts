@@ -142,22 +142,31 @@ describe('domain/game/reducer', () => {
     expect(state.turn?.endsAt).toBeGreaterThan(endsAt);
   });
 
-  it('opens stat carousel after final round and dismisses into end_of_match', () => {
+  it('opens recap carousel after final round and dismisses into end_of_match', () => {
     let state = startMatch(['w1']);
     state = guessCurrentWord(state);
 
     state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
     expect(state.status).toBe('stat_carousel');
-    expect(state.statCardsRemaining).toBe(3);
+    expect(state.statCardsRemaining).toBeGreaterThan(0);
 
-    state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME });
-    expect(state.status).toBe('stat_carousel');
-
-    state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME + 10 });
-    expect(state.status).toBe('stat_carousel');
-
-    state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME + 20 });
+    const cardsToDismiss = state.statCardsRemaining;
+    for (let index = 0; index < cardsToDismiss; index += 1) {
+      state = gameReducer(state, { type: 'DISMISS_STAT_CAROUSEL', now: BASE_TIME + index });
+    }
     expect(state.status).toBe('end_of_match');
+  });
+
+  it('skips recap carousel into end_of_match in one event', () => {
+    let state = startMatch(['w1']);
+    state = guessCurrentWord(state);
+
+    state = gameReducer(state, { type: 'OPEN_STAT_CAROUSEL', now: BASE_TIME });
+    expect(state.status).toBe('stat_carousel');
+
+    state = gameReducer(state, { type: 'SKIP_STAT_CAROUSEL', now: BASE_TIME + 1 });
+    expect(state.status).toBe('end_of_match');
+    expect(state.statCardsRemaining).toBe(0);
   });
 
   it('clears teams when settings are completed so team count can change', () => {
@@ -213,6 +222,84 @@ describe('domain/game/reducer', () => {
     expect(selectIsHatEmpty(state)).toBe(false);
     expect(getCurrentRoundScore(state, 't2')).toBe(1);
     expect(state.rounds[0]?.guessedWordIds).toContain(awardedWordId);
+  });
+
+  it('records a self-awarded word-for-all as guessed so it appears in review', () => {
+    let state = startMatch(['w1', 'w2']);
+    const wordId = state.turn?.currentWordId;
+    state = expireTimer(state);
+    state = awardWord(state, 't1');
+
+    expect(state.status).toBe('review');
+    expect(getCurrentRoundScore(state, 't1')).toBe(1);
+    expect(getCurrentRoundScore(state, 't2')).toBe(0);
+    expect(state.rounds[0]?.guessedWordIds).toContain(wordId);
+    expect(state.turn?.events).toEqual(
+      expect.arrayContaining([{ kind: 'guessed', wordId, at: expect.any(Number) }]),
+    );
+    expect(state.turn?.events.some((event) => event.kind === 'awarded')).toBe(false);
+  });
+
+  it('review foul of a self-awarded word returns it to the hat and removes the point', () => {
+    let state = startMatch(['w1', 'w2']);
+    const wordId = state.turn?.currentWordId;
+    state = expireTimer(state);
+    state = awardWord(state, 't1');
+    state = submitReview(state, { [wordId!]: 'skipped' });
+
+    expect(getCurrentRoundScore(state, 't1')).toBe(0);
+    expect(state.rounds[0]?.guessedWordIds).not.toContain(wordId);
+    expect(state.rounds[0]?.remainingWordIds).toContain(wordId);
+  });
+
+  it('does not bank skip debt against later guesses in the same turn', () => {
+    const words = ['w1', 'w2', 'w3', 'w4', 'w5', 'w6', 'w7', 'w8'];
+    let state = startMatch(
+      words,
+      undefined,
+      makeSettings({ skipPenalty: -1, wordCount: words.length }),
+    );
+    state = skipCurrentWord(state);
+    state = skipCurrentWord(state);
+    state = guessCurrentWord(state);
+    state = guessCurrentWord(state);
+    state = guessCurrentWord(state);
+    state = guessCurrentWord(state);
+    state = guessCurrentWord(state);
+
+    expect(getCurrentRoundScore(state, 't1')).toBe(5);
+  });
+
+  it('does not subtract skip penalty from previous turns in the same round', () => {
+    const words = Array.from({ length: 20 }, (_, index) => `w${index + 1}`);
+    let state = startMatch(
+      words,
+      undefined,
+      makeSettings({ skipPenalty: -1, wordCount: words.length }),
+    );
+    for (let index = 0; index < 10; index += 1) {
+      state = guessCurrentWord(state);
+    }
+    expect(getCurrentRoundScore(state, 't1')).toBe(10);
+
+    state = expireTimer(state);
+    state = awardWord(state, null);
+    state = nextTurn(state);
+    state = gameReducer(state, { type: 'ROUND_INTRO_ACK', now: BASE_TIME + 61_000 });
+    state = expireTimer(state, BASE_TIME + 121_000);
+    state = awardWord(state, null, BASE_TIME + 121_000);
+    state = nextTurn(state, BASE_TIME + 121_000);
+    state = gameReducer(state, { type: 'ROUND_INTRO_ACK', now: BASE_TIME + 122_000 });
+
+    state = skipCurrentWord(state, BASE_TIME + 122_000);
+    state = skipCurrentWord(state, BASE_TIME + 123_000);
+    state = guessCurrentWord(state, BASE_TIME + 124_000);
+    state = guessCurrentWord(state, BASE_TIME + 125_000);
+    state = guessCurrentWord(state, BASE_TIME + 126_000);
+    state = guessCurrentWord(state, BASE_TIME + 127_000);
+    state = guessCurrentWord(state, BASE_TIME + 128_000);
+
+    expect(getCurrentRoundScore(state, 't1')).toBe(15);
   });
 
   it('records turn history when advancing from review', () => {

@@ -27,3 +27,25 @@ _Avoid_: deck, vocabulary, word list (when you mean this match's pool)
 **Pack**:
 A named collection of shipped words. Not player-typed words.
 _Avoid_: using pack for a custom hat
+
+### Recap
+
+**Recap**:
+The post-match highlight carousel between the last review and the podium.
+_Avoid_: statistics (for this sequence). Status `stat_carousel` and route `statistic.tsx` are leftover implementation names for Recap, not the product term.
+
+**Recap card**:
+One highlight in the recap. The last card's title is «Статистика гри».
+_Avoid_: statistic, slide (for the card). That summary title is copy on one card, not the sequence name.
+
+**Attempt**:
+One exposure of a session word as skipped, guessed, or awarded to a team.
+_Avoid_: try, play
+
+**Score gap**:
+Winner total minus runner-up total.
+_Avoid_: margin, spread
+
+**Guess duration**:
+The sum of successful guess intervals for one session word across all rounds.
+_Avoid_: think time, reaction time

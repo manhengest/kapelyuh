@@ -146,11 +146,26 @@ export interface AppSettings {
   skipPenaltyEnabled: boolean;
 }
 
-export interface MatchStats {
-  fastestGuess: { wordText: string; durationMs: number } | null;
-  slowestGuess: { wordText: string; durationMs: number } | null;
-  leastSkippedTeam: { teamName: string; skipCount: number } | null;
-  mostSkippedWord: { wordText: string; skipCount: number } | null;
-  bestTurn: { teamName: string; totalWordsGuessed: number } | null;
-  matchDurationMs: number | null;
-}
+export type RecapCardKind =
+  | 'close_game'
+  | 'blowout'
+  | 'fastest'
+  | 'hardest'
+  | 'slowest'
+  | 'best_turn'
+  | 'summary';
+
+export type RecapCard =
+  | { kind: 'close_game'; gap: number }
+  | { kind: 'blowout'; gap: number }
+  | { kind: 'fastest'; wordText: string; durationMs: number }
+  | { kind: 'hardest'; wordText: string; skipsBeforeFirst: number; attemptIndex: number }
+  | { kind: 'slowest'; wordText: string; durationMs: number }
+  | { kind: 'best_turn'; teamName: string; totalWordsGuessed: number }
+  | {
+      kind: 'summary';
+      durationMs: number | null;
+      guessedCount: number;
+      skippedCount: number;
+      turnCount: number;
+    };

@@ -15,9 +15,14 @@ const sizePx: Record<AppLogoSize, number> = {
 type AppLogoProps = {
   size?: AppLogoSize;
   accessibilityLabel?: string;
+  rounded?: boolean;
 };
 
-export function AppLogo({ size = 'md', accessibilityLabel = strings.appName }: AppLogoProps) {
+export function AppLogo({
+  size = 'md',
+  accessibilityLabel = strings.appName,
+  rounded = false,
+}: AppLogoProps) {
   const dimension = sizePx[size];
 
   return (
@@ -25,7 +30,11 @@ export function AppLogo({ size = 'md', accessibilityLabel = strings.appName }: A
       source={logo}
       accessibilityRole="image"
       accessibilityLabel={accessibilityLabel}
-      style={{ width: dimension, height: dimension }}
+      style={{
+        width: dimension,
+        height: dimension,
+        borderRadius: rounded ? dimension / 2 : 0,
+      }}
     />
   );
 }

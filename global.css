@@ -44,7 +44,7 @@
   }
 
   .picker-option {
-    @apply rounded-2xl border border-pickerBorder bg-pickerSurface px-2 py-3;
+    @apply rounded-2xl border border-pickerBorder bg-pickerSurface p-2;
   }
 
   .picker-option--selected {
@@ -81,5 +81,289 @@
 
   .screen-header-action-btn {
     @apply h-11 w-11 items-center justify-center rounded-full bg-white/70;
+  }
+
+  .panel-card {
+    @apply overflow-hidden rounded-3xl bg-white;
+  }
+
+  .section-title {
+    @apply mb-2 px-1 text-base font-extrabold text-primaryText;
+  }
+
+  .panel-row {
+    @apply min-h-[64px] flex-row items-center gap-3 px-4 py-3.5;
+  }
+
+  .row-label {
+    @apply text-lg font-extrabold leading-6 text-primaryText;
+  }
+
+  .row-description {
+    @apply mt-0.5 text-[15px] leading-5 text-primaryText/70;
+  }
+
+  .settings-row {
+    @apply min-h-[64px] flex-row items-center gap-3 px-4 py-3.5;
+  }
+
+  .settings-row-icon {
+    @apply h-11 w-11 items-center justify-center rounded-2xl bg-pickerSurface;
+  }
+
+  .settings-row-divider {
+    @apply ml-[72px] mr-4 h-px bg-pickerBorder/60;
+  }
+
+  .numbered-item {
+    @apply flex-row items-start gap-3 px-4 py-3.5;
+  }
+
+  .numbered-item-index {
+    @apply mt-0.5 h-7 w-7 items-center justify-center rounded-full bg-pink;
+  }
+
+  .numbered-item-index-text {
+    @apply text-sm font-extrabold text-white;
+  }
+
+  .numbered-item-text {
+    @apply min-w-0 flex-1 text-[16px] leading-6 text-primaryText;
+  }
+
+  .numbered-item-divider {
+    @apply ml-14 mr-4 h-px bg-pickerBorder/60;
+  }
+
+  .rules-card-divider {
+    @apply mx-4 h-px bg-pickerBorder/60;
+  }
+
+  .rules-callout {
+    @apply rounded-2xl px-4 py-3;
+  }
+
+  .rules-callout--warn {
+    @apply bg-pink/20;
+  }
+
+  .rules-callout--tip {
+    @apply bg-pickerSurface;
+  }
+
+  .rules-callout-label {
+    @apply mb-0.5 text-sm font-extrabold uppercase text-highlightText;
+  }
+
+  .rules-callout-body {
+    @apply text-[15px] leading-5 text-primaryText;
+  }
+
+  .rules-round-stripe {
+    @apply w-1.5;
+  }
+
+  .rules-round-name {
+    @apply text-lg font-extrabold leading-6 text-primaryText;
+  }
+
+  .rules-round-body {
+    @apply mt-0.5 text-[15px] leading-5 text-primaryText/70;
+  }
+
+  .rules-score-badge {
+    @apply min-w-[52px] items-center justify-center rounded-xl bg-pickerSurface px-2 py-1;
+  }
+
+  .rules-score-badge-text {
+    @apply text-xl font-extrabold text-primaryText;
+  }
+
+  .screen-footer-hint {
+    @apply mb-1 flex-row items-center justify-center gap-1.5 self-center;
+  }
+
+  .screen-footer-hint--pill {
+    @apply rounded-full bg-white/90 px-4 py-2;
+  }
+
+  .screen-footer-hint-text {
+    @apply shrink text-center text-xl text-highlightText;
+  }
+
+  .screen-footer-skip {
+    @apply text-base font-semibold text-primaryText underline;
+  }
+
+  .recap-card {
+    @apply min-h-[280px] justify-center overflow-hidden rounded-3xl bg-white p-6;
+  }
+
+  .recap-card--summary {
+    @apply min-h-0 justify-start;
+  }
+
+  .recap-emoji {
+    @apply mb-2 text-center text-6xl leading-tight;
+  }
+
+  .recap-kicker {
+    @apply mb-3 text-center text-2xl font-extrabold leading-7 text-highlightText;
+  }
+
+  .recap-label {
+    @apply text-center text-sm font-bold text-primaryText/55;
+  }
+
+  .recap-word {
+    @apply mb-3 mt-0.5 text-center text-2xl font-extrabold leading-8 text-primaryText;
+  }
+
+  .recap-hero-word {
+    @apply mb-4 text-center text-4xl font-extrabold leading-tight text-primaryText;
+  }
+
+  .recap-hero {
+    @apply text-center text-[80px] font-extrabold leading-tight text-primaryText;
+  }
+
+  .recap-caption {
+    @apply text-center text-xl font-bold leading-6 text-primaryText;
+  }
+
+  .recap-detail {
+    @apply mt-4 text-center text-lg font-semibold text-primaryText/70;
+  }
+
+  .recap-summary-title {
+    @apply mb-2 text-center text-2xl font-extrabold text-primaryText;
+  }
+
+  .recap-summary-row {
+    @apply items-center py-3.5;
+  }
+
+  .recap-summary-row--last {
+    @apply pb-0;
+  }
+
+  .recap-summary-label {
+    @apply text-center text-sm font-bold text-primaryText/55;
+  }
+
+  .recap-summary-value {
+    @apply mt-0.5 text-center text-2xl font-extrabold leading-8 text-primaryText;
+  }
+
+  .recap-summary-divider {
+    @apply mx-6 h-px bg-pickerBorder/60;
+  }
+
+  .recap-dots {
+    @apply mt-5 flex-row items-center justify-center gap-2;
+  }
+
+  .recap-dot {
+    @apply h-2 w-2 rounded-full bg-primaryText/20;
+  }
+
+  .recap-dot--active {
+    @apply h-2 w-5 rounded-full bg-pink;
+  }
+
+  .results-title {
+    @apply text-center text-[38px] font-extrabold leading-tight text-primaryText;
+  }
+
+  .results-subtitle {
+    @apply mt-1 text-center text-lg font-bold text-primaryText/60;
+  }
+
+  .results-winner-card {
+    @apply items-center overflow-hidden rounded-3xl bg-awardSelected px-5 py-6;
+  }
+
+  .results-winner-badge {
+    @apply h-[72px] w-[72px] items-center justify-center rounded-full bg-white/80;
+  }
+
+  .results-winner-emoji {
+    @apply text-4xl leading-[46px];
+  }
+
+  .results-winner-label {
+    @apply mt-3 text-sm font-extrabold uppercase text-highlightText;
+  }
+
+  .results-winner-name {
+    @apply mt-1 text-center text-3xl font-extrabold leading-9 text-primaryText;
+  }
+
+  .results-winner-teams {
+    @apply mt-1.5 text-center text-base font-bold text-primaryText/60;
+  }
+
+  .results-winner-score {
+    @apply mt-2 text-center text-5xl font-extrabold leading-tight text-highlightText;
+  }
+
+  .results-winner-score-unit {
+    @apply text-center text-base font-bold text-primaryText/60;
+  }
+
+  .results-table-head {
+    @apply flex-row items-center gap-2 bg-pickerSurface px-4 py-2.5;
+  }
+
+  .results-table-head-team {
+    @apply min-w-0 flex-1 text-xs font-extrabold uppercase text-primaryText/55;
+  }
+
+  .results-table-row {
+    @apply flex-row items-center gap-2 px-4 py-3;
+  }
+
+  .results-table-row--leader {
+    @apply bg-awardSelected/70;
+  }
+
+  .results-table-rank {
+    @apply h-7 w-7 items-center justify-center rounded-full bg-pickerSurface;
+  }
+
+  .results-table-rank--leader {
+    @apply bg-primaryBtn;
+  }
+
+  .results-table-rank-text {
+    @apply text-sm font-extrabold text-primaryText;
+  }
+
+  .results-table-team {
+    @apply min-w-0 flex-1 text-[17px] font-bold text-primaryText;
+  }
+
+  .results-table-col {
+    @apply w-8 items-center;
+  }
+
+  .results-table-score {
+    @apply text-center text-[17px] font-semibold text-primaryText/60;
+  }
+
+  .results-table-total-col {
+    @apply w-11 items-center;
+  }
+
+  .results-table-total {
+    @apply text-center text-xl font-extrabold text-highlightText;
+  }
+
+  .results-table-divider {
+    @apply mx-4 h-px bg-pickerBorder/60;
+  }
+
+  .results-legend {
+    @apply px-1 text-center text-[13px] font-semibold text-primaryText/55;
   }
 }
