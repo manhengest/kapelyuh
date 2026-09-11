@@ -92,6 +92,28 @@ describe('scripts/validate-words', () => {
     ]);
     expect(warnings.some((warning) => errorIncludesSubset(warning))).toBe(true);
   });
+
+  it('warns when a hard/elite core category is below the floor or over the cap', () => {
+    const { warnings } = validateWords([
+      word({ text: 'трактор', difficulty: 'hard', category: 'transport' }),
+    ]);
+    expect(
+      warnings.some((warning) => warning.includes('hard core category "transport" 1 < floor 40')),
+    ).toBe(true);
+    expect(
+      warnings.some((warning) => warning.includes('hard core category "cities" 0 < floor 40')),
+    ).toBe(true);
+
+    const overCap = Array.from({ length: 241 }, (_, index) =>
+      word({ text: `звір${index}`, difficulty: 'hard', category: 'animals' }),
+    );
+    const cap = validateWords(overCap);
+    expect(
+      cap.warnings.some((warning) =>
+        warning.includes('hard core category "animals" 241 > cap 240'),
+      ),
+    ).toBe(true);
+  });
 });
 
 function errorIncludesSubset(warning: string): boolean {
