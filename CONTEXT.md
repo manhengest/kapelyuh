@@ -37,7 +37,7 @@ How hard the bundled hat is: easy, medium, hard, or elite.
 _Avoid_: pack, Pro, level pack
 
 **Elite**:
-The hardest bundled difficulty. The setup label is «Еліта». Cards are mostly recognizable Ukrainian phrases that fit elite shape.
+The hardest bundled difficulty. The setup label is «Еліта». Cards are phrase-shaped: idioms, set names, and specific multi-word descriptors whose difficulty comes from reproducing the exact wording. Hard cards are difficult because of knowledge (jargon, rare single words).
 _Avoid_: pack, Pro, expert, елітний. The bundled card «еліта» (`people`, medium) is unrelated.
 
 ### Recap

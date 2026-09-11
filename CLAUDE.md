@@ -81,6 +81,10 @@ nvm use
 | `npm run words:apply-conflicts`             | Apply `scripts/audit/word-conflict-decisions.json` to master CSV (`status=reject`, `group`) |
 | `npm run words:elite-html`                  | Rebuild `scripts/audit/elite-review-picker.html` for elite/hard review                      |
 | `npm run words:apply-elite`                 | Apply `scripts/audit/elite-review-decisions.json` to master CSV                             |
+| `npm run words:apply-scores -- <batch>`     | Heuristic + LLM playability gate: fail → `reject`, pass → `core`                            |
+| `npm run words:spotcheck-html -- <batch>`   | Seeded 10% Accept/Reject picker → `scripts/audit/spotcheck-picker.html`                     |
+| `npm run words:apply-spotcheck -- <batch>`  | Apply spot-check; >5% fail flips the batch back to `review`                                 |
+| `npm run words:group-subsets`               | Phrase containing an active single-word card inherits that word's group                     |
 | `npm run words:build` / `build:db`          | Regenerates `assets/data/kapelyukh.db` from master CSV                                      |
 
 CI (`.github/workflows/ci.yml`) runs `validate:words`, `build:db`, typecheck, lint, format, and test on every PR. Run `typecheck` + `lint` + `test` before finishing non-trivial work.
