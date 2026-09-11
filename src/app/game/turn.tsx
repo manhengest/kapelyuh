@@ -52,11 +52,14 @@ export default function TurnScreen() {
   const isAwaitingAward = status === 'awaiting_award';
   const teamName = currentTeam?.name ?? '—';
   const currentWordId = turn?.currentWordId ?? null;
-  const cardLabel = isAwaitingAward
-    ? strings.turn.wordForAll
-    : settings.wordSource === 'bundled' && isSavedWordId(currentWordId)
-      ? strings.turn.savedWordLabel
-      : undefined;
+  const awardLabel = isAwaitingAward ? strings.turn.wordForAll : undefined;
+  const badgeForWord = useCallback(
+    (wordId: string) =>
+      !isAwaitingAward && settings.wordSource === 'bundled' && isSavedWordId(wordId)
+        ? strings.turn.savedWordLabel
+        : undefined,
+    [isAwaitingAward, settings.wordSource],
+  );
 
   const commitPendingAction = useCallback(
     (action: WordCardAction) => {
@@ -218,7 +221,8 @@ export default function TurnScreen() {
           wordTexts={wordTexts}
           backgroundColor={palette.card}
           textColor={palette.wordText}
-          label={cardLabel}
+          label={awardLabel}
+          badgeForWord={badgeForWord}
           onExitComplete={onExitComplete}
         />
         {showPauseButton ? (

@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { WordCard, WordCardLabel } from '@features/game/components/WordCard';
+import { WordCard, WordCardHeading, WordCardLabel } from '@features/game/components/WordCard';
 import {
   EXIT_ANIMATION_DURATION_MS,
   EXIT_ANIMATION_DURATION_REDUCED_MS,
@@ -31,6 +31,7 @@ type WordCardStackProps = {
   backgroundColor: string;
   textColor: string;
   label?: string;
+  badgeForWord?: (wordId: string) => string | undefined;
   onExitComplete: (action: WordCardAction) => void;
 };
 
@@ -48,6 +49,7 @@ type StackLayerCardProps = {
   backgroundColor: string;
   textColor: string;
   label?: string;
+  badge?: string;
 };
 
 function StackLayerCard({
@@ -59,6 +61,7 @@ function StackLayerCard({
   backgroundColor,
   textColor,
   label,
+  badge,
 }: StackLayerCardProps) {
   const layer = STACK_LAYER_OFFSETS[depthIndex] ?? STACK_LAYER_OFFSETS[0];
   const translateY = useSharedValue(isEntering ? STACK_ENTER_FROM.translateY : layer.translateY);
@@ -93,6 +96,7 @@ function StackLayerCard({
         backgroundColor={backgroundColor}
         textColor={textColor}
         label={isFront ? label : undefined}
+        badge={isFront ? badge : undefined}
         showWord={isFront}
         isBackCard={!isFront}
         hideFromAccessibility={!isFront}
@@ -110,6 +114,7 @@ export const WordCardStack = forwardRef<WordCardStackHandle, WordCardStackProps>
       backgroundColor,
       textColor,
       label,
+      badgeForWord,
       onExitComplete,
     },
     ref,
@@ -260,6 +265,7 @@ export const WordCardStack = forwardRef<WordCardStackHandle, WordCardStackProps>
                   backgroundColor={backgroundColor}
                   textColor={textColor}
                   label={label}
+                  badge={badgeForWord?.(wordId)}
                 />
               );
             })}
@@ -289,8 +295,9 @@ export const WordCardStack = forwardRef<WordCardStackHandle, WordCardStackProps>
                   elevation: 10,
                 },
               ]}
-              className="w-full px-4"
+              className="w-full items-center gap-2 px-4"
             >
+              <WordCardHeading label={label} />
               <Animated.View
                 className="min-h-[200px] w-full items-center justify-center rounded-3xl px-4 py-8"
                 style={overlayCardStyle}
@@ -304,7 +311,7 @@ export const WordCardStack = forwardRef<WordCardStackHandle, WordCardStackProps>
                 >
                   {exitingWord}
                 </Text>
-                <WordCardLabel label={label} />
+                <WordCardLabel label={badgeForWord?.(exitingWordId)} />
               </Animated.View>
             </Animated.View>
           ) : null}

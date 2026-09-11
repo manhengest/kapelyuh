@@ -7,10 +7,23 @@ type WordCardProps = {
   backgroundColor: string;
   textColor?: string;
   label?: string;
+  badge?: string;
   hideFromAccessibility?: boolean;
   showWord?: boolean;
   isBackCard?: boolean;
 };
+
+export function WordCardHeading({ label }: { label?: string }) {
+  return (
+    <View className="h-8 items-center justify-center">
+      {label ? (
+        <Text className="text-2xl font-bold uppercase tracking-widest text-primaryText">
+          {label}
+        </Text>
+      ) : null}
+    </View>
+  );
+}
 
 export function WordCardLabel({ label }: { label?: string }) {
   if (!label) {
@@ -29,6 +42,7 @@ export function WordCard({
   backgroundColor,
   textColor = '#1A1A1A',
   label,
+  badge,
   hideFromAccessibility = false,
   showWord = true,
   isBackCard = false,
@@ -44,8 +58,9 @@ export function WordCard({
         shadowRadius: 3,
         elevation: isBackCard ? 4 : 10,
       }}
-      className="w-full px-4"
+      className="w-full items-center gap-2 px-4"
     >
+      <WordCardHeading label={isBackCard ? undefined : label} />
       <View
         className="min-h-[200px] w-full items-center justify-center rounded-3xl px-4 py-8"
         style={{ backgroundColor }}
@@ -65,7 +80,7 @@ export function WordCard({
             {word}
           </Text>
         ) : null}
-        {!isBackCard ? <WordCardLabel label={label} /> : null}
+        {!isBackCard ? <WordCardLabel label={badge} /> : null}
       </View>
     </View>
   );
