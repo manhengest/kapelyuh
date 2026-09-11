@@ -81,6 +81,39 @@ export function SettingsLinkRow({ label, onPress }: SettingsLinkRowProps) {
   );
 }
 
+type SettingsNavRowProps = {
+  label: string;
+  description?: string;
+  onPress: () => void;
+  showDivider?: boolean;
+};
+
+export function SettingsNavRow({
+  label,
+  description,
+  onPress,
+  showDivider = false,
+}: SettingsNavRowProps) {
+  return (
+    <View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={label}
+        accessibilityHint={description}
+        onPress={onPress}
+        className="settings-row active:bg-pickerSurface/80"
+      >
+        <View className="min-w-0 flex-1">
+          <Text className="row-label">{label}</Text>
+          {description ? <Text className="row-description">{description}</Text> : null}
+        </View>
+        <Text className="text-2xl text-highlightText">›</Text>
+      </Pressable>
+      {showDivider ? <View className="settings-row-divider" /> : null}
+    </View>
+  );
+}
+
 const GLYPH_SIZE = 22;
 
 const SETTINGS_GLYPHS: Record<SettingsGlyphName, () => ReactElement> = {
@@ -107,10 +140,7 @@ const SETTINGS_GLYPHS: Record<SettingsGlyphName, () => ReactElement> = {
   ),
   sentry: () => (
     <Svg width={GLYPH_SIZE} height={GLYPH_SIZE} viewBox="0 0 24 24" fill="none">
-      <Path
-        d="M12 3l8 3.2v6.2c0 4.4-3 7.5-8 8.6-5-1.1-8-4.2-8-8.6V6.2L12 3z"
-        fill={GLYPH_COLOR}
-      />
+      <Path d="M12 3l8 3.2v6.2c0 4.4-3 7.5-8 8.6-5-1.1-8-4.2-8-8.6V6.2L12 3z" fill={GLYPH_COLOR} />
       <Path
         d="M9.2 12.2l1.8 1.8 4-4"
         stroke={GLYPH_ON}

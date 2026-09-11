@@ -34,9 +34,10 @@ function recapAccessibilityLabel(card: RecapCard): string {
         copy.fastestTitle,
         copy.onWord,
         copy.quotedWord(card.wordText),
-        copy.spentAll,
+        copy.spent,
         String(seconds),
         copy.secondsUnit(seconds),
+        copy.bestTurnTeam(card.teamName),
       ].join('. ');
     }
     case 'hardest':
@@ -55,6 +56,7 @@ function recapAccessibilityLabel(card: RecapCard): string {
         copy.spent,
         String(seconds),
         copy.secondsUnit(seconds),
+        copy.bestTurnTeam(card.teamName),
       ].join('. ');
     }
     case 'best_turn':
@@ -68,7 +70,6 @@ function recapAccessibilityLabel(card: RecapCard): string {
       return [
         copy.summaryTitle,
         `${copy.durationLabel}: ${copy.durationValue(card.durationMs ?? 0)}`,
-        `${copy.guessedLabel}: ${copy.guessedValue(card.guessedCount)}`,
         `${copy.skippedLabel}: ${copy.skippedValue(card.skippedCount)}`,
         `${copy.turnsLabel}: ${copy.turnsValue(card.turnCount)}`,
       ].join('. ');
@@ -83,7 +84,6 @@ function RecapCardBody({ card }: { card: RecapCard }) {
     case 'summary': {
       const rows = [
         { label: copy.durationLabel, value: copy.durationValue(card.durationMs ?? 0) },
-        { label: copy.guessedLabel, value: copy.guessedValue(card.guessedCount) },
         { label: copy.skippedLabel, value: copy.skippedValue(card.skippedCount) },
         { label: copy.turnsLabel, value: copy.turnsValue(card.turnCount) },
       ];
@@ -145,13 +145,14 @@ function RecapCardBody({ card }: { card: RecapCard }) {
           <Text className="recap-word" numberOfLines={2} adjustsFontSizeToFit>
             {copy.quotedWord(card.wordText)}
           </Text>
-          <Text className="recap-label">{copy.spentAll}</Text>
+          <Text className="recap-label">{copy.spent}</Text>
           <View className="recap-hero-wrap">
             <Text className="recap-hero" numberOfLines={1}>
               {seconds}
             </Text>
           </View>
           <Text className="recap-caption">{copy.secondsUnit(seconds)}</Text>
+          <Text className="recap-detail">{copy.bestTurnTeam(card.teamName)}</Text>
         </>
       );
     }
@@ -184,6 +185,7 @@ function RecapCardBody({ card }: { card: RecapCard }) {
             </Text>
           </View>
           <Text className="recap-caption">{copy.secondsUnit(seconds)}</Text>
+          <Text className="recap-detail">{copy.bestTurnTeam(card.teamName)}</Text>
         </>
       );
     }
@@ -259,10 +261,7 @@ export default function StatisticScreen() {
           <View
             accessible
             accessibilityRole="text"
-            accessibilityLabel={strings.results.recap.cardProgress(
-              currentIndex + 1,
-              totalCards,
-            )}
+            accessibilityLabel={strings.results.recap.cardProgress(currentIndex + 1, totalCards)}
             className="recap-dots"
           >
             {recapCards.map((card, index) => (

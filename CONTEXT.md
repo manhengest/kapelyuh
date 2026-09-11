@@ -17,8 +17,12 @@ Session words selected from the shipped word list.
 _Avoid_: default pack, base pack, built-in pack
 
 **Custom hat**:
-Session words typed by the players before the first round. They exist only for that match.
+Session words typed by the players before the first round. They exist only for that match unless saved as Saved words.
 _Avoid_: custom pack, user pack, private pack
+
+**Saved words**:
+Custom-hat words the players chose to keep after a match. They join the bundled set at a chosen difficulty and live on the device.
+_Avoid_: custom pack, user pack, private pack, player words
 
 **Session words**:
 The opaque word identities that make up one match. The same identities are replayed in all three rounds.
@@ -27,6 +31,14 @@ _Avoid_: deck, vocabulary, word list (when you mean this match's pool)
 **Pack**:
 A named collection of shipped words. Not player-typed words.
 _Avoid_: using pack for a custom hat
+
+**Difficulty**:
+How hard the bundled hat is: easy, medium, hard, or elite.
+_Avoid_: pack, Pro, level pack
+
+**Elite**:
+The hardest bundled difficulty. The setup label is «Еліта». Cards are mostly recognizable Ukrainian phrases that fit elite shape.
+_Avoid_: pack, Pro, expert, елітний. The bundled card «еліта» (`people`, medium) is unrelated.
 
 ### Recap
 
@@ -47,5 +59,5 @@ Winner total minus runner-up total.
 _Avoid_: margin, spread
 
 **Guess duration**:
-The sum of successful guess intervals for one session word across all rounds.
-_Avoid_: think time, reaction time
+A single successful guess interval within one turn, at least 1 second, excluding a self-award after the timer expires.
+_Avoid_: think time, reaction time, summed duration

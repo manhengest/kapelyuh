@@ -9,7 +9,6 @@ import { selectSessionWords } from '@domain/game/wordSelector';
 import { parseWordsCsv } from '../../../../scripts/words-csv';
 
 const BUNDLED_PACK_ID = 'bundled-default';
-const THEMATIC_PACK_ID = 'pack:thematic';
 const SESSION_COUNT = 10_000;
 const WORD_COUNT = 30;
 
@@ -25,16 +24,40 @@ function mulberry32(seed: number): () => number {
 
 function loadCoreWords(): Word[] {
   const csv = readFileSync(join(__dirname, '../../../../scripts/words-master.csv'), 'utf8');
-  return parseWordsCsv(csv)
-    .filter((row) => row.status === 'core')
-    .map((row) => ({
-      id: row.id,
-      text: row.text,
-      difficulty: row.difficulty,
-      categoryId: row.category,
-      packId: row.status === 'pack' ? THEMATIC_PACK_ID : BUNDLED_PACK_ID,
-      groupId: row.group || undefined,
-    }));
+  return parseWordsCsv(csv).flatMap((row) => {
+    if (row.status !== 'core' || row.difficulty === 'elite') {
+      return [];
+    }
+    return [
+      {
+        id: row.id,
+        text: row.text,
+        difficulty: row.difficulty,
+        categoryId: row.category,
+        packId: BUNDLED_PACK_ID,
+        groupId: row.group || undefined,
+      },
+    ];
+  });
+}
+
+function loadEliteCoreWords(): Word[] {
+  const csv = readFileSync(join(__dirname, '../../../../scripts/words-master.csv'), 'utf8');
+  return parseWordsCsv(csv).flatMap((row) => {
+    if (row.status !== 'core' || row.difficulty !== 'elite') {
+      return [];
+    }
+    return [
+      {
+        id: row.id,
+        text: row.text,
+        difficulty: row.difficulty,
+        categoryId: row.category,
+        packId: BUNDLED_PACK_ID,
+        groupId: row.group || undefined,
+      },
+    ];
+  });
 }
 
 describe('selectSessionWords production properties', () => {
@@ -71,7 +94,11 @@ describe('selectSessionWords production properties', () => {
     const usage: Record<string, number> = {};
     const pickCounts = new Map<string, number>();
     const categoryPicks = new Map<string, number>();
-    const difficultyPicks = { easy: 0, medium: 0, hard: 0 };
+    const difficultyPicks: Record<'easy' | 'medium' | 'hard', number> = {
+      easy: 0,
+      medium: 0,
+      hard: 0,
+    };
 
     for (let i = 0; i < SESSION_COUNT; i += 1) {
       const ids = selectSessionWords({
@@ -94,6 +121,13 @@ describe('selectSessionWords production properties', () => {
         expect(word.packId).toBe(BUNDLED_PACK_ID);
         pickCounts.set(id, (pickCounts.get(id) ?? 0) + 1);
         categoryPicks.set(word.categoryId, (categoryPicks.get(word.categoryId) ?? 0) + 1);
+        if (
+          word.difficulty !== 'easy' &&
+          word.difficulty !== 'medium' &&
+          word.difficulty !== 'hard'
+        ) {
+          throw new Error(`unexpected difficulty ${word.difficulty}`);
+        }
         difficultyPicks[word.difficulty] += 1;
         if (word.groupId) {
           expect(seenGroups.has(word.groupId)).toBe(false);
@@ -117,5 +151,24 @@ describe('selectSessionWords production properties', () => {
     const pickValues = [...pickCounts.values()];
     expect(Math.min(...pickValues)).toBeGreaterThan(0);
     expect(Math.max(...pickValues)).toBeLessThan(SESSION_COUNT);
+  });
+
+  it('fills a 30-word elite hat from elite core', () => {
+    const elite = loadEliteCoreWords();
+    expect(elite.length).toBeGreaterThanOrEqual(500);
+    const ids = selectSessionWords({
+      words: elite,
+      difficulties: ['elite'],
+      wordCount: WORD_COUNT,
+      usage: {},
+      enabledPackIds: [BUNDLED_PACK_ID],
+      rng: mulberry32(7),
+    });
+    expect(ids).toHaveLength(WORD_COUNT);
+    expect(new Set(ids).size).toBe(WORD_COUNT);
+    const byId = new Map(elite.map((word) => [word.id, word]));
+    for (const id of ids) {
+      expect(byId.get(id)?.difficulty).toBe('elite');
+    }
   });
 });

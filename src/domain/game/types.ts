@@ -1,6 +1,6 @@
 export type RoundType = 'elias' | 'crocodile' | 'association';
 
-export type Difficulty = 'easy' | 'medium' | 'hard';
+export type Difficulty = 'easy' | 'medium' | 'hard' | 'elite';
 
 export type WordSource = 'bundled' | 'custom';
 
@@ -158,14 +158,13 @@ export type RecapCardKind =
 export type RecapCard =
   | { kind: 'close_game'; gap: number }
   | { kind: 'blowout'; gap: number }
-  | { kind: 'fastest'; wordText: string; durationMs: number }
+  | { kind: 'fastest'; wordText: string; durationMs: number; teamName: string }
   | { kind: 'hardest'; wordText: string; skipsBeforeFirst: number; attemptIndex: number }
-  | { kind: 'slowest'; wordText: string; durationMs: number }
+  | { kind: 'slowest'; wordText: string; durationMs: number; teamName: string }
   | { kind: 'best_turn'; teamName: string; totalWordsGuessed: number }
   | {
       kind: 'summary';
       durationMs: number | null;
-      guessedCount: number;
       skippedCount: number;
       turnCount: number;
     };

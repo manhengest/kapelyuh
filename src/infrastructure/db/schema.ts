@@ -1,4 +1,4 @@
-export const DATABASE_VERSION = 2;
+export const DATABASE_VERSION = 3;
 
 export const BUNDLED_PACK_ID = 'bundled-default';
 export const BUNDLED_PACK_NAME = 'Базовий набір';
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS words (
   id TEXT PRIMARY KEY,
   pack_id TEXT NOT NULL REFERENCES packs(id) ON DELETE CASCADE,
   text TEXT NOT NULL,
-  difficulty TEXT NOT NULL CHECK (difficulty IN ('easy','medium','hard')),
+  difficulty TEXT NOT NULL CHECK (difficulty IN ('easy','medium','hard','elite')),
   category_id TEXT NOT NULL,
   group_id TEXT
 );

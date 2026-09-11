@@ -110,7 +110,7 @@ describe('features/game/store session persistence', () => {
     expect(clearActiveMatchMock).toHaveBeenCalled();
   });
 
-  it('skips usage marking and clears custom words when a custom match ends', () => {
+  it('skips usage marking and keeps custom words when a custom match ends', () => {
     expect(addCustomWord('футбол')).toBe('added');
     useGameStore.setState({
       state: {
@@ -135,7 +135,7 @@ describe('features/game/store session persistence', () => {
     useGameStore.getState().dispatch({ type: 'DISMISS_STAT_CAROUSEL', now: 200 });
 
     expect(getWordUsage('custom_1')).toBe(0);
-    expect(getCustomWords()).toEqual({});
+    expect(getCustomWords()).toEqual({ custom_1: 'футбол' });
     expect(saveFinishedSessionMock).toHaveBeenCalledTimes(1);
   });
 

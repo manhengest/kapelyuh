@@ -60,7 +60,7 @@ export function ScreenFooter({
         >
           {hint ? (
             <View
-              className={`screen-footer-hint${hintVariant === 'pill' ? ' screen-footer-hint--pill' : ''}`}
+              className={`screen-footer-hint ${hintVariant === 'pill' ? 'screen-footer-hint--pill' : ''}`}
             >
               <InfoIcon size={20} />
               <Text className="screen-footer-hint-text">{hint}</Text>

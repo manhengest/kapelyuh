@@ -14,6 +14,7 @@ export interface WordSelectorInput {
   rng?: RandomSource;
 }
 
+/** Empty `difficulties` falls back to the original three; elite is opt-in only. */
 const ALL_DIFFICULTIES: Difficulty[] = ['easy', 'medium', 'hard'];
 const CATEGORY_PENALTY = 0.5;
 
@@ -43,6 +44,15 @@ function freshnessWeight(usageCount: number): number {
   return 1 / (1 + usageCount);
 }
 
+function categoryWeightFactor(word: Word, categoryCounts: Map<string, number>): number {
+  if (word.categoryId === 'custom') {
+    return 1;
+  }
+
+  const categoryCount = categoryCounts.get(word.categoryId) ?? 0;
+  return categoryCount > 0 ? Math.pow(CATEGORY_PENALTY, categoryCount) : 1;
+}
+
 /**
  * Weighted random draw without replacement.
  * Applies group collision exclusion and soft category balancing.
@@ -70,9 +80,7 @@ function weightedSample(
   while (selected.length < count && pool.length > 0) {
     let total = 0;
     for (const entry of pool) {
-      const categoryCount = categoryCounts.get(entry.word.categoryId) ?? 0;
-      const categoryFactor = categoryCount > 0 ? Math.pow(CATEGORY_PENALTY, categoryCount) : 1;
-      total += entry.weight * categoryFactor;
+      total += entry.weight * categoryWeightFactor(entry.word, categoryCounts);
     }
 
     if (total <= 0) {
@@ -83,9 +91,7 @@ function weightedSample(
     let pickIndex = pool.length - 1;
     for (let i = 0; i < pool.length; i += 1) {
       const entry = pool[i]!;
-      const categoryCount = categoryCounts.get(entry.word.categoryId) ?? 0;
-      const categoryFactor = categoryCount > 0 ? Math.pow(CATEGORY_PENALTY, categoryCount) : 1;
-      cursor -= entry.weight * categoryFactor;
+      cursor -= entry.weight * categoryWeightFactor(entry.word, categoryCounts);
       if (cursor <= 0) {
         pickIndex = i;
         break;
@@ -98,10 +104,12 @@ function weightedSample(
     if (picked.word.groupId) {
       blockedGroups.add(picked.word.groupId);
     }
-    categoryCounts.set(
-      picked.word.categoryId,
-      (categoryCounts.get(picked.word.categoryId) ?? 0) + 1,
-    );
+    if (picked.word.categoryId !== 'custom') {
+      categoryCounts.set(
+        picked.word.categoryId,
+        (categoryCounts.get(picked.word.categoryId) ?? 0) + 1,
+      );
+    }
 
     if (blockedGroups.size > 0) {
       for (let i = pool.length - 1; i >= 0; i -= 1) {

@@ -1,7 +1,11 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { validateWords } from '../validate-words';
-import { PLAYABILITY_MIN, scorePlayability } from '../word-playability';
+import {
+  PLAYABILITY_ELITE_CROCODILE_MIN,
+  PLAYABILITY_MIN,
+  scorePlayability,
+} from '../word-playability';
 import { type CsvWord } from '../words-csv';
 import { stableWordId } from '../words-id';
 
@@ -108,6 +112,18 @@ describe('scripts/word-playability', () => {
       });
       expect(score.min).toBeLessThan(PLAYABILITY_MIN);
     }
+  });
+
+  it('relaxes crocodile floor to 4 for elite difficulty', () => {
+    const regular = scorePlayability(word({ text: 'мета', category: 'abstract' }));
+    const elite = scorePlayability(
+      word({ text: 'мета', category: 'abstract', difficulty: 'elite' }),
+    );
+    expect(regular.pass).toBe(false);
+    expect(elite.crocodile).toBe(regular.crocodile);
+    expect(elite.crocodile).toBeGreaterThanOrEqual(PLAYABILITY_ELITE_CROCODILE_MIN);
+    expect(elite.crocodile).toBeLessThan(PLAYABILITY_MIN);
+    expect(elite.pass).toBe(true);
   });
 
   it('treats 6 as the pass floor', () => {

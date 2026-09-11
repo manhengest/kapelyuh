@@ -64,7 +64,6 @@ function handleMatchEnd(prev: GameState, next: GameState): void {
       const sessionWordIds = next.rounds[0]?.sessionWordIds ?? [];
       markWordsUsed(sessionWordIds, String(next.createdAt));
     }
-    clearCustomWords();
 
     void saveFinishedSession(next).catch((error: unknown) => {
       console.error('Failed to save finished session', error);

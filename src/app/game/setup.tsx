@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { type ReactNode, useMemo, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
-import { strings } from '@content/strings';
+import { difficultyLabels, strings } from '@content/strings';
 import type { Difficulty, MatchSettings, WordSource } from '@domain/game/types';
 import { DEFAULT_MATCH_SETTINGS } from '@domain/game/types';
 import { useGameActions, useGameState } from '@features/game/hooks';
@@ -40,12 +40,7 @@ export default function SetupScreen() {
     };
   });
 
-  const difficultyOptions = useMemo<Difficulty[]>(() => ['easy', 'medium', 'hard'], []);
-  const difficultyLabels: Record<Difficulty, string> = {
-    easy: strings.setup.difficultyEasy,
-    medium: strings.setup.difficultyMedium,
-    hard: strings.setup.difficultyHard,
-  };
+  const difficultyOptions = useMemo<Difficulty[]>(() => ['easy', 'medium', 'hard', 'elite'], []);
   const wordSourceOptions = useMemo<WordSource[]>(() => ['bundled', 'custom'], []);
   const wordSourceLabels: Record<WordSource, string> = {
     bundled: strings.setup.wordSourceBundled,

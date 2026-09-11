@@ -1,4 +1,12 @@
+import type { Difficulty } from '@domain/game/types';
 import { pluralizeUkrainian } from '@shared/lib/pluralize';
+
+export const difficultyLabels: Record<Difficulty, string> = {
+  easy: 'Легкий',
+  medium: 'Середній',
+  hard: 'Важкий',
+  elite: 'Еліта',
+};
 
 export const strings = {
   appName: 'Капелюх',
@@ -29,9 +37,6 @@ export const strings = {
     skipPenalty: 'Штраф за пропуск слова',
     skipPenaltyNone: 'Без штрафу',
     skipPenaltyMinusOne: '−1 бал за пропуск',
-    difficultyEasy: 'Легкий',
-    difficultyMedium: 'Середній',
-    difficultyHard: 'Важкий',
     teamPlaceholder: 'Назва команди',
     wordSetNote: 'Один набір слів грається за 3 раунди',
     teamHint: 'Натисни на назву, щоб змінити',
@@ -93,6 +98,7 @@ export const strings = {
     guess: 'Вгадав',
     skip: 'Пропустити',
     wordForAll: 'СЛОВО ДЛЯ ВСІХ',
+    savedWordLabel: 'Свій капелюх',
     pause: 'Пауза',
   },
   pause: {
@@ -152,7 +158,6 @@ export const strings = {
       summaryTitle: 'Статистика гри',
       onWord: 'На слово',
       spent: 'витратили',
-      spentAll: 'витратили всього',
       quotedWord: (word: string) => `«${word}»`,
       hardestSkips: (count: number) => {
         const timesWord = pluralizeUkrainian(count, {
@@ -187,7 +192,6 @@ export const strings = {
           many: 'секунд',
         }),
       durationLabel: 'Ця гра тривала',
-      guessedLabel: 'Відгадано',
       skippedLabel: 'Пропущено',
       turnsLabel: 'Зіграно ходів',
       durationValue: (durationMs: number) => {
@@ -228,14 +232,6 @@ export const strings = {
         });
         return `${hours} ${hourWord} ${minutes} ${minWord}`;
       },
-      guessedValue: (count: number) => {
-        const wordsWord = pluralizeUkrainian(count, {
-          one: 'слово',
-          few: 'слова',
-          many: 'слів',
-        });
-        return `${count} ${wordsWord}`;
-      },
       skippedValue: (count: number) => {
         const wordsWord = pluralizeUkrainian(count, {
           one: 'слово',
@@ -246,6 +242,14 @@ export const strings = {
       },
       turnsValue: (count: number) => `${count}`,
       cardProgress: (index: number, total: number) => `Картка ${index} з ${total}`,
+    },
+    saveWords: {
+      promptTitle: 'Зберегти слова з капелюха?',
+      yes: 'Так',
+      no: 'Ні',
+      difficultyTitle: 'Яка складність цих слів?',
+      result: (saved: number, total: number) => `Збережено ${saved} із ${total}`,
+      duplicatesRemoved: 'Дублікати видалено',
     },
   },
   settings: {
@@ -261,6 +265,11 @@ export const strings = {
     sentryDescription: 'Анонімні звіти для покращення стабільності',
     skipPenalty: 'Штраф за пропуск',
     skipPenaltyDescription: '−1 бал за пропуск, рахунок ходу не нижче 0',
+    savedWords: 'Збережені слова',
+    savedWordsEmpty: 'Ще немає збережених слів. Після гри у свій капелюх їх можна залишити.',
+    savedWordsDeleteAll: 'Видалити всі',
+    savedWordsDeleteAllConfirm: 'Видалити всі збережені слова?',
+    savedWordsDeleteOne: 'Видалити слово',
     about: 'Про гру',
     play: 'Грати',
   },

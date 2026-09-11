@@ -12,6 +12,18 @@ type WordCardProps = {
   isBackCard?: boolean;
 };
 
+export function WordCardLabel({ label }: { label?: string }) {
+  if (!label) {
+    return null;
+  }
+
+  return (
+    <View className="word-card-badge" pointerEvents="none">
+      <Text className="word-card-badge-text">{label}</Text>
+    </View>
+  );
+}
+
 export function WordCard({
   word = '',
   backgroundColor,
@@ -32,15 +44,8 @@ export function WordCard({
         shadowRadius: 3,
         elevation: isBackCard ? 4 : 10,
       }}
-      className="w-full items-center gap-2 px-4"
+      className="w-full px-4"
     >
-      <View className="h-8 items-center justify-center">
-        {!isBackCard && label ? (
-          <Text className="text-2xl font-bold uppercase tracking-widest text-primaryText">
-            {label}
-          </Text>
-        ) : null}
-      </View>
       <View
         className="min-h-[200px] w-full items-center justify-center rounded-3xl px-4 py-8"
         style={{ backgroundColor }}
@@ -60,6 +65,7 @@ export function WordCard({
             {word}
           </Text>
         ) : null}
+        {!isBackCard ? <WordCardLabel label={label} /> : null}
       </View>
     </View>
   );

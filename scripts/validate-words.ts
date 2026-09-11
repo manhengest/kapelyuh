@@ -11,7 +11,9 @@ import {
 import {
   CANONICAL_CATEGORIES,
   CANONICAL_CATEGORY_SET,
+  ELITE_FUNCTION_WORDS,
   MAX_CARD_LENGTH,
+  MAX_ELITE_CARD_LENGTH,
   parseWordsCsv,
   type CsvWord,
   type Difficulty,
@@ -21,6 +23,7 @@ import { normalizeTextKey, stableWordId } from './words-id';
 
 const CORE_WARN_BELOW = 5000;
 const HARD_WARN_BELOW = 500;
+const ELITE_WARN_BELOW = 500;
 
 export interface ValidateWordsOptions {
   playability?: boolean;
@@ -37,6 +40,65 @@ function countBy<K extends string>(words: CsvWord[], key: (word: CsvWord) => K):
 
 function pad(label: string, width: number): string {
   return label.padEnd(width, ' ');
+}
+
+export function cardTokens(text: string): string[] {
+  return text
+    .trim()
+    .toLocaleLowerCase('uk-UA')
+    .split(/[\s-]+/)
+    .filter((token) => token.length > 0);
+}
+
+export function letterCount(token: string): number {
+  return [...token].filter((char) => /\p{L}/u.test(char)).length;
+}
+
+function isFunctionToken(token: string): boolean {
+  return ELITE_FUNCTION_WORDS.has(token);
+}
+
+function eliteTokenAllowed(token: string): boolean {
+  return letterCount(token) >= 3 || isFunctionToken(token);
+}
+
+export function isContiguousSubset(needles: string[], haystack: string[]): boolean {
+  if (needles.length === 0 || needles.length >= haystack.length) {
+    return false;
+  }
+
+  for (let start = 0; start <= haystack.length - needles.length; start += 1) {
+    if (needles.every((token, index) => haystack[start + index] === token)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+export function eliteShapeError(word: CsvWord): string | null {
+  const tokens = cardTokens(word.text);
+  if (tokens.length === 1) {
+    if (letterCount(tokens[0]!) < 10) {
+      return `elite shape (single word needs ≥10 letters): ${word.text}`;
+    }
+    return null;
+  }
+
+  if (tokens.length < 2 || tokens.length > 4) {
+    return `elite shape (need 2–4 tokens or a 10+ letter word): ${word.text}`;
+  }
+
+  if (tokens.length === 4 && !tokens.some(isFunctionToken)) {
+    return `elite shape (4 tokens need a function word): ${word.text}`;
+  }
+
+  const short = tokens.find((token) => !eliteTokenAllowed(token));
+  if (short) {
+    return `elite token too short (${short}): ${word.text}`;
+  }
+
+  return null;
 }
 
 function formatCountMap(counts: Record<string, number>, keys: string[]): string {
@@ -66,8 +128,16 @@ export function validateWords(
       );
     }
 
-    if (word.text.length > MAX_CARD_LENGTH) {
+    const maxLength = word.difficulty === 'elite' ? MAX_ELITE_CARD_LENGTH : MAX_CARD_LENGTH;
+    if (word.text.length > maxLength) {
       errors.push(`card too long (${word.text.length}): ${word.text}`);
+    }
+
+    if (word.difficulty === 'elite') {
+      const shapeError = eliteShapeError(word);
+      if (shapeError) {
+        errors.push(shapeError);
+      }
     }
 
     if (/[ыэъё]/i.test(word.text)) {
@@ -117,6 +187,23 @@ export function validateWords(
     }
   }
 
+  const active = words.filter((word) => word.status !== 'reject');
+  const tokenized = active.map((word) => ({ word, tokens: cardTokens(word.text) }));
+  for (const candidate of tokenized) {
+    if (candidate.word.difficulty !== 'elite') {
+      continue;
+    }
+    for (const other of tokenized) {
+      if (candidate.word.id === other.word.id) {
+        continue;
+      }
+      if (isContiguousSubset(other.tokens, candidate.tokens)) {
+        warnings.push(`subset of "${other.word.text}": ${candidate.word.text}`);
+        break;
+      }
+    }
+  }
+
   const core = words.filter((word) => word.status === 'core');
   const coreByDifficulty = countBy(core, (word) => word.difficulty);
 
@@ -125,6 +212,9 @@ export function validateWords(
   }
   if ((coreByDifficulty.hard ?? 0) < HARD_WARN_BELOW) {
     warnings.push(`hard core ${coreByDifficulty.hard ?? 0} < ${HARD_WARN_BELOW}`);
+  }
+  if ((coreByDifficulty.elite ?? 0) < ELITE_WARN_BELOW) {
+    warnings.push(`elite core ${coreByDifficulty.elite ?? 0} < ${ELITE_WARN_BELOW}`);
   }
 
   return { errors, warnings };
@@ -137,7 +227,7 @@ function printValidationReport(words: CsvWord[], errors: string[], warnings: str
   const coreByDifficulty = countBy(core, (word) => word.difficulty);
   const byCategory = countBy(words, (word) => word.category);
 
-  const difficultyOrder: Difficulty[] = ['easy', 'medium', 'hard'];
+  const difficultyOrder: Difficulty[] = ['easy', 'medium', 'hard', 'elite'];
   const statusOrder: WordStatus[] = ['core', 'pack', 'review', 'reject'];
 
   const groups = new Set(words.map((word) => word.group).filter(Boolean));
@@ -153,7 +243,7 @@ function printValidationReport(words: CsvWord[], errors: string[], warnings: str
   console.log('');
   console.log('Core by difficulty:');
   console.log(
-    `  easy:   ${String(coreByDifficulty.easy ?? 0).padStart(4)}  medium: ${String(coreByDifficulty.medium ?? 0).padStart(4)}  hard: ${String(coreByDifficulty.hard ?? 0).padStart(4)}`,
+    `  easy:   ${String(coreByDifficulty.easy ?? 0).padStart(4)}  medium: ${String(coreByDifficulty.medium ?? 0).padStart(4)}  hard: ${String(coreByDifficulty.hard ?? 0).padStart(4)}  elite: ${String(coreByDifficulty.elite ?? 0).padStart(4)}`,
   );
   console.log('');
   console.log('By status:');

@@ -111,16 +111,25 @@ export function selectReviewCta(
   return 'match_results';
 }
 
-function guessDurations(turn: CompletedTurn): { wordId: string; durationMs: number }[] {
-  const durations: { wordId: string; durationMs: number }[] = [];
+function guessDurations(
+  turn: CompletedTurn,
+): { wordId: string; durationMs: number; teamId: string }[] {
+  const durations: { wordId: string; durationMs: number; teamId: string }[] = [];
   let previousAt = turn.startedAt;
+  let sawExpired = false;
 
   for (const event of turn.events) {
+    if (event.kind === 'expired') {
+      sawExpired = true;
+      continue;
+    }
     if (event.kind === 'guessed') {
-      durations.push({
-        wordId: event.wordId,
-        durationMs: Math.max(0, event.at - previousAt),
-      });
+      if (!sawExpired) {
+        const durationMs = Math.max(0, event.at - previousAt);
+        if (durationMs >= 1_000) {
+          durations.push({ wordId: event.wordId, durationMs, teamId: turn.teamId });
+        }
+      }
     }
     if (event.kind === 'guessed' || event.kind === 'skipped') {
       previousAt = event.at;
@@ -180,16 +189,16 @@ function wordText(wordId: string, wordTexts: Record<string, string>): string {
   return wordTexts[wordId] ?? wordId;
 }
 
-function summedGuessDurations(turnHistory: CompletedTurn[]): Map<string, number> {
-  const durationByWord = new Map<string, number>();
+function selectGuessIntervals(turnHistory: CompletedTurn[]): {
+  wordId: string;
+  durationMs: number;
+  teamId: string;
+}[] {
+  return turnHistory.flatMap((turn) => guessDurations(turn));
+}
 
-  for (const turn of turnHistory) {
-    for (const entry of guessDurations(turn)) {
-      durationByWord.set(entry.wordId, (durationByWord.get(entry.wordId) ?? 0) + entry.durationMs);
-    }
-  }
-
-  return durationByWord;
+function teamNameOf(teams: Team[], teamId: string): string {
+  return teams.find((team) => team.id === teamId)?.name ?? teamId;
 }
 
 function selectHardestWord(
@@ -290,24 +299,19 @@ function selectBestTurn(
 }
 
 function summaryCounts(turnHistory: CompletedTurn[]): {
-  guessedCount: number;
   skippedCount: number;
 } {
-  let guessedCount = 0;
   let skippedCount = 0;
 
   for (const turn of turnHistory) {
     for (const event of turn.events) {
-      if (event.kind === 'guessed' || (event.kind === 'awarded' && event.toTeamId != null)) {
-        guessedCount += 1;
-      }
       if (event.kind === 'skipped') {
         skippedCount += 1;
       }
     }
   }
 
-  return { guessedCount, skippedCount };
+  return { skippedCount };
 }
 
 export function selectRecapCards(
@@ -325,20 +329,14 @@ export function selectRecapCards(
     cards.push({ kind: 'blowout', gap });
   }
 
-  const durationByWord = summedGuessDurations(turnHistory);
-  const wordDurations = [...durationByWord.entries()].map(([wordId, durationMs]) => ({
-    wordId,
-    durationMs,
-  }));
+  const intervals = selectGuessIntervals(turnHistory);
 
   type MiddleKind = 'hardest' | 'fastest' | 'slowest' | 'best_turn';
   const middle: { card: RecapCard; score: number; kind: MiddleKind }[] = [];
 
   const fastest =
-    wordDurations.length > 0
-      ? wordDurations.reduce((best, current) =>
-          current.durationMs < best.durationMs ? current : best,
-        )
+    intervals.length > 0
+      ? intervals.reduce((best, current) => (current.durationMs < best.durationMs ? current : best))
       : null;
   if (fastest && fastest.durationMs < FASTEST_MAX_MS) {
     middle.push({
@@ -348,13 +346,14 @@ export function selectRecapCards(
         kind: 'fastest',
         wordText: wordText(fastest.wordId, wordTexts),
         durationMs: fastest.durationMs,
+        teamName: teamNameOf(teams, fastest.teamId),
       },
     });
   }
 
   const slowest =
-    wordDurations.length > 0
-      ? wordDurations.reduce((worst, current) =>
+    intervals.length > 0
+      ? intervals.reduce((worst, current) =>
           current.durationMs > worst.durationMs ? current : worst,
         )
       : null;
@@ -366,6 +365,7 @@ export function selectRecapCards(
         kind: 'slowest',
         wordText: wordText(slowest.wordId, wordTexts),
         durationMs: slowest.durationMs,
+        teamName: teamNameOf(teams, slowest.teamId),
       },
     });
   }
@@ -399,11 +399,10 @@ export function selectRecapCards(
     cards.push(entry.card);
   }
 
-  const { guessedCount, skippedCount } = summaryCounts(turnHistory);
+  const { skippedCount } = summaryCounts(turnHistory);
   cards.push({
     kind: 'summary',
     durationMs: selectMatchDurationMs(turnHistory, createdAt),
-    guessedCount,
     skippedCount,
     turnCount: turnHistory.length,
   });

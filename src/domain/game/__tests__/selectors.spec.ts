@@ -59,7 +59,7 @@ describe('domain/game/selectors', () => {
     'w-hard': 'квантова фізика',
   };
 
-  it('omits fastest at an 8s sum and shows it at 7.9s without a team', () => {
+  it('omits fastest at an 8s attempt and shows it at 7.9s with the team', () => {
     const omitted = selectRecapCards(
       [makeTurn({ events: [{ kind: 'guessed', wordId: 'w-fast', at: 8_000 }] })],
       makeTeams(10, 4),
@@ -79,11 +79,11 @@ describe('domain/game/selectors', () => {
       kind: 'fastest',
       wordText: 'швидко',
       durationMs: 7_900,
+      teamName: 'Блискавки',
     });
-    expect(cardOf(shown, 'fastest')).not.toHaveProperty('teamName');
   });
 
-  it('sums guess duration across rounds for the same word', () => {
+  it('uses the fastest single attempt, not the sum across rounds', () => {
     const history: CompletedTurn[] = [
       makeTurn({
         endedAt: 3_000,
@@ -107,7 +107,52 @@ describe('domain/game/selectors', () => {
     ];
 
     const cards = selectRecapCards(history, makeTeams(10, 4), wordTexts, 0);
-    expect(cardOf(cards, 'fastest').durationMs).toBe(6_500);
+    expect(cardOf(cards, 'fastest')).toEqual({
+      kind: 'fastest',
+      wordText: 'швидко',
+      durationMs: 2_000,
+      teamName: 'Блискавки',
+    });
+  });
+
+  it('ignores guess intervals under 1 second', () => {
+    const cards = selectRecapCards(
+      [
+        makeTurn({
+          events: [
+            { kind: 'guessed', wordId: 'w-fast', at: 400 },
+            { kind: 'guessed', wordId: 'w-slow', at: 7_400 },
+          ],
+        }),
+      ],
+      makeTeams(10, 4),
+      wordTexts,
+      0,
+    );
+    expect(cardOf(cards, 'fastest')).toEqual({
+      kind: 'fastest',
+      wordText: 'повільно',
+      durationMs: 7_000,
+      teamName: 'Блискавки',
+    });
+  });
+
+  it('excludes self-award guesses after the timer expires', () => {
+    const cards = selectRecapCards(
+      [
+        makeTurn({
+          events: [
+            { kind: 'guessed', wordId: 'w-slow', at: 20_000 },
+            { kind: 'expired', at: 60_000, pendingWordId: 'w-fast' },
+            { kind: 'guessed', wordId: 'w-fast', at: 61_000 },
+          ],
+        }),
+      ],
+      makeTeams(10, 4),
+      wordTexts,
+      0,
+    );
+    expect(kinds(cards)).toEqual(['summary']);
   });
 
   it('omits slowest below 25s and shows it at 25s', () => {
@@ -129,6 +174,7 @@ describe('domain/game/selectors', () => {
       kind: 'slowest',
       wordText: 'повільно',
       durationMs: 25_000,
+      teamName: 'Блискавки',
     });
   });
 
@@ -184,15 +230,15 @@ describe('domain/game/selectors', () => {
     const history = [makeTurn({ events: [{ kind: 'guessed', wordId: 'w-fast', at: 20_000 }] })];
 
     expect(kinds(selectRecapCards(history, makeTeams(31, 29), wordTexts, 0))[0]).toBe('close_game');
-    expect(cardOf(selectRecapCards(history, makeTeams(31, 29), wordTexts, 0), 'close_game').gap).toBe(
-      2,
-    );
+    expect(
+      cardOf(selectRecapCards(history, makeTeams(31, 29), wordTexts, 0), 'close_game').gap,
+    ).toBe(2);
     expect(kinds(selectRecapCards(history, makeTeams(42, 19), wordTexts, 0))[0]).toBe('blowout');
     expect(kinds(selectRecapCards(history, makeTeams(30, 30), wordTexts, 0))).toEqual(['summary']);
     expect(kinds(selectRecapCards(history, makeTeams(20, 13), wordTexts, 0))).toEqual(['summary']);
   });
 
-  it('summary is always last and counts awards to a team as guessed', () => {
+  it('summary is always last', () => {
     const history = [
       makeTurn({
         endedAt: 40_000,
@@ -209,7 +255,6 @@ describe('domain/game/selectors', () => {
     expect(cards.at(-1)).toEqual({
       kind: 'summary',
       durationMs: 35_000,
-      guessedCount: 2,
       skippedCount: 1,
       turnCount: 1,
     });
@@ -218,13 +263,14 @@ describe('domain/game/selectors', () => {
   it('ranks blowout first, then middle cards by threshold units, summary last', () => {
     const guessed = (wordId: string, at: number) => ({ kind: 'guessed' as const, wordId, at });
 
-    const bestTurnEvents = Array.from({ length: 10 }, (_, index) =>
-      guessed(`w-${index + 1}`, (index + 1) * 100),
-    );
+    const bestTurnEvents = [
+      ...Array.from({ length: 10 }, (_, index) => guessed(`w-${index + 1}`, (index + 1) * 100)),
+      guessed('w-fast', 3_000),
+    ];
 
     const history: CompletedTurn[] = [
       makeTurn({
-        endedAt: 2_000,
+        endedAt: 4_000,
         events: bestTurnEvents,
       }),
       makeTurn({

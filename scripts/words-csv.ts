@@ -41,13 +41,40 @@ export const CANONICAL_CATEGORIES = [
 
 export const CANONICAL_CATEGORY_SET = new Set<string>(CANONICAL_CATEGORIES);
 
-export type Difficulty = 'easy' | 'medium' | 'hard';
+export type Difficulty = 'easy' | 'medium' | 'hard' | 'elite';
 export type WordStatus = 'core' | 'pack' | 'review' | 'reject';
 
-export const VALID_DIFFICULTIES = new Set<Difficulty>(['easy', 'medium', 'hard']);
+export const VALID_DIFFICULTIES = new Set<Difficulty>(['easy', 'medium', 'hard', 'elite']);
 export const VALID_STATUSES = new Set<WordStatus>(['core', 'pack', 'review', 'reject']);
 
 export const MAX_CARD_LENGTH = 28;
+export const MAX_ELITE_CARD_LENGTH = 32;
+
+/** Closed list of Ukrainian function words allowed as short elite tokens. */
+export const ELITE_FUNCTION_WORDS = new Set([
+  'з',
+  'зі',
+  'із',
+  'на',
+  'у',
+  'в',
+  'і',
+  'й',
+  'та',
+  'до',
+  'від',
+  'по',
+  'за',
+  'про',
+  'як',
+  'не',
+  'ні',
+  'чи',
+  'бо',
+  'то',
+  'о',
+  'а',
+]);
 
 export interface CsvWord {
   id: string;

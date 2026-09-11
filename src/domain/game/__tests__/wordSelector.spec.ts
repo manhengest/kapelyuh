@@ -254,6 +254,29 @@ describe('domain/game/wordSelector', () => {
     expect(ids).toEqual(['only']);
   });
 
+  it('does not apply category penalty to saved (custom) words', () => {
+    const words: Word[] = [
+      ...Array.from({ length: 8 }, (_, index) =>
+        makeWord(`saved-${index}`, 'easy', { categoryId: 'custom' }),
+      ),
+      makeWord('food-0', 'easy', { categoryId: 'food' }),
+    ];
+
+    const counts = { custom: 0, food: 0 };
+    for (let i = 0; i < 200; i += 1) {
+      const ids = selectSessionWords({
+        words,
+        difficulties: ['easy'],
+        wordCount: 5,
+        usage: {},
+      });
+      counts.custom += ids.filter((id) => id.startsWith('saved-')).length;
+      counts.food += ids.filter((id) => id.startsWith('food-')).length;
+    }
+
+    expect(counts.custom).toBeGreaterThan(counts.food * 3);
+  });
+
   it('soft-balances categories across the pool', () => {
     const words: Word[] = [
       ...Array.from({ length: 20 }, (_, i) =>
@@ -294,5 +317,20 @@ describe('domain/game/wordSelector', () => {
       rng: sequentialRng([0.1, 0.2, 0.3, 0.4, 0.5, 0.6]),
     });
     expect(first).toEqual(second);
+  });
+
+  it('selects only elite words when elite is the chosen difficulty', () => {
+    const pool: Word[] = [
+      ...Array.from({ length: 10 }, (_, index) => makeWord(`elite-${index}`, 'elite')),
+      ...dictionary,
+    ];
+    const ids = selectSessionWords({
+      words: pool,
+      difficulties: ['elite'],
+      wordCount: 6,
+      usage: {},
+    });
+    expect(ids).toHaveLength(6);
+    ids.forEach((id) => expect(id.startsWith('elite-')).toBe(true));
   });
 });

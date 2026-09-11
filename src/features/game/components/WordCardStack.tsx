@@ -8,7 +8,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { WordCard } from '@features/game/components/WordCard';
+import { WordCard, WordCardLabel } from '@features/game/components/WordCard';
 import {
   EXIT_ANIMATION_DURATION_MS,
   EXIT_ANIMATION_DURATION_REDUCED_MS,
@@ -289,15 +289,8 @@ export const WordCardStack = forwardRef<WordCardStackHandle, WordCardStackProps>
                   elevation: 10,
                 },
               ]}
-              className="w-full items-center gap-2 px-4"
+              className="w-full px-4"
             >
-              <View className="h-8 items-center justify-center">
-                {label ? (
-                  <Text className="text-2xl font-bold uppercase tracking-widest text-primaryText">
-                    {label}
-                  </Text>
-                ) : null}
-              </View>
               <Animated.View
                 className="min-h-[200px] w-full items-center justify-center rounded-3xl px-4 py-8"
                 style={overlayCardStyle}
@@ -311,6 +304,7 @@ export const WordCardStack = forwardRef<WordCardStackHandle, WordCardStackProps>
                 >
                   {exitingWord}
                 </Text>
+                <WordCardLabel label={label} />
               </Animated.View>
             </Animated.View>
           ) : null}

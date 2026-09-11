@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useMemo, useRef, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Image, ScrollView, View } from 'react-native';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import Animated, {
@@ -10,8 +10,10 @@ import Animated, {
 } from 'react-native-reanimated';
 
 import { strings } from '@content/strings';
+import { SaveWordsModal } from '@features/game/components/Modals';
 import { useGameActions, useGameSelectors, useGameState } from '@features/game/hooks';
 import { playEnd } from '@infrastructure/audio/sounds';
+import { getCustomWords } from '@infrastructure/storage/customWords';
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenShell } from '@ui/components/ScreenShell';
@@ -58,11 +60,23 @@ function WinnerReveal({ children }: { children: ReactNode }) {
 
 export default function ResultsScreen() {
   const router = useRouter();
-  const status = useGameState().status;
+  const gameState = useGameState();
+  const status = gameState.status;
   const { scoreboard, winners } = useGameSelectors();
   const { abandonMatch } = useGameActions();
   const reducedMotion = useReducedMotion();
   const endSoundPlayed = useRef(false);
+  const [saveModalVisible, setSaveModalVisible] = useState(false);
+
+  const customHatTexts = useMemo(() => {
+    if (gameState.settings.wordSource !== 'custom') {
+      return [];
+    }
+    const custom = getCustomWords();
+    return (gameState.rounds[0]?.sessionWordIds ?? [])
+      .map((id) => custom[id])
+      .filter((text): text is string => Boolean(text));
+  }, [gameState.rounds, gameState.settings.wordSource]);
 
   useEffect(() => {
     if (status === 'end_of_match' && !endSoundPlayed.current) {
@@ -86,6 +100,7 @@ export default function ResultsScreen() {
   const isDraw = winners.length > 1;
   const winnerLabel = isDraw ? strings.results.tieLabel : strings.results.winnerLabel;
   const headline = isDraw ? strings.results.friendshipWins : winnerNames;
+  const isCustomHatCta = gameState.settings.wordSource === 'custom' && customHatTexts.length > 0;
 
   return (
     <ScreenShell
@@ -202,12 +217,31 @@ export default function ResultsScreen() {
         </View>
       </ScrollView>
       <ScreenFooter
-        label={strings.home.newGame}
+        label={isCustomHatCta ? strings.common.next : strings.home.newGame}
         onPress={() => {
+          if (isCustomHatCta) {
+            setSaveModalVisible(true);
+            return;
+          }
           abandonMatch();
           router.replace('/');
         }}
       />
+      {saveModalVisible ? (
+        <SaveWordsModal
+          texts={customHatTexts}
+          onDecline={() => {
+            setSaveModalVisible(false);
+            abandonMatch();
+            router.replace('/');
+          }}
+          onComplete={() => {
+            setSaveModalVisible(false);
+            abandonMatch();
+            router.replace('/');
+          }}
+        />
+      ) : null}
     </ScreenShell>
   );
 }

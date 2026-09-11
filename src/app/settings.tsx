@@ -1,14 +1,15 @@
-import { useRouter } from 'expo-router';
-import { type ReactNode } from 'react';
+import { useFocusEffect, useRouter } from 'expo-router';
+import { type ReactNode, useCallback, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { strings } from '@content/strings';
 import { useSettingsStore } from '@features/settings/store';
 import { setSentryEnabled } from '@infrastructure/analytics/sentry';
+import { getSavedWordCount } from '@infrastructure/storage/savedWords';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { ScreenShell } from '@ui/components/ScreenShell';
-import { SettingsToggleRow } from '@ui/components/SettingsRow';
+import { SettingsNavRow, SettingsToggleRow } from '@ui/components/SettingsRow';
 import { ShadowCard } from '@ui/components/ShadowCard';
 import { Text } from '@ui/components/Text';
 
@@ -27,6 +28,13 @@ export default function SettingsScreen() {
   const router = useRouter();
   const settings = useSettingsStore((store) => store.settings);
   const updateSettings = useSettingsStore((store) => store.updateSettings);
+  const [savedCount, setSavedCount] = useState(getSavedWordCount);
+
+  useFocusEffect(
+    useCallback(() => {
+      setSavedCount(getSavedWordCount());
+    }, []),
+  );
 
   return (
     <ScreenShell>
@@ -47,6 +55,11 @@ export default function SettingsScreen() {
             description={strings.settings.hapticsDescription}
             value={settings.hapticsEnabled}
             onValueChange={(hapticsEnabled) => updateSettings({ hapticsEnabled })}
+            showDivider
+          />
+          <SettingsNavRow
+            label={`${strings.settings.savedWords} · ${savedCount}`}
+            onPress={() => router.push('/saved-words')}
           />
         </SettingsSection>
         <SettingsSection title={strings.settings.sectionScore}>

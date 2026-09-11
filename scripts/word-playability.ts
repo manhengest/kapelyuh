@@ -2,6 +2,7 @@ import type { CsvWord } from './words-csv';
 import { normalizeTextKey } from './words-id';
 
 export const PLAYABILITY_MIN = 6;
+export const PLAYABILITY_ELITE_CROCODILE_MIN = 4;
 
 export interface PlayabilityScore {
   alias: number;
@@ -237,7 +238,17 @@ export function scorePlayability(word: CsvWord): PlayabilityScore {
   scores = overridden;
 
   const min = Math.min(scores.alias, scores.crocodile, scores.association);
-  const pass = passOverride !== undefined ? passOverride : min >= PLAYABILITY_MIN;
+  const thresholds = {
+    alias: PLAYABILITY_MIN,
+    crocodile: word.difficulty === 'elite' ? PLAYABILITY_ELITE_CROCODILE_MIN : PLAYABILITY_MIN,
+    association: PLAYABILITY_MIN,
+  };
+  const pass =
+    passOverride !== undefined
+      ? passOverride
+      : scores.alias >= thresholds.alias &&
+        scores.crocodile >= thresholds.crocodile &&
+        scores.association >= thresholds.association;
 
   return {
     alias: scores.alias,

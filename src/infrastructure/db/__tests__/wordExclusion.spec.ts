@@ -29,6 +29,7 @@ describe('session word freshness integration', () => {
       wordCount: 3,
       usage,
       enabledPackIds: ['bundled-default'],
+      rng: () => 0.95,
     });
 
     expect(selected).toHaveLength(3);

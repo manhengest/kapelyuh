@@ -21,6 +21,7 @@ import { useGameStore } from '@features/game/store';
 import { useWordTextMap } from '@features/game/useWordTextMap';
 import { playGuess, playSkip } from '@infrastructure/audio/sounds';
 import { triggerHaptic } from '@infrastructure/haptics';
+import { isSavedWordId } from '@infrastructure/storage/savedWords';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { Text } from '@ui/components/Text';
 import { getRoundPalette } from '@ui/theme/roundPalette';
@@ -51,6 +52,11 @@ export default function TurnScreen() {
   const isAwaitingAward = status === 'awaiting_award';
   const teamName = currentTeam?.name ?? '—';
   const currentWordId = turn?.currentWordId ?? null;
+  const cardLabel = isAwaitingAward
+    ? strings.turn.wordForAll
+    : settings.wordSource === 'bundled' && isSavedWordId(currentWordId)
+      ? strings.turn.savedWordLabel
+      : undefined;
 
   const commitPendingAction = useCallback(
     (action: WordCardAction) => {
@@ -212,7 +218,7 @@ export default function TurnScreen() {
           wordTexts={wordTexts}
           backgroundColor={palette.card}
           textColor={palette.wordText}
-          label={isAwaitingAward ? strings.turn.wordForAll : undefined}
+          label={cardLabel}
           onExitComplete={onExitComplete}
         />
         {showPauseButton ? (
