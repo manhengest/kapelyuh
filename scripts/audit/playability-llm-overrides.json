@@ -2826,5 +2826,215 @@
     "association": 9,
     "pass": true,
     "reason": "llm hard-05"
+  },
+  "яблуконьютона": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "маятникньютона": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "котушкатесли": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "плазмовакуля": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "ваннаархімеда": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "собакапавлова": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "сухийлід": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "рідкийазот": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "вулканізсоди": {
+    "alias": 9,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "лимоннабатарейка": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "сонячнийгодинник": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "пір'їнаігиря": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "хвісткомети": {
+    "alias": 9,
+    "crocodile": 8,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "місяцехід": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "орбітальнастанція": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "радіотелескоп": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "телескопхаббл": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "місячниймодуль": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "великаведмедиця": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "темнийбікмісяця": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "прапорнамісяці": {
+    "alias": 9,
+    "crocodile": 8,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "брахіозавр": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "мегалодон": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "скелетдинозавра": {
+    "alias": 9,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "яйцединозавра": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "шерстистийносоріг": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "венеринамухоловка": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "лавовеозеро": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "знакрадіації": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
+  },
+  "громовідвід": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-06"
   }
 }
