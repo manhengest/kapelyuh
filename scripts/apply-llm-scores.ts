@@ -4,17 +4,25 @@ import { fileURLToPath } from 'node:url';
 
 import { loadBatch, loadLlmScores, type LlmScore, type WordBatch } from './word-batches';
 import {
+  ABSTRACTISH_CATEGORIES,
+  LLM_OVERRIDES_PATH,
+  loadLlmOverrides,
   PLAYABILITY_ELITE_CROCODILE_MIN,
   PLAYABILITY_MIN,
+  resetLlmOverrideCache,
   scorePlayability,
+  type PlayabilityOverride,
 } from './word-playability';
 import { formatWordsCsv, parseWordsCsv, type CsvWord, type Difficulty } from './words-csv';
+import { normalizeTextKey } from './words-id';
 
 export interface ApplyLlmScoresResult {
   accepted: number;
   rejected: number;
   heuristicFails: number;
   llmFails: number;
+  overrideWrites: number;
+  overrides: Record<string, PlayabilityOverride>;
   missingScores: string[];
   missingWords: string[];
 }
@@ -40,10 +48,12 @@ export function applyLlmScores(
   const scoreById = new Map(scores.map((score) => [score.id, score]));
   const missingScores: string[] = [];
   const missingWords: string[] = [];
+  const overrides: Record<string, PlayabilityOverride> = {};
   let accepted = 0;
   let rejected = 0;
   let heuristicFails = 0;
   let llmFails = 0;
+  let overrideWrites = 0;
 
   for (const id of batch.ids) {
     const word = byId.get(id);
@@ -66,7 +76,20 @@ export function applyLlmScores(
       llmFails += 1;
     }
 
-    if (heuristic.pass && llmOk) {
+    const abstractish = ABSTRACTISH_CATEGORIES.has(word.category);
+    const heuristicOk = heuristic.pass || (llmOk && abstractish);
+
+    if (heuristicOk && llmOk) {
+      if (abstractish && !heuristic.pass) {
+        overrides[normalizeTextKey(word.text)] = {
+          alias: llm.alias,
+          crocodile: llm.crocodile,
+          association: llm.association,
+          pass: true,
+          reason: `llm ${batch.name}`,
+        };
+        overrideWrites += 1;
+      }
       if (word.status !== 'core') {
         word.status = 'core';
         accepted += 1;
@@ -78,7 +101,22 @@ export function applyLlmScores(
     }
   }
 
-  return { accepted, rejected, heuristicFails, llmFails, missingScores, missingWords };
+  return {
+    accepted,
+    rejected,
+    heuristicFails,
+    llmFails,
+    overrideWrites,
+    overrides,
+    missingScores,
+    missingWords,
+  };
+}
+
+function persistOverrides(partial: Record<string, PlayabilityOverride>): void {
+  const merged = { ...loadLlmOverrides(), ...partial };
+  writeFileSync(LLM_OVERRIDES_PATH, JSON.stringify(merged, null, 2) + '\n', 'utf8');
+  resetLlmOverrideCache();
 }
 
 function main(): void {
@@ -103,6 +141,9 @@ function main(): void {
     process.exit(1);
   }
 
+  if (result.overrideWrites > 0) {
+    persistOverrides(result.overrides);
+  }
   writeFileSync(csvPath, formatWordsCsv(words), 'utf8');
 
   console.log('=== APPLY LLM SCORES ===');
@@ -111,6 +152,7 @@ function main(): void {
   console.log(`Rejected: ${result.rejected}`);
   console.log(`Heuristic fails: ${result.heuristicFails}`);
   console.log(`LLM fails: ${result.llmFails}`);
+  console.log(`LLM overrides written: ${result.overrideWrites}`);
 }
 
 const entry = process.argv[1];

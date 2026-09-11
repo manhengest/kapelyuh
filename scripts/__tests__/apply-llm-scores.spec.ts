@@ -1,9 +1,10 @@
 import { describe, expect, it } from '@jest/globals';
 
 import { applyLlmScores, llmScorePass } from '../apply-llm-scores';
+import { scorePlayability } from '../word-playability';
+import type { LlmScore, WordBatch } from '../word-batches';
 import type { CsvWord } from '../words-csv';
 import { stableWordId } from '../words-id';
-import type { LlmScore, WordBatch } from '../word-batches';
 
 function word(partial: Partial<CsvWord> & Pick<CsvWord, 'text'>): CsvWord {
   return {
@@ -42,6 +43,17 @@ describe('applyLlmScores', () => {
     expect(llmScorePass('elite', { alias: 6, crocodile: 4, association: 6 })).toBe(true);
     expect(llmScorePass('elite', { alias: 5, crocodile: 9, association: 9 })).toBe(false);
     expect(llmScorePass('hard', { alias: 6, crocodile: 4, association: 6 })).toBe(false);
+  });
+
+  it('opts abstract-ish LLM passers in via override when the heuristic cannot pass', () => {
+    const proud = word({ text: 'пихатий', category: 'personality' });
+    const batch: WordBatch = { name: 'hard-01', tier: 'hard', ids: [proud.id] };
+    const scores: LlmScore[] = [{ id: proud.id, alias: 7, crocodile: 7, association: 7 }];
+    const result = applyLlmScores([proud], batch, scores);
+    expect(scorePlayability(proud).pass).toBe(false);
+    expect(result.accepted).toBe(1);
+    expect(result.overrideWrites).toBe(1);
+    expect(proud.status).toBe('core');
   });
 
   it('reports missing scores without mutating other rows', () => {
