@@ -1,0 +1,667 @@
+{
+  "безвольний": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 6,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "буркотливий": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "вайлуватий": {
+    "alias": 6,
+    "crocodile": 6,
+    "association": 6,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "відлюдькуватий": {
+    "alias": 6,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "гарячкуватий": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "дволичний": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "закомплексований": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "зашорений": {
+    "alias": 6,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "захланний": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "злопам'ятний": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "злорадний": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "легковірний": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "насмішкуватий": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "небагатослівний": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "ненаситний": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "норовистий": {
+    "alias": 6,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "педантичний": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "пихатий": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "підозріливий": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "покірливий": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "помпезний": {
+    "alias": 6,
+    "crocodile": 6,
+    "association": 6,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "прискіпливий": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "розхлябаний": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "самозакоханий": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "услужливий": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "улесливий": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "хвалькуватий": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "хлібосольний": {
+    "alias": 7,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "булінг": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "відмовавідчарки": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "гризіннянігтів": {
+    "alias": 9,
+    "crocodile": 10,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "добрийполіцейський": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "зайчикутранспорті": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "заїданнястресу": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "злийполіцейський": {
+    "alias": 7,
+    "crocodile": 8,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "ігроманія": {
+    "alias": 6,
+    "crocodile": 6,
+    "association": 6,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "крутінняпасма": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "кулачневітання": {
+    "alias": 8,
+    "crocodile": 10,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "лікотьдоліктя": {
+    "alias": 7,
+    "crocodile": 9,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "мовчазнепокарання": {
+    "alias": 6,
+    "crocodile": 6,
+    "association": 6,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "нічнепереїдання": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "перевіркагеолокації": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "перевірказамкатричі": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "перевіркателефону": {
+    "alias": 9,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "підливаннягорілки": {
+    "alias": 9,
+    "crocodile": 9,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "підмінакупюри": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 6,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "підсуваннястільця": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "повітрянийпоцілунок": {
+    "alias": 9,
+    "crocodile": 10,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "подаванняпальта": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "поклонупояс": {
+    "alias": 7,
+    "crocodile": 9,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "постукуванняподереву": {
+    "alias": 9,
+    "crocodile": 10,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "примусовечастування": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "проскакуваннячерги": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "реверанс": {
+    "alias": 7,
+    "crocodile": 8,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "розгойдуванняногою": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "розмовакрізьсон": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "рукоцілування": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "серветканаколінах": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "сплюваннячерезплече": {
+    "alias": 9,
+    "crocodile": 10,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "схрещуванняпальців": {
+    "alias": 9,
+    "crocodile": 10,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "третійтост": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "фейсконтроль": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "ходінняувісні": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "хлібсільнарушнику": {
+    "alias": 9,
+    "crocodile": 8,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "хрускітпальців": {
+    "alias": 9,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "букетвибачення": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "втечазпідвінця": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "вінчаннявцеркві": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "другасім'я": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "життянадвіхати": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "залишитинапрочитано": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "замокнамосту": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "змінитизамки": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "каблучказаручин": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "ключвідквартири": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "ключінастіл": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "колишнійнавесіллі": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "курортнийроман": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "любовнийлист": {
+    "alias": 9,
+    "crocodile": 8,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "обмінобручками": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "освідченнянаколіні": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "поділмайна": {
+    "alias": 6,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "повернутиобручку": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "порватифото": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "розписатисяурацсі": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "свайпправоруч": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "свідоцтвопрошлюб": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "серенадапідвікном": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "спільнааватарка": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 6,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "спільнийрахунок": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "співмешканець": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "фотозрибиною": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "швидкіпобачення": {
+    "alias": 7,
+    "crocodile": 8,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "читатилистування": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  },
+  "чужісережки": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-01"
+  }
+}
