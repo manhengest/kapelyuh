@@ -1041,5 +1041,194 @@
     "association": 7,
     "pass": true,
     "reason": "llm hard-02"
+  },
+  "амеба": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "відцентровасила": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "вільнепадіння": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "вівцядоллі": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "гідравлічнийпрес": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "дрейфконтинентів": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "електромагніт": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "зорепад": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "звуковийбар'єр": {
+    "alias": 7,
+    "crocodile": 6,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "кільцясатурна": {
+    "alias": 9,
+    "crocodile": 9,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "кораловийриф": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "короткезамикання": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "кульоваблискавка": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "лавовийпотік": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "неандерталець": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "озоновийшар": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "подвійнаспіраль": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "похилаплощина": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 7,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "птеродактиль": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "радіоактивність": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "сейсмограф": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "сонячнезатемнення": {
+    "alias": 9,
+    "crocodile": 9,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "статичнаелектрика": {
+    "alias": 8,
+    "crocodile": 8,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "умовнийрефлекс": {
+    "alias": 7,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "харчовапіраміда": {
+    "alias": 8,
+    "crocodile": 7,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "шаблезубийтигр": {
+    "alias": 8,
+    "crocodile": 9,
+    "association": 8,
+    "pass": true,
+    "reason": "llm hard-03"
+  },
+  "ядернийгриб": {
+    "alias": 9,
+    "crocodile": 9,
+    "association": 9,
+    "pass": true,
+    "reason": "llm hard-03"
   }
 }
