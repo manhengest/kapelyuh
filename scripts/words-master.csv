@@ -35,11 +35,11 @@ w_20f0807f94,акуратність,easy,personality,core,
 w_db386fe664,акушерка,easy,professions,core,
 w_0c774b879b,алгебра,easy,school,core,
 w_8a00dd9f22,алергія,easy,body,core,
-w_eb031e599d,алея,easy,places,core,
+w_eb031e599d,алея,easy,places,core,aleya
 w_4baaabe067,алігатор,easy,animals,core,
 w_de66ed6955,алфавіт,easy,school,core,
 w_1bde5d310a,альбатрос,medium,animals,core,
-w_817dfcab1f,альбом,easy,school,core,
+w_817dfcab1f,альбом,easy,school,core,albom
 w_db11d176cf,бити байдики,elite,behavior,core,
 w_d3ce99f226,пекти раків,elite,behavior,core,
 w_9e725e4995,дати драла,elite,behavior,core,
@@ -1009,6 +1009,506 @@ w_a7501bf483,Карлові Вари,hard,cities,core,
 w_6747230bc7,Балі,hard,cities,core,
 w_435e9cb733,терези Феміди,hard,abstract,core,
 w_ebc244b6a2,Феміда,hard,abstract,core,
+w_cf17323468,бити тривогу,elite,actions,core,
+w_003510f664,палити мости,elite,actions,core,
+w_76da0c688c,рубати з плеча,elite,actions,core,
+w_20ca504895,тягнути лямку,elite,actions,core,
+w_8dbab0c9d9,кусати лікті,elite,actions,core,
+w_ed3fff20f5,полоскати кісточки,elite,actions,reject,
+w_6857d38ae4,замітати сліди,elite,actions,core,
+w_32b7abf8b0,замітати під килим,elite,actions,core,kylym
+w_cbe7a5fc5d,знімати вершки,elite,actions,core,vershky
+w_e9e2bf8918,розкривати карти,elite,actions,core,card
+w_8e2737373f,ставити на карту,elite,actions,core,
+w_0179386122,закидати вудку,elite,actions,core,
+w_bbb27e8cbb,підкладати свиню,elite,actions,core,
+w_ed3623ee55,ставити підніжку,elite,actions,core,
+w_3f36a24cb4,лізти на рожен,elite,actions,reject,
+w_cca519719c,лізти в пляшку,elite,actions,core,
+w_7f1d52a1cd,пхати носа,elite,actions,core,
+w_e3a91d3915,крутити баранку,elite,actions,core,
+w_434c52a3e2,накивати п'ятами,elite,actions,core,
+w_9a8b0c5e92,дихати на ладан,elite,actions,reject,
+w_efc3222d1a,почивати на лаврах,elite,actions,core,
+w_79cb278e74,пускати качку,elite,actions,core,
+w_d6cd8a4b06,пускати пил в очі,elite,actions,core,
+w_467ae24978,молоти язиком,elite,actions,core,
+w_42d235ce3b,гнути спину,elite,actions,core,
+w_ba4e7c4bea,нести хрест,elite,actions,core,khrest
+w_6cc3e6a351,змотувати вудки,elite,actions,core,
+w_ae0b08d0e3,кидати якір,elite,actions,core,yakir
+w_ec02a63562,наступати на граблі,elite,actions,core,hrabli
+w_1e7cc0c3e0,сісти на шию,elite,actions,core,
+w_155f2305d2,дихати в потилицю,elite,actions,core,
+w_4170e222ca,різати правду,elite,actions,reject,
+w_c6c9ee592b,поливати брудом,elite,actions,core,
+w_f1ce98d749,дути на воду,elite,actions,reject,
+w_efe6c1fb9e,бити себе в груди,elite,actions,core,
+w_4b837c452a,випускати пару,elite,actions,core,
+w_77ccd4eb9e,підливати масла у вогонь,elite,actions,core,vohon
+w_6ff8023682,затягувати паски,elite,actions,core,
+w_f598eb7d97,тримати камінь за пазухою,elite,actions,core,kamin
+w_e2353b85c7,виливати душу,elite,actions,core,
+w_af64be6120,поставити на коліна,elite,actions,core,
+w_46758ec13d,закручувати гайки,elite,actions,core,
+w_139bae8d34,намилювати шию,elite,actions,core,
+w_c3f38c88cb,гріти крісло,elite,actions,core,krislo
+w_26e7f7c297,ходити ходуном,elite,actions,core,
+w_a9c77323a1,задирати носа,elite,actions,core,
+w_986478aca2,накривати на стіл,elite,actions,core,stil
+w_6416f9905c,ловити на гарячому,elite,actions,core,
+w_dd19f2683a,кувати залізо,elite,actions,core,
+w_cca9eb4dc3,ходити по тонкому льоду,elite,actions,core,
+w_0f142c6988,синяк під оком,elite,body,core,
+w_8968122e47,гусяча шкірка,elite,body,core,
+w_05c66a071f,синя губа,elite,body,core,huba
+w_a3f6281f69,зламаний ніс,elite,body,core,nis
+w_75147a37c0,високе чоло,elite,body,core,
+w_22305d6319,ліхтар під оком,elite,body,core,
+w_67bea65b7d,ґуля на лобі,elite,body,core,
+w_5b85a0430d,кола під очима,elite,body,core,cola
+w_4d734bdc3c,кирпатий ніс,elite,body,core,nis
+w_7bf085e17e,ніс картоплею,elite,body,core,nis
+w_9397b0e0b8,брови будиночком,elite,body,core,brovy
+w_34df43abee,золотий зуб,elite,body,core,zub
+w_0fb48c5a39,ямочки на щоках,elite,body,core,
+w_93607d6686,розбите коліно,elite,body,core,kolino
+w_68e4f8387c,потріскані губи,elite,body,core,
+w_e5ecd8a738,розбита губа,elite,body,core,huba
+w_4b514cd817,чорний ніготь,elite,body,core,nihot
+w_03e7a8dc69,ноги колесом,elite,body,core,
+w_3f2cfa32e2,лисина на тімені,elite,body,core,
+w_c29b44b39e,червоні очі,elite,body,core,
+w_c6078f1009,червоне горло,elite,body,core,horlo
+w_47ca261c2e,закладений ніс,elite,body,core,nis
+w_bd08641105,потріскані п'яти,elite,body,core,
+w_c5693d69ea,шрам на брові,elite,body,core,shram
+w_83de9adf78,мокрі долоні,elite,body,core,
+w_dd186f5d51,рука на перев'язі,elite,body,core,river_pen
+w_aeee1079e4,гіпс на руці,elite,body,core,hips
+w_139abf43cd,зеленка на коліні,elite,body,core,zelenka
+w_9f663fd761,пов'язка на оці,elite,body,core,povyazka
+w_0169fba87e,бинт на голові,elite,body,core,bynt
+w_2ae2b5932e,пластир на коліні,elite,body,core,plastyr
+w_67e16abb4e,холодний компрес,elite,body,core,kompres
+w_d91eda42ba,ходити на милицях,elite,body,core,
+w_b92145df4b,шина на нозі,elite,body,core,shyna
+w_a7a169f6dd,прищемлений палець,elite,body,core,palets
+w_e122c10305,пухир від опіку,elite,body,core,
+w_f8ad3af2c1,лід на синці,elite,body,core,lid
+w_cad8df8627,ватка з зеленкою,elite,body,core,
+w_025e09723a,рушник на лобі,elite,body,core,rushnyk
+w_baa673afc6,зірочка під ніс,elite,body,core,nis
+w_be22c8d305,нашатир під ніс,elite,body,core,nashatyr
+w_53bdfb139e,краплі в ніс,elite,body,core,krapli
+w_aab909d730,першить у горлі,elite,body,core,
+w_e1231ac0ea,сироп від кашлю,elite,body,core,
+w_b770e224c6,парити ноги,elite,body,core,
+w_59f0dec0b0,таблетка від голови,elite,body,core,tabletka
+w_861ac618a2,валідол під язик,elite,body,core,validol
+w_09b7e83c9f,мурашки по спині,elite,body,core,
+w_2501457261,закладає вуха,elite,body,core,
+w_41cad53f42,мушки перед очима,elite,body,core,
+w_4e2cc4b7c6,Андріївська церква,elite,cities,core,tserkva
+w_567cb0e1bd,Афінський акрополь,elite,cities,core,akropol
+w_f8a09e5dc4,Батьківщина-мати,elite,cities,core,matka
+w_2e5c2f1502,Берлінська стіна,elite,cities,core,stil
+w_318ed2c87c,Біг-Бен,elite,cities,core,run
+w_c6a964c829,Білий дім,elite,cities,core,
+w_2a213510f7,Блакитна мечеть,elite,cities,core,mechet
+w_001867176f,Бранденбурзькі ворота,elite,cities,core,gate_crow
+w_e524d33871,Бруклінський міст,elite,cities,core,mist
+w_8a7e29ead2,Будинок з химерами,elite,cities,core,house
+w_0e709321f8,Букінгемський палац,elite,cities,core,palats
+w_69333844c6,Бурдж-Халіфа,elite,cities,core,
+w_fe065a278f,Брюссельський атоміум,elite,cities,reject,
+w_6fbb4bbbcb,Велика китайська стіна,elite,cities,core,stil
+w_5a2f33e309,Великий сфінкс,elite,cities,core,
+w_595a84f3c6,Вулиця Хрещатик,elite,cities,core,vulytsya
+w_adbe53e52f,Голлівудська алея,elite,cities,core,aleya
+w_80f879db2e,Дерибасівська вулиця,elite,cities,core,vulytsya
+w_6a78e0bb34,Емпайр-стейт,elite,cities,core,
+w_3fcf61cf58,Єлисейські поля,elite,cities,core,
+w_662baa30f6,Замок Нойшванштайн,elite,cities,core,zamok
+w_0c18501945,Іспанські сходи,elite,cities,reject,
+w_47881bae2e,Канали Венеції,elite,cities,core,
+w_173964659f,Карлів міст,elite,cities,core,mist
+w_7514f86d16,Ластівчине гніздо,elite,cities,core,hnizdo
+w_1bc542fa72,Лондонське око,elite,cities,core,oko
+w_7dba2e0a51,Львівська опера,elite,cities,core,opera
+w_3ef9f70d49,Майдан Незалежності,elite,cities,core,maidan
+w_1f64269bfe,Маннекен Піс,elite,cities,core,
+w_91e41bbdb4,Маунт-Рашмор,elite,cities,core,
+w_dd0fc8bb8f,Міст Кличка,elite,cities,reject,
+w_5086a6e448,Мулен Руж,elite,cities,core,
+w_ea4c9999ff,Одеські катакомби,elite,cities,core,katakomby
+w_54da812ab5,Палац Шенбрунн,elite,cities,reject,
+w_79b357079a,Парк Гуель,elite,cities,core,park
+w_cbd77c9232,Піраміда Лувру,elite,cities,core,piramida
+w_305c79b422,Піраміда Хеопса,elite,cities,core,piramida
+w_cc2339d8e7,Римський колізей,elite,cities,core,kolizei
+w_fe0f74541f,Саграда Фамілія,elite,cities,core,
+w_43b67e1efa,Сіднейська опера,elite,cities,core,opera
+w_208d4f3301,Статуя Христа Спасителя,elite,cities,core,
+w_3f8c7aa67c,Таймс-сквер,elite,cities,core,
+w_1836da8f8e,Тауерський міст,elite,cities,core,mist
+w_b286184970,Трафальгарська площа,elite,cities,core,
+w_34200d3ced,Тунель кохання,elite,cities,core,tuna
+w_797a1919ec,Уолл-стріт,elite,cities,core,
+w_4464a13625,Фонтан Треві,elite,cities,core,fontan
+w_ef4f428f4d,Харківський держпром,elite,cities,reject,
+w_7cabed3a12,Цукрова голова,elite,cities,core,holova
+w_82adb0c981,Червона площа,elite,cities,core,
+w_e80bd3e68d,вишита сорочка,elite,clothing,core,soroka
+w_6b12eb84fb,весільна фата,elite,clothing,core,fata
+w_ed83502de3,шкіряна куртка,elite,clothing,core,hen_jacket
+w_05154a5122,червоні туфлі,elite,clothing,core,tufli
+w_c3daf985c5,випускна сукня,elite,clothing,core,suknya
+w_fea6f49c0d,чорна сукня,elite,clothing,core,suknya
+w_48242b104a,весільна сукня,elite,clothing,core,suknya
+w_a61c9e6346,вечірня сукня,elite,clothing,core,suknya
+w_fc12e4c2da,джинсова куртка,elite,clothing,core,hen_jacket
+w_15077be397,картата сорочка,elite,clothing,core,soroka
+w_cb1afc1021,біла сорочка,elite,clothing,core,soroka
+w_ecb95b90cc,шкільна спідниця,elite,clothing,core,spidnytsya
+w_aee9a1ef2d,спортивний костюм,elite,clothing,core,kostyum
+w_9058c28795,туфлі на шпильках,elite,clothing,core,tufli
+w_a98cdfe0fe,шапка з помпоном,elite,clothing,core,shapka
+w_3f05602fe1,хустка на голові,elite,clothing,core,khustka
+w_be685001a2,сонцезахисні окуляри,elite,clothing,core,okulyary
+w_42bf33b724,краватка-метелик,elite,clothing,core,kravatka
+w_dda76bc544,худі з капюшоном,elite,clothing,reject,
+w_cf38553498,банний халат,elite,clothing,core,salad_robe
+w_6e639904e0,кухонний фартух,elite,clothing,core,fartukh
+w_5160f0cee8,нічна сорочка,elite,clothing,core,soroka
+w_24d134c1c7,домашні капці,elite,clothing,core,kaptsi
+w_0cfb28c3a6,чорні джинси,elite,clothing,core,dzhynsy
+w_125b1f93f1,білі кросівки,elite,clothing,core,krosivky
+w_3c7714ed27,зимове пальто,elite,clothing,core,palto
+w_7d571e8d03,білий бант,elite,clothing,core,bant
+w_9f2087029a,в'язаний светр,elite,clothing,core,svetr
+w_c1a44e1470,вовняний шарф,elite,clothing,core,sharf
+w_be702b11c2,футболка з принтом,elite,clothing,reject,
+w_3a6eba1670,коротка спідниця,elite,clothing,core,spidnytsya
+w_caef5be4b0,бальна сукня,elite,clothing,core,suknya
+w_cec1019b8d,норкова шуба,elite,clothing,core,shuba
+w_b880c9e327,перлове намисто,elite,clothing,core,namysto
+w_d568f8da00,хрестик на шиї,elite,clothing,core,
+w_c1025d9294,солом'яний капелюх,elite,clothing,core,kapelyukh
+w_248c6ed997,спідниця-олівець,elite,clothing,reject,
+w_e2f9694a43,кепка задом наперед,elite,clothing,core,kepka
+w_f4578b36fe,весільний костюм,elite,clothing,core,kostyum
+w_57d5e8c5db,квітчаста хустка,elite,clothing,core,khustka
+w_c714f076e7,стрічка в косі,elite,clothing,core,
+w_7dc240eaad,шкіряні чоботи,elite,clothing,core,choboty
+w_3d496f2767,лаковані туфлі,elite,clothing,reject,
+w_f335c2e221,новорічний светр,elite,clothing,core,svetr
+w_ae2aaac927,лижний комбінезон,elite,clothing,core,kombinezon
+w_31cabdbc96,піонерська краватка,elite,clothing,core,kravatka
+w_daf0a9aeb7,матроська тільняшка,elite,clothing,core,
+w_0b8fe6e18d,купальний костюм,elite,clothing,core,kostyum
+w_3b845bab6e,светр з косами,elite,clothing,reject,
+w_77a7fc7233,чоботи на підборах,elite,clothing,core,choboty
+w_af9d29eb2b,кров не вода,elite,family,core,krov
+w_917d3aea1d,яблуко від яблуні,elite,family,core,apple
+w_cf050ea53a,сьома вода на киселі,elite,family,core,voda
+w_50b660a28c,вилитий батько,elite,family,core,father
+w_e52609c718,вилита мати,elite,family,core,matka
+w_8d086fdfe4,блудна донька,elite,family,core,donka
+w_0ac504297f,мамина донька,elite,family,core,donka
+w_41a894d3ce,татова донька,elite,family,core,donka
+w_6993b8762c,за мамину спідницю,elite,family,core,
+w_d149ad7bfd,сидіти на шиї батьків,elite,family,core,
+w_a7572383e3,знайшли в капусті,elite,family,core,
+w_5b017c8ddd,в чому мати народила,elite,family,core,matka
+w_2fc2599c7c,плоть від плоті,elite,family,reject,
+w_85e0323dbf,пуповина не відрізана,elite,family,core,
+w_049e4d5add,нашого полку прибуло,elite,family,core,
+w_1ba9afbac4,сім'ї не без виродка,elite,family,core,
+w_f4999007b6,за маму за тата,elite,family,core,
+w_13d8b9d2dc,зять у приймах,elite,family,reject,
+w_fb8e9d799f,теща на порозі,elite,family,core,teshcha
+w_d46cd712e7,борщ від тещі,elite,family,core,borshch
+w_9d9ef17ad8,посаджений батько,elite,family,reject,
+w_37f2c7ec33,посаджена мати,elite,family,reject,
+w_682be59631,іти в свати,elite,family,core,
+w_8c01f14f7b,засилати старостів,elite,family,reject,
+w_56d1b29914,видати заміж,elite,family,core,
+w_893be045a2,скриня з посагом,elite,family,core,
+w_466a7b90ea,танець батька з донькою,elite,family,core,tanets
+w_e9f89f52d3,сімейне вогнище,elite,family,core,vohnyshche
+w_155d992a2d,родинне коло,elite,family,core,
+w_34dbd80436,порожнє гніздо,elite,family,core,hnizdo
+w_4db6bc6505,сімейна вечеря,elite,family,core,vechir
+w_5b315a7b88,сімейний альбом,elite,family,core,albom
+w_4fc2618e98,сімейна таємниця,elite,family,core,
+w_62184f1ca7,батьківський дім,elite,family,core,
+w_43223fa14c,поріг рідної хати,elite,family,core,porih
+w_4813c25a16,улюбленець сім'ї,elite,family,core,
+w_50b083b66e,золота дитина,elite,family,core,dytyna
+w_7ca1a391a1,берегиня роду,elite,family,core,
+w_e3f7dbff4d,пакунок малюка,elite,family,core,
+w_643276acab,бабусині пиріжки,elite,family,core,
+w_01eb053054,бабусині казки,elite,family,core,
+w_f3c1ac38b7,бабусин светр,elite,family,core,svetr
+w_11494f9349,перші кроки,elite,family,core,
+w_16405ed7b7,зуб під подушкою,elite,family,core,zub
+w_890fbe5984,стояти в кутку,elite,family,core,
+w_00f5453e50,зріст на одвірку,elite,family,core,
+w_5d977aa551,новий чоловік мами,elite,family,core,cholovik
+w_92f408c83a,черга в садок,elite,family,core,cherha
+w_d79e585e7d,фото на холодильнику,elite,family,core,
+w_43614f0f20,слово матері,elite,family,core,slovo
+w_4144423df0,бонусний рівень,elite,games,core,riven
+w_5f17c36b39,будинок барбі,elite,games,core,house
+w_b6e13b46f7,гра в замри,elite,games,core,hra
+w_5575c40b7d,гра в колечко,elite,games,reject,
+w_40231f4d0d,гра в лапту,elite,games,core,hra
+w_f9a9319f85,гра в піонербол,elite,games,core,hra
+w_e7340a80e3,гра в скрабл,elite,games,core,hra
+w_4664f284ae,гра еліас,elite,games,core,hra
+w_d5a21d4335,гра закінчена,elite,games,core,hra
+w_927fdd473e,гра крокодил,elite,games,core,hra
+w_dc4640cf68,два вогні,elite,games,core,
+w_1c00a279b5,день і ніч,elite,games,core,day
+w_8d8a397b72,додаткове життя,elite,games,core,
+w_a4b706356e,другий гравець,elite,games,core,
+w_bdf4c38c67,захоплення прапора,elite,games,core,
+w_660abc21b0,іграшка тамагочі,elite,games,core,igrovyi
+w_8d98f95a83,іграшкова залізниця,elite,games,core,
+w_9a77d72190,картридж денді,elite,games,core,kartrydzh
+w_124137adf2,класики на асфальті,elite,games,core,
+w_9d5e33e3db,коза рогата,elite,games,core,koza
+w_487af7bd70,крейда на асфальті,elite,games,core,kreida
+w_d18e7b829d,кубики з літерами,elite,games,core,kubyk
+w_a5312fa80a,лего сіті,elite,games,core,leho
+w_50a674a375,лялька барбі,elite,games,core,lyalka
+w_b0417f674d,мак-мачок,elite,games,reject,
+w_bce471650f,металевий конструктор,elite,games,core,konstrukto
+w_4f1a3817bc,наздоганялки,elite,games,core,
+w_1e758a5c6b,набір перукаря,elite,games,core,
+w_7f6698a71a,набір пожежника,elite,games,core,
+w_a9101d848a,набір юного хіміка,elite,games,core,
+w_0fadd17af3,настільна монополія,elite,games,core,
+w_3e92a4c7ce,ноги від землі,elite,games,core,
+w_7e09b14f8a,олов'яні солдатики,elite,games,core,
+w_0f1f0c7f04,паличка-виручалочка,elite,games,core,
+w_c2c8687a6f,паперові кораблики,elite,games,core,
+w_a59da2e3be,паперові літачки,elite,games,core,
+w_398906279b,подоляночка,elite,games,core,
+w_331fc42a0b,подвійна скакалка,elite,games,core,skakalka
+w_197cb465c0,подвійний стрибок,elite,games,reject,
+w_b139a29d12,пошук скарбів,elite,games,core,poshuk
+w_66de1a0c91,п'ять камінців,elite,games,core,
+w_4d94d88b3d,радіоконструктор,elite,games,reject,
+w_d63022fa17,скляні кульки,elite,games,core,
+w_1efa7f8e24,снігова фортеця,elite,games,core,fortetsya
+w_36553b9b43,стрибки на гумці,elite,games,core,
+w_26f370be9f,таблиця рекордів,elite,games,core,
+w_62267f98e6,тише їдеш,elite,games,reject,
+w_35947536e9,фінальний бос,elite,games,core,bos
+w_4a6da56180,форт з подушок,elite,games,core,
+w_a396723fe8,щенячий патруль,elite,games,core,
+w_6ba4df735e,ніч на Андрея,elite,holidays,core,nich
+w_8fb16cf246,перша зірка,elite,holidays,core,zirka
+w_267b57aa9a,купальська ніч,elite,holidays,core,nich
+w_a664efb835,Прощена неділя,elite,holidays,core,nedilya
+w_a6170a8229,Чистий четвер,elite,holidays,core,chetver
+w_cc23cca7fb,Страсна п'ятниця,elite,holidays,core,friday
+w_32e5b4f655,Світла неділя,elite,holidays,core,nedilya
+w_463e336e8d,Провідна неділя,elite,holidays,reject,
+w_4ffcb0dde1,Зелені свята,elite,holidays,core,
+w_c1c540830a,козацька Покрова,elite,holidays,core,pokrova
+w_77a7668aa8,Василів вечір,elite,holidays,reject,
+w_93b4c97370,Великий піст,elite,holidays,core,pist
+w_70654f4f03,голодна кутя,elite,holidays,reject,
+w_7c6a91bacf,багата кутя,elite,holidays,reject,
+w_132e95d735,щедра кутя,elite,holidays,core,kutya
+w_429b6ac0ba,Христос Воскрес,elite,holidays,core,
+w_de3bfb9f27,Христос народився,elite,holidays,core,
+w_d57bfd3104,Воістину Воскрес,elite,holidays,core,
+w_6ebfa26fd0,многая літа,elite,holidays,core,
+w_db505933f6,день ангела,elite,holidays,core,day
+w_7ca21dd495,віфлеємська зірка,elite,holidays,core,zirka
+w_c1c8074c77,сійся-родися,elite,holidays,core,
+w_d346cf36a3,Маланка з Василем,elite,holidays,core,malanka
+w_ea3804e3ef,дідух на покуті,elite,holidays,core,didukh
+w_62488220e3,святити вербу,elite,holidays,core,
+w_83649b0971,святвечірній стіл,elite,holidays,core,stil
+w_ecd6cb3497,новорічна ніч,elite,holidays,core,nich
+w_32b8858bf5,різдвяна ніч,elite,holidays,core,nich
+w_5a57a38c75,дванадцять ударів,elite,holidays,core,
+w_f96d110767,зустріч Нового року,elite,holidays,core,zustrich
+w_612155e8ae,День Конституції,elite,holidays,core,day
+w_0c98a735e2,День закоханих,elite,holidays,core,day
+w_f0d0a311ed,День захисту дітей,elite,holidays,core,day
+w_f663b57c8f,День Збройних Сил,elite,holidays,core,day
+w_28125e434c,День сміху,elite,holidays,core,day
+w_a8a9795171,День студента,elite,holidays,core,day
+w_d865416397,День Соборності України,elite,holidays,core,day
+w_403cbef2d6,День Гідності та Свободи,elite,holidays,core,day
+w_57ecf03ac0,День Державного Прапора,elite,holidays,core,day
+w_6bdf31b485,День захисників і захисниць,elite,holidays,core,day
+w_a243dee5b2,парад на Хрещатику,elite,holidays,core,parad
+w_86ec246e4b,ланцюг Соборності,elite,holidays,core,
+w_1da8adf5ef,дівич-вечір,elite,holidays,core,vechir
+w_e33566449f,випускний бал,elite,holidays,core,vypusk
+w_faa05a9ce8,діамантове весілля,elite,holidays,core,vesillya
+w_c2a8c40937,перше вересня,elite,holidays,core,
+w_1501a5c66f,кругла дата,elite,holidays,core,
+w_7d6b26940d,пустити вінок на воду,elite,holidays,core,vinok
+w_50fa2def15,задути свічки,elite,holidays,core,
+w_da55ed74a1,Чистий понеділок,elite,holidays,reject,
+w_60a2fdc31a,гімн України,elite,music,core,himn
+w_e4473e4cc4,Щедрик вечір,elite,music,reject,
+w_61d5b832b8,поставити платівку,elite,music,core,
+w_966fc2c8b9,Червона рута,elite,music,core,
+w_cadddd435b,Пливе кача,elite,music,core,
+w_f978e7a3ed,Два кольори,elite,music,core,
+w_5c64e0416c,Гей соколи,elite,music,core,
+w_73498beb97,Несе Галя воду,elite,music,core,
+w_36f5da9d47,Розпрягайте хлопці коней,elite,music,core,
+w_8332e77cbc,Їхав козак за Дунай,elite,music,core,kozyrok
+w_c7b396d839,Ніч яка місячна,elite,music,core,nich
+w_41f96065a7,Реве та стогне,elite,music,core,
+w_a9b12e1901,пісня про рушник,elite,music,core,pisnya
+w_93d53ccda0,Чуєш брате мій,elite,music,core,
+w_fa07b86100,Воїни світла,elite,music,core,
+w_1a8b0fc0a4,Стефанія на сцені,elite,music,core,stefaniya
+w_33fb985621,Шум на євробаченні,elite,music,core,
+w_dbc570b5b5,Плакала на весіллі,elite,music,core,
+w_d4f9700d4d,Океан Ельзи,elite,music,core,okean
+w_49c15ce63d,Тіна Кароль,elite,music,core,
+w_1b74d5255b,хор Верьовки,elite,music,core,khor
+w_c3d49f4cbc,Голос країни,elite,music,core,holos
+w_ced1c88cea,Скрябін на касеті,elite,music,core,
+w_d32031aff2,рояль у кущах,elite,music,core,royal
+w_e99610325a,співати під гітару,elite,music,core,
+w_ede83fe9cc,гітара біля багаття,elite,music,core,guitar
+w_4da67b7329,викликати на біс,elite,music,core,bis
+w_8048c045e7,співати в караоке,elite,music,core,karaoke
+w_48c25ce630,взяти високу ноту,elite,music,core,
+w_3a7945ff84,фальшива нота,elite,music,core,notes
+w_646bc76698,розбити гітару,elite,music,core,
+w_b7520301fb,запалити запальнички,elite,music,core,
+w_3554ca8b6e,квиток на концерт,elite,music,core,kvytok
+w_8adfce8fb8,вуличний музикант,elite,music,core,music_root
+w_34bab6433e,баян на весіллі,elite,music,core,bayan
+w_e8aa936671,коломийка на танцях,elite,music,core,kolomyika
+w_471b166fd7,діджей за пультом,elite,music,core,
+w_d2e20d806c,білий танець,elite,music,core,tanets
+w_9b6cdf7df8,пісня першого танцю,elite,music,core,pisnya
+w_b170c11e07,колядки під дверима,elite,music,core,
+w_a59b380433,пластинка заїла,elite,music,core,
+w_ff0eb2714d,перемотати касету,elite,music,core,
+w_94f32bf194,гімн перед матчем,elite,music,core,himn
+w_0793c8700d,марш Мендельсона,elite,music,core,marsh
+w_5f461501aa,троїсті музики,elite,music,core,
+w_71ddcc58e5,рокерська коза,elite,music,core,koza
+w_7635de6ff2,мікрофон не працює,elite,music,core,mikrofon
+w_cb63787b7b,капела бандуристів,elite,music,core,
+w_3cea2871f1,встати під гімн,elite,music,core,himn
+w_f525ab11b4,скрипка на вокзалі,elite,music,core,skrypka
+w_81af716822,перший дзвінок,elite,school,core,dzvinok
+w_b2e56a4565,останній дзвінок,elite,school,core,dzvinok
+w_d38fcdefb7,контрольна робота,elite,school,core,kontrolna
+w_954a6a17bf,літня практика,elite,school,reject,
+w_b449ac785e,золота медаль,elite,school,core,medal
+w_38124986e6,срібна медаль,elite,school,core,medal
+w_2b80517760,домашнє завдання,elite,school,core,zavdannya
+w_06f5fcc5c5,самостійна робота,elite,school,core,robot
+w_4c24eeb052,усний іспит,elite,school,core,ispyt
+w_56886e25c3,письмовий іспит,elite,school,core,ispyt
+w_bc5ba91bb8,атестат зрілості,elite,school,reject,
+w_6835dfcdb1,атестат з відзнакою,elite,school,reject,
+w_964728b0e0,випускний вечір,elite,school,core,vypusk
+w_9cf17ff2d9,мала перерва,elite,school,core,pererva
+w_355d374e66,дзвінок на урок,elite,school,core,dzvinok
+w_6a92c46cc8,дзвінок з уроку,elite,school,core,dzvinok
+w_a0f6e86a6e,розклад уроків,elite,school,core,rozklad
+w_ddae5fc151,шкільна форма,elite,school,core,
+w_dbc83fd787,шпаргалка в рукаві,elite,school,core,shparhalka
+w_50b5cfd187,виклик до директора,elite,school,core,
+w_d313d79817,бесіда з батьками,elite,school,core,
+w_2d049ced0a,запізнення на урок,elite,school,core,zapiznenny
+w_cbad5f8731,зимові канікули,elite,school,core,kanikuly
+w_7cd70f57f8,літні канікули,elite,school,core,kanikuly
+w_25c64d5bc9,шкільна їдальня,elite,school,core,yidalnya
+w_72fe87285f,актова зала,elite,school,core,
+w_345544c308,комп'ютерний клас,elite,school,core,klas
+w_a3126be0f3,захист диплома,elite,school,core,
+w_bea1a1d1d2,дипломна робота,elite,school,core,robot
+w_ff6969f912,курсова робота,elite,school,core,robot
+w_1c7ffb8642,пробне НМТ,elite,school,core,
+w_8d4a1049b1,задача з зірочкою,elite,school,core,zadacha
+w_5e6b6b4686,автомат на іспиті,elite,school,core,
+w_0eaf3326e4,хвіст із сесії,elite,school,reject,
+w_d60c90905e,екзаменаційна сесія,elite,school,core,sesiya
+w_1d68868d17,двійка за чверть,elite,school,core,two
+w_ce613adbca,п'ятірка з плюсом,elite,school,core,pyatirka
+w_cba1b2db7c,прощання зі школою,elite,school,core,proschenna
+w_06000bdb61,чешки на фізру,elite,school,core,cheshky
+w_8f32961482,сто балів,elite,school,core,
+w_ea7e0d8563,електронний щоденник,elite,school,reject,
+w_e8f3ff9e45,батьківський чат,elite,school,core,chat
+w_e7e63e75de,перша зміна,elite,school,core,zmina
+w_ad61c17dc3,друга зміна,elite,school,core,zmina
+w_03e0a0ed62,виховна година,elite,school,core,watch
+w_04a8fe3db8,лінійка першого вересня,elite,school,core,liniika
+w_0aec1ff087,букет для вчительки,elite,school,core,
+w_9c15755e38,руки на парту,elite,school,core,
+w_d60829845c,усна відповідь,elite,school,core,
+w_65727888af,тиша в класі,elite,school,core,
+w_e6177b8784,закон Ома,elite,science,core,
+w_02e35ab52d,закон Паскаля,elite,science,reject,
+w_fb63eb8d6d,закон збереження енергії,elite,science,core,
+w_80395fdb7e,золоте правило механіки,elite,science,reject,
+w_02cf75a393,точка кипіння,elite,science,core,
+w_3378d880ae,точка опори,elite,science,core,
+w_5046f81d3f,критична маса,elite,science,core,
+w_001849af12,вічний двигун,elite,science,core,dvyhun
+w_21982d98ab,диск Ньютона,elite,science,core,
+w_85963463cb,лампа розжарювання,elite,science,core,lampa
+w_86de7f141b,сполучені посудини,elite,science,core,
+w_da10e4ec4e,дія і протидія,elite,science,core,
+w_62f524a777,періодична система,elite,science,core,
+w_5a949d6d2a,лакмусовий папірець,elite,science,core,
+w_c6356cec35,царська горілка,elite,science,reject,
+w_24ed6c2e7b,електроліз води,elite,science,core,
+w_7a30513076,дистильована вода,elite,science,core,voda
+w_eb5eb5ed47,мідний купорос,elite,science,core,
+w_f039d5819f,перекис водню,elite,science,core,perekys
+w_f8ffd1d9c0,кислота і луг,elite,science,core,kyslota
+w_6b0d471751,колообіг води,elite,science,core,
+w_67475c02c6,піддослідний кролик,elite,science,core,krolyk
+w_9f360334c9,препарування жаби,elite,science,core,
+w_d1a7d76656,імунна система,elite,science,core,
+w_86563085db,група крові,elite,science,core,grupa
+w_f389d0df4d,дерево життя,elite,science,core,derevo
+w_cd9637e6d3,наднова зірка,elite,science,core,zirka
+w_8dc86f91cd,Полярна зірка,elite,science,core,zirka
+w_275c3bdbd9,Мала Ведмедиця,elite,science,core,
+w_f340a39ab2,комета Галлея,elite,science,core,kometa
+w_8ba4570c94,пояс Оріона,elite,science,core,
+w_d2cef673fc,червона планета,elite,science,core,planeta
+w_2b99ddece1,штучний супутник,elite,science,core,suputnyk
+w_265932774b,життя на Марсі,elite,science,core,
+w_5acd830f92,сонячний спалах,elite,science,core,
+w_b7c1ad9e35,земна вісь,elite,science,core,
+w_88f5d17c5a,приплив і відплив,elite,science,core,pryplyv
+w_1bd591db41,машина часу,elite,science,core,machine_fruit
+w_962733d332,теорія відносності,elite,science,core,
+w_aede1a9676,горизонт подій,elite,science,core,horyzont
+w_3b91d6aa1f,кротова нора,elite,science,core,nora
+w_885a8e7b2b,частинка Бога,elite,science,core,
+w_885a08fedc,нейтронна зірка,elite,science,reject,
+w_f0d1b2098d,рентгенівські промені,elite,science,core,
+w_51efc51e29,Великий адронний колайдер,elite,science,core,
+w_01e1c45645,мирний атом,elite,science,core,
+w_dafd786aaf,радіаційний фон,elite,science,reject,
+w_fa06579752,йодна таблетка,elite,science,core,tabletka
+w_694e80db81,атомна бомба,elite,science,core,
+w_65e92feb66,Чорнобильська АЕС,elite,science,core,
 w_cd09953859,шалька терезів,hard,abstract,reject,
 w_b44f662952,противага,hard,abstract,reject,
 w_a651c43599,баланс сил,hard,abstract,reject,
@@ -2502,7 +3002,7 @@ w_73eb722d03,бадяга,hard,body,reject,
 w_988f14fe8f,бальзам зірочка,hard,body,core,
 w_37b22e8ff3,банки на спину,hard,body,core,
 w_990d476526,бормашина,hard,body,core,
-w_9d9769ab62,валідол,hard,body,core,
+w_9d9769ab62,валідол,hard,body,core,validol
 w_54ac6fade6,вазелін,hard,body,core,
 w_b6875ca3a3,валер'янка,hard,body,core,
 w_834bb62a78,веснянки,hard,body,core,
@@ -2528,7 +3028,7 @@ w_79200346f0,марганцівка,hard,body,core,
 w_edca533d84,медичний спирт,hard,body,core,
 w_edcb23a5dd,міхур з льодом,hard,body,core,
 w_99fc21afa7,мозоль,hard,body,core,
-w_e350f93754,нашатир,hard,body,core,
+w_e350f93754,нашатир,hard,body,core,nashatyr
 w_3fb787690c,нітрогліцерин,hard,body,core,
 w_2ae60fe60c,ноші,hard,body,core,
 w_6a16f7f443,пантенол,hard,body,core,
@@ -3134,14 +3634,14 @@ w_d0bd3e475b,цурки-палки,hard,games,reject,
 w_4e0785555c,шутер,hard,games,reject,
 w_25e0e3532d,Масниця,hard,holidays,core,
 w_5d578092a1,чучело Масниці,hard,holidays,core,
-w_1f2048c8d8,Маланка,hard,holidays,core,
+w_1f2048c8d8,Маланка,hard,holidays,core,malanka
 w_22063daad0,коза Маланки,hard,holidays,reject,
 w_9f0672b841,ряжені,hard,holidays,core,
 w_3761edcd50,Медовий Спас,hard,holidays,core,
 w_489bcd21f1,букет Маковея,hard,holidays,reject,
 w_5b2e66e40d,Горіховий Спас,hard,holidays,reject,
 w_da2f063647,Андріївські вечорниці,hard,holidays,core,
-w_76d36757b0,дідух,hard,holidays,core,
+w_76d36757b0,дідух,hard,holidays,core,didukh
 w_bad41833cb,різдвяний вінок,hard,holidays,core,vinok
 w_8fc0fc77c4,адвентський вінок,hard,holidays,reject,
 w_14a06d1f04,чобіток Миколая,hard,holidays,core,
@@ -3262,7 +3762,7 @@ w_8352b82dfe,квартирант,hard,people,core,
 w_90922dec5a,олігарх,hard,people,core,
 w_76e29ac0ec,косплеєр,hard,people,core,
 w_fda471c7e2,масон,hard,people,core,
-w_dbdeded3ea,акрополь,hard,places,core,
+w_dbdeded3ea,акрополь,hard,places,core,akropol
 w_2f6cf993e1,амфітеатр,hard,places,core,
 w_eeef52158c,базиліка,hard,places,reject,
 w_6a4a02d07d,бастіон,hard,places,reject,
@@ -3568,7 +4068,7 @@ w_84494f2e3a,тюрбан,hard,clothing,core,
 w_7e3921a686,уггі,hard,clothing,core,
 w_e47ac2c2ba,циліндр,hard,clothing,core,
 w_0b51a468ae,чепчик,hard,clothing,core,
-w_ff65a401b5,чешки,hard,clothing,core,
+w_ff65a401b5,чешки,hard,clothing,core,cheshky
 w_0acfc85712,чокер,hard,clothing,core,
 w_8ecf8c7a32,шиповки,hard,clothing,core,
 w_570281f80f,перерізання стрічки,hard,events,core,
@@ -3873,7 +4373,7 @@ w_a3a58c777b,глюкометр,hard,body,core,
 w_20876f0861,діафрагма,hard,body,reject,
 w_c99396a8c4,джгут,hard,body,core,
 w_830a6c7bcf,еластичний бинт,hard,body,core,bynt
-w_c6493e7bf7,зеленка,hard,body,core,
+w_c6493e7bf7,зеленка,hard,body,core,zelenka
 w_8d976e8cc5,зуб мудрості,hard,body,core,zub
 w_863eacb40b,інгалятор,hard,body,core,
 w_8a93aae64a,кадик,hard,body,core,
@@ -3891,7 +4391,7 @@ w_9f70029dfc,наколінник,hard,body,core,
 w_2971ceecda,небулайзер,hard,body,core,
 w_c8eb18ba69,ортез,hard,body,reject,
 w_6148a41d29,передпліччя,hard,body,reject,
-w_e8f52fca9d,перекис,hard,body,core,
+w_e8f52fca9d,перекис,hard,body,core,perekys
 w_9611d773c1,перенісся,hard,body,reject,
 w_ef0bfbc8b5,поперек,hard,body,core,
 w_a612e253b3,скроня,hard,body,reject,
@@ -4660,7 +5160,7 @@ w_a9b73171f7,батон,easy,food,core,
 w_7e616afab1,батут,easy,sports,core,batut
 w_35d059db6a,батьки,easy,family,core,father
 w_1617c7b329,батько,easy,family,core,father
-w_46edcd7bf4,баян,easy,music,core,
+w_46edcd7bf4,баян,easy,music,core,bayan
 w_a62ecfce54,бджола,easy,animals,core,bdzhola
 w_cec4a1a36c,бегемот,easy,animals,core,
 w_573a8fa185,безвіз,easy,travel,core,
@@ -4740,7 +5240,7 @@ w_32510acd62,боротьба,easy,actions,core,borotba
 w_b8fef91151,борошно,easy,food,core,
 w_6b21418d98,борсук,easy,animals,core,borsuk
 w_d0bdbb9929,борщ,easy,food,core,borshch
-w_f9a18832d8,бос,easy,people,core,
+w_f9a18832d8,бос,easy,people,core,bos
 w_46c4971907,босоніжки,easy,clothing,core,
 w_0c4a19ccf6,ботанічний сад,easy,places,core,sad
 w_2cca786dbd,боулінг,easy,places,core,
@@ -4842,7 +5342,7 @@ w_1bb588d3c9,верблюд,easy,animals,core,verblyud
 w_34786abc42,Вербна неділя,medium,holidays,core,nedilya
 w_39abb6b894,вертоліт,easy,transport,core,
 w_dbf52acce3,вершина,easy,nature,core,
-w_a21e55ac3e,вершки,easy,food,core,
+w_a21e55ac3e,вершки,easy,food,core,vershky
 w_f1045c3ae7,веселість,easy,emotions,core,
 w_cfe37e7b24,веселка,easy,nature,core,
 w_de36db00b2,весілля,easy,holidays,core,vesillya
@@ -4981,7 +5481,7 @@ w_f1d131601b,вугілля,easy,nature,core,vuhillya
 w_2c885714d1,вугор,easy,animals,core,vuhor
 w_8857777117,вуж,easy,animals,core,
 w_50d51b7da6,вулик,easy,animals,core,
-w_5c06d4dcfe,вулиця,easy,places,core,
+w_5c06d4dcfe,вулиця,easy,places,core,vulytsya
 w_3c28066b60,вулкан,easy,nature,core,vulkan
 w_b46c311125,вуса,easy,animals,core,
 w_22b0ea402b,вухо,easy,body,core,vukho
@@ -5032,7 +5532,7 @@ w_4a5ebaa58d,гієна,easy,animals,core,
 w_5705357542,гілка,easy,nature,core,hilka
 w_b27179ed07,гімнаст,easy,professions,core,gimnast
 w_8c2fb60c30,гімнастика,easy,sports,core,gimnast
-w_3abaa51092,гіпс,easy,body,core,
+w_3abaa51092,гіпс,easy,body,core,hips
 w_02defd9d1b,гірка,easy,games,core,hirka
 w_8812f193b3,гірлянда,easy,holidays,core,
 w_743732731f,гірчиця,easy,food,core,hirchytsya
@@ -5047,7 +5547,7 @@ w_c431af7fb6,глінтвейн,easy,drinks,core,hlintvein
 w_c0e607dc58,глобус,easy,school,core,hlobus
 w_67ba28b25b,глухар,medium,animals,core,hlukhar
 w_213bc02ad8,гнів,easy,emotions,core,
-w_75d08663f2,гніздо,easy,animals,core,
+w_75d08663f2,гніздо,easy,animals,core,hnizdo
 w_086b9c8f80,гном,easy,people,core,
 w_ce90ef1701,година,easy,events,core,watch
 w_73a6139b53,годинник,easy,home,core,watch
@@ -5080,7 +5580,7 @@ w_952e4dedaf,готель,easy,places,core,hotel
 w_8a81151755,готівка,easy,work,core,
 w_16da925c7f,готування,easy,actions,core,
 w_38bc7e6e7b,гра,easy,actions,core,hra
-w_6ece33605b,граблі,easy,tools,core,
+w_6ece33605b,граблі,easy,tools,core,hrabli
 w_c399ef8fc3,град,easy,nature,core,
 w_e5a9ce91b7,гранат,easy,food,core,grant
 w_53f039528f,граніт,easy,nature,core,grant
@@ -5124,7 +5624,7 @@ w_a1f8c2d09f,дарування,easy,actions,core,
 w_3502335c93,дах,easy,home,core,dakh
 w_67d585a661,дача,easy,places,core,
 w_954e1f7128,двері,easy,home,core,dveri
-w_0760de56a4,двигун,easy,transport,core,
+w_0760de56a4,двигун,easy,transport,core,dvyhun
 w_0751ca68a6,двієчник,easy,people,core,two
 w_19fd259cec,двійка,easy,school,core,two
 w_a809a82a2c,двір,easy,places,core,
@@ -5311,13 +5811,13 @@ w_90d6817dbe,журнал,easy,work,core,jurnal
 w_e4f50dd72a,заборона,easy,society,core,
 w_9e85e8e1a4,зав'язування шнурків,medium,actions,core,
 w_7b9c03e36a,завантаження,easy,technology,core,zavantazhe
-w_680822e95b,завдання,easy,school,core,
+w_680822e95b,завдання,easy,school,core,zavdannya
 w_0ef8579d09,завіса,easy,movies,core,zavisa
 w_f1db7944b0,завод,easy,places,core,zavod
 w_6103388cfc,завтра,easy,events,core,
 w_4cbdf762b1,завуч,easy,school,core,
 w_6ae17948e4,загадування,easy,actions,core,
-w_8880546e9d,задача,easy,school,core,
+w_8880546e9d,задача,easy,school,core,zadacha
 w_19ccdaf3a2,задачник,medium,school,core,
 w_48e78fe8bb,задоволення,easy,emotions,core,
 w_d53aacc667,задування свічки,medium,actions,core,
@@ -5341,7 +5841,7 @@ w_8efd185c3e,замок,easy,home,core,zamok
 w_cb9386bae0,заморожування,medium,actions,core,
 w_edb8bdfc55,зап'ястя,easy,body,core,
 w_d62a36be6b,запалювання,easy,actions,core,
-w_8200826910,запізнення,easy,actions,core,
+w_8200826910,запізнення,easy,actions,core,zapiznenny
 w_ff9f09617a,запіканка,easy,food,core,zapikanka
 w_8624de3ac7,заплітання,easy,actions,core,
 w_e04a75f407,заповідник,easy,places,core,
@@ -5452,9 +5952,9 @@ w_7274423b6b,інтерфейс,easy,technology,core,
 w_a08ec6101d,інформатика,easy,school,core,
 w_1e5accfc0d,інцидент,easy,events,core,
 w_35500db6ef,іриска,easy,food,core,
-w_e86d15e109,іспит,easy,school,core,
+w_e86d15e109,іспит,easy,school,core,ispyt
 w_981e471c8c,історик,easy,professions,core,
-w_37167cf5a9,їдальня,easy,places,core,
+w_37167cf5a9,їдальня,easy,places,core,yidalnya
 w_39c1c04f1a,їжак,easy,animals,core,yizhak
 w_d7370abf85,їзда верхи,easy,actions,core,
 w_d95f68f17f,йо-йо,easy,games,core,
@@ -5489,7 +5989,7 @@ w_9702c205a4,камінь,easy,nature,core,kamin
 w_799f0d38ec,кампус,easy,places,core,
 w_c820139458,канал,easy,internet,core,kanal
 w_3d5f9db0cf,канарка,easy,animals,core,
-w_6773ee47f0,канікули,easy,travel,core,
+w_6773ee47f0,канікули,easy,travel,core,kanikuly
 w_a67e08754f,кантрі,easy,music,core,
 w_338314fef3,капелюх,easy,clothing,core,kapelyukh
 w_3071996688,капібара,easy,animals,core,
@@ -5551,7 +6051,7 @@ w_7c8c26116c,кекс,easy,food,core,
 w_2dbaaff0b1,келих,easy,home,core,
 w_b0b613a662,кемпінг,easy,places,core,
 w_b97e15a9df,кенгуру,easy,animals,core,
-w_958180d202,кепка,easy,clothing,core,
+w_958180d202,кепка,easy,clothing,core,kepka
 w_53f29e45e7,кермо,easy,transport,core,
 w_00c72fa72c,кетчуп,easy,food,core,
 w_4cc5d94c29,кефір,easy,drinks,core,kefir
@@ -5622,7 +6122,7 @@ w_1d3d7e6029,ковтання,easy,actions,core,kovzanna
 w_a1a59d86d1,код доступу,medium,technology,core,kod
 w_97e6b6c1db,кодовий замок,medium,travel,core,zamok
 w_d0fc642270,кожух,easy,clothing,core,
-w_6c1f535fa4,коза,easy,animals,core,
+w_6c1f535fa4,коза,easy,animals,core,koza
 w_96de8c370c,козак,easy,history,core,kozyrok
 w_9ebba5a9de,козел,easy,animals,core,kozyrok
 w_c92bfe30da,козинаки,easy,food,core,kozyrok
@@ -5641,7 +6141,7 @@ w_a67a0e5b36,колесо,easy,transport,core,koleso
 w_0b8ee13be4,колесо огляду,medium,games,core,koleso
 w_fccda96d88,колискова,easy,music,core,koleso
 w_1500f62190,колібрі,easy,animals,core,
-w_dfc1fcd5d6,коліно,easy,body,core,
+w_dfc1fcd5d6,коліно,easy,body,core,kolino
 w_315ef2733b,колонка,easy,technology,core,kolonka
 w_0bf353a460,колорадський жук,easy,animals,core,zhuk
 w_1abb83bdfd,колосок,easy,nature,core,
@@ -5653,7 +6153,7 @@ w_ec67f96980,команда,easy,sports,core,
 w_fac3d034af,комар,easy,animals,core,komar
 w_c9b2aa55d7,комбайн,easy,transport,core,kombayn
 w_5d4744b76c,комбайнер,easy,professions,core,kombayn
-w_d164bfd9d9,комбінезон,easy,clothing,core,
+w_d164bfd9d9,комбінезон,easy,clothing,core,kombinezon
 w_2e06994c89,комедійне шоу,medium,tv,core,comedy
 w_bf792d3643,комендантська година,medium,society,core,watch
 w_00dc71ba15,коментар,easy,internet,core,komentar
@@ -5663,17 +6163,17 @@ w_2c516524a5,комора,easy,home,core,komod
 w_b7c42dc409,компас,easy,travel,core,
 w_967c4c8419,композитор,easy,professions,core,
 w_30810fa4e6,компот,easy,drinks,core,kompot
-w_d0574872e8,компрес,easy,body,core,
+w_d0574872e8,компрес,easy,body,core,kompres
 w_26db4da4f2,конверт,easy,work,core,konvert
 w_4b5bed1d1f,кондитерська,easy,places,core,kondyter
 w_ee9c14e05d,кондуктор,easy,professions,core,
 w_d8e718ff2b,коник,easy,animals,core,konyk
 w_47429b4725,консерви,easy,food,core,
 w_29d62f45e8,конспект,easy,school,core,
-w_3aa201ce7d,конструктор,easy,games,core,
+w_3aa201ce7d,конструктор,easy,games,core,konstrukto
 w_31e1003596,континент,easy,places,core,
 w_58f839fd5a,контракт,easy,work,core,
-w_78394f246c,контрольна,easy,school,core,
+w_78394f246c,контрольна,easy,school,core,kontrolna
 w_709011e637,конфеті,easy,holidays,core,konfeti
 w_14295a481a,конфлікт,easy,relationships,reject,
 w_de18ea6d4f,концерт,easy,events,core,konvert
@@ -5708,7 +6208,7 @@ w_03af2eaad8,косметолог,easy,professions,core,cosmetics
 w_1d5839a998,космічна станція,medium,technology,core,astronaut_root
 w_fe224430ab,космічний корабель,medium,technology,core,astronaut_root
 w_050bdc1084,космос,easy,science,core,astronaut_root
-w_4102d9934c,костюм,easy,movies,core,
+w_4102d9934c,костюм,easy,movies,core,kostyum
 w_b933e2921a,косуля,easy,animals,core,
 w_282788248f,котлета,easy,food,core,kotleta
 w_d41b4b2a4e,кохання,easy,emotions,core,kokhannya
@@ -5717,7 +6217,7 @@ w_0198446542,кошик,easy,home,core,koshyk
 w_951092a663,кошик для білизни,medium,home,core,koshyk
 w_0b77badfcf,кошмар,easy,body,core,
 w_f2a6563d16,краб,easy,animals,core,
-w_2bfeed9c56,краватка,easy,clothing,core,
+w_2bfeed9c56,краватка,easy,clothing,core,kravatka
 w_bd1986d7d4,кравець,medium,professions,core,
 w_fb187c891a,країна,easy,places,core,
 w_a698710b7b,Краків,easy,cities,core,
@@ -5746,11 +6246,11 @@ w_b17588d1e1,крісло,easy,home,core,krislo
 w_3b90dbaddb,кров,easy,body,core,krov
 w_5f0bb9b015,кровотеча,easy,body,core,
 w_d2eb303364,крок,easy,actions,core,
-w_d45f927201,кролик,easy,animals,core,
+w_d45f927201,кролик,easy,animals,core,krolyk
 w_85d1cd38d3,крона,hard,nature,core,
 w_efabb0f9ed,кропива,easy,nature,core,
 w_86edb69650,кросворд,easy,games,core,
-w_cd5e92987d,кросівки,easy,clothing,core,
+w_cd5e92987d,кросівки,easy,clothing,core,krosivky
 w_79e3cf4901,крохмаль,medium,food,core,
 w_e28bba1ff3,круасан,easy,food,core,kruasan
 w_7d084c795b,круїз,easy,travel,core,
@@ -5803,7 +6303,7 @@ w_b0f63ddd42,лев,easy,animals,core,lev
 w_c88acc10ba,легені,easy,body,core,
 w_dd12a25993,легінси,easy,clothing,core,
 w_4964fa57c7,легка атлетика,medium,sports,core,
-w_b11f86b09c,лего,easy,brands,core,
+w_b11f86b09c,лего,easy,brands,core,leho
 w_15f9c04e0b,лейс,easy,brands,core,
 w_a24f505366,лелека,easy,animals,core,leleka
 w_53a0403aee,лемур,medium,animals,core,lemur
@@ -6080,7 +6580,7 @@ w_81a78143b9,новорічна іграшка,medium,holidays,core,ny
 w_3a7c8b16d5,нога,easy,body,core,
 w_309cd05a92,ножиці,easy,tools,core,nozhytsi
 w_f2c61f04f7,номерний знак,easy,transport,core,
-w_f6f0380f47,нора,easy,animals,core,
+w_f6f0380f47,нора,easy,animals,core,nora
 w_0425372e31,носоріг,easy,animals,core,nosorih
 w_3e5d9f9257,нота,easy,music,core,notes
 w_8d11b9edaa,ноти,easy,music,core,notes
@@ -6109,7 +6609,7 @@ w_c8d4993389,Одеса,easy,cities,core,
 w_cd106e31b7,одногрупник,easy,people,core,
 w_12c7e4a557,однокласник,easy,school,core,
 w_1bda6d3c0d,озеро,easy,nature,core,ozero
-w_aacd9f0ea5,океан,easy,nature,core,
+w_aacd9f0ea5,океан,easy,nature,core,okean
 w_9c44f51670,око,easy,body,core,oko
 w_1c26df03bf,окрошка,easy,food,core,okroshka
 w_fb3c72d66b,окуляри,easy,clothing,core,okulyary
@@ -6153,7 +6653,7 @@ w_4c024205d1,очерет,medium,nature,core,
 w_a0aa31641f,очікування,easy,actions,core,ochikuvann
 w_2c11973dd8,п'явка,easy,animals,core,pyavka
 w_d2dbdc512b,п'ята,easy,body,core,
-w_35ea3aba87,п'ятірка,easy,school,core,
+w_35ea3aba87,п'ятірка,easy,school,core,pyatirka
 w_38dde7b1ed,п'ятниця,easy,events,core,friday
 w_553f39a50e,павербанк,easy,technology,core,paverbank
 w_96a0226d54,павук,easy,animals,core,pavuk
@@ -6161,11 +6661,11 @@ w_7fb4140d0c,пагорб,easy,nature,core,
 w_300964e063,падіння,easy,actions,core,padinnya
 w_0639bf9682,пазл,easy,games,core,
 w_c4cd0b504e,пакування,easy,actions,core,
-w_7ba87306ec,палац,easy,places,core,
-w_7b1e427a03,палець,easy,body,core,
+w_7ba87306ec,палац,easy,places,core,palats
+w_7b1e427a03,палець,easy,body,core,palets
 w_98e2da6f21,паличник,easy,animals,core,
 w_c7caebd6e2,пальма,easy,nature,core,palma
-w_7e48093c0d,пальто,easy,clothing,core,
+w_7e48093c0d,пальто,easy,clothing,core,palto
 w_3f955927d8,паляниця,easy,food,core,palyanytsya_root
 w_a732e7fffd,пампушка,easy,food,core,
 w_8111580799,пан,easy,people,core,
@@ -6294,7 +6794,7 @@ w_fa68bc40a2,піраміда,easy,history,core,piramida
 w_b26e162669,піранья,easy,animals,core,
 w_672e80b551,пірат,easy,professions,core,
 w_c66be6314c,пірнання,easy,actions,core,
-w_473b2d2a2c,пісня,easy,music,core,
+w_473b2d2a2c,пісня,easy,music,core,pisnya
 w_ba7c590a6b,пісок,easy,nature,core,pisok
 w_ac5ecb62cf,пісочниця,easy,games,core,pisok
 w_6c24d56a7c,піт,easy,body,core,pit
@@ -6592,7 +7092,7 @@ w_edee67b408,росомаха,easy,animals,core,
 w_7942aca48d,рот,easy,body,core,
 w_2f2aa8019e,роутер,medium,technology,core,
 w_cf048294c1,рошен,easy,brands,core,
-w_f1d02e5524,рояль,easy,music,core,
+w_f1d02e5524,рояль,easy,music,core,royal
 w_fb0617c987,руїни,easy,history,reject,
 w_38c9a88d5e,рука,easy,body,core,river_pen
 w_9baeb3e4a9,рукав,easy,clothing,core,river_pen
@@ -6632,7 +7132,7 @@ w_1f0d19afcf,сардина,easy,animals,core,
 w_1d6555478c,сафарі,easy,travel,core,safari
 w_9e5c10f706,сварка,easy,relationships,core,svarka
 w_5c649bfc9f,сват,medium,family,core,swat
-w_68d9585d57,светр,easy,clothing,core,
+w_68d9585d57,светр,easy,clothing,core,svetr
 w_2ffb5c4540,свиня,easy,animals,core,
 w_385c1d8173,свист,easy,actions,core,svist
 w_ee41c2c422,свисток,easy,sports,core,svist
@@ -6686,7 +7186,7 @@ w_297851e4fb,сім-карта,easy,technology,core,card
 w_b6738f62a1,сім'я,easy,family,core,simya
 w_f0f7604a9d,сірник,easy,tools,core,
 w_1c75b951f9,сітка,easy,sports,core,sitka
-w_e1da947ec4,скакалка,easy,sports,core,
+w_e1da947ec4,скакалка,easy,sports,core,skakalka
 w_f995ce2751,сканер,easy,technology,core,skaner
 w_055fa8d00d,скарб,easy,abstract,core,
 w_8ef7bf25cc,скатертина,easy,home,core,
@@ -6699,7 +7199,7 @@ w_c3691a36dc,склянка,easy,home,core,
 w_323a329fb1,сковорода,easy,home,core,skovoroda
 w_1d4a3c728f,скорпіон,easy,animals,core,skorpion
 w_2512a218b1,скотч,easy,tools,core,skotch
-w_cebb5ca399,скрипка,easy,music,core,
+w_cebb5ca399,скрипка,easy,music,core,skrypka
 w_e4b0cb98f3,скріншот,easy,technology,core,
 w_1de9b12e87,скульптура,easy,movies,core,sculptor_root
 w_d99a523b56,скунс,easy,animals,core,
@@ -6708,7 +7208,7 @@ w_8eceb30965,слива,easy,food,core,slyva
 w_7cb5e812df,слина,easy,body,core,slyva
 w_007873f64b,слинявчик,easy,clothing,core,
 w_fc9f6db98d,словник,easy,school,core,
-w_f56eb6c35a,слово,easy,abstract,core,
+w_f56eb6c35a,слово,easy,abstract,core,slovo
 w_4c28c7787b,слон,easy,animals,core,slon
 w_976478232b,слухач,easy,people,core,
 w_dbcf7dfe74,сльози,easy,emotions,core,slozy
@@ -6771,7 +7271,7 @@ w_91a5b2d322,спина,easy,body,core,
 w_8ace821ce1,співак,easy,professions,core,
 w_a4d7ed57c5,співбесіда,easy,work,core,
 w_64d6d02faf,співчуття,easy,emotions,reject,
-w_4f643a452b,спідниця,easy,clothing,core,
+w_4f643a452b,спідниця,easy,clothing,core,spidnytsya
 w_763e4224f8,спілкування,easy,relationships,core,
 w_01242e1fee,спінер,easy,games,core,
 w_3b8d3ca5fd,сплячка,easy,animals,core,
@@ -6792,7 +7292,7 @@ w_4296253f16,старт,easy,sports,core,
 w_ca80cc7d7d,стейк,easy,food,core,
 w_8b7900dfa9,стеля,easy,home,core,stels
 w_4117ef00a0,стендап,easy,tv,core,
-w_cbeee1e2c8,Стефанія,easy,music,core,
+w_cbeee1e2c8,Стефанія,easy,music,core,stefaniya
 w_15ee01dd85,стиль,easy,abstract,core,
 w_4888493e05,стікер,easy,internet,core,stiker
 w_e542662a68,стіл,easy,home,core,stil
@@ -6827,7 +7327,7 @@ w_841b2c562b,суглоб,easy,body,core,
 w_8b55b49e86,суд,easy,places,core,sud
 w_335c2a6ce0,суддя,easy,professions,core,sud
 w_048adc9656,судома,easy,body,core,
-w_9518f92307,сукня,easy,clothing,core,
+w_9518f92307,сукня,easy,clothing,core,suknya
 w_22f1eeff41,сулугуні,easy,food,core,suluhuni
 w_8a56dedbf2,сум,easy,emotions,core,
 w_0da4acc008,сумка,easy,home,core,sumka
@@ -6860,7 +7360,7 @@ w_9803fb0cb8,талант,easy,personality,reject,
 w_146d94297e,талант-шоу,medium,tv,core,shou
 w_263ff53293,талія,easy,body,core,
 w_34bb4c18c4,танго,medium,music,core,
-w_e9d3ac6813,танець,easy,actions,core,
+w_e9d3ac6813,танець,easy,actions,core,tanets
 w_3d2fa5a71e,танцюрист,easy,professions,core,
 w_64ca621e81,тарантул,easy,animals,core,tarantul
 w_c41ab37f0a,тариф,easy,society,reject,
@@ -6896,7 +7396,7 @@ w_cdf340ebc6,Тероборона,easy,society,core,
 w_45bb00bfbd,тертка,easy,home,core,
 w_8ff6254de6,тертя,easy,science,reject,
 w_cc9e6c32cb,техно,easy,music,core,
-w_2d6ee1b8b6,теща,easy,family,core,
+w_2d6ee1b8b6,теща,easy,family,core,teshcha
 w_8569e7aeee,тигр,easy,animals,core,tyhr
 w_ea39dfd77c,тиждень,easy,events,core,
 w_3301301f85,тир,easy,games,core,tyr
@@ -6962,7 +7462,7 @@ w_292eca02b4,турботливість,hard,personality,reject,
 w_6193ebbfce,турист,easy,people,core,
 w_83a873e09e,турнік,easy,sports,core,turnik
 w_24fd3571ff,туроператор,easy,travel,core,
-w_d854558d69,туфлі,easy,clothing,core,
+w_d854558d69,туфлі,easy,clothing,core,tufli
 w_1a6f9f25df,тушонка,easy,food,core,
 w_91d57dd085,тхеквондо,easy,sports,core,
 w_2a04b2d8ac,тюлень,easy,animals,core,
@@ -7030,7 +7530,7 @@ w_44b65f4314,флірт,easy,relationships,reject,
 w_f026655cec,фломастер,easy,tools,core,
 w_786357e26b,фойє,medium,movies,core,
 w_f18b1a1ebd,фол,medium,sports,core,
-w_bd8bb05550,фонтан,easy,places,core,
+w_bd8bb05550,фонтан,easy,places,core,fontan
 w_aa210dd475,форель,easy,animals,core,forel
 w_ffbf6b9283,формочка,easy,games,core,
 w_e311883b3d,формула,easy,science,reject,
@@ -7083,7 +7583,7 @@ w_db1b860b41,хокей,easy,sports,core,khokei
 w_81b1b57ade,холодець,easy,food,core,
 w_549ca77067,холодильник,easy,home,core,kholodylny
 w_3341f05b82,хом'як,easy,animals,core,khomyak
-w_96f8bed48c,хор,easy,music,core,
+w_96f8bed48c,хор,easy,music,core,khor
 w_c119954391,хостел,easy,places,core,
 w_e441c1f2ee,хот-дог,easy,food,core,khotdoh
 w_b4da89604c,храм,easy,history,core,
@@ -7102,7 +7602,7 @@ w_1f29839dba,хуліган,easy,people,core,
 w_c1eed9a83a,хумус,easy,food,core,khumus
 w_b7114d8728,хурма,easy,food,core,
 w_44551d1182,хуртовина,easy,nature,core,
-w_7ccaf2da84,хустка,easy,clothing,core,
+w_7ccaf2da84,хустка,easy,clothing,core,khustka
 w_3be1c6450c,хутро,easy,animals,core,
 w_773d409271,цвіркун,easy,animals,core,tsvirkun
 w_bec4ddc05c,цвях,easy,tools,core,tsvyakh
@@ -7140,7 +7640,7 @@ w_1305d097af,черевики,easy,clothing,core,shoe_root
 w_1f93311d93,черепаха,easy,animals,core,cherepakha
 w_75f2809da0,черешня,easy,food,core,
 w_860c2d8651,Чернівці,easy,cities,core,
-w_8d22eac22a,четвер,easy,events,core,
+w_8d22eac22a,четвер,easy,events,core,chetver
 w_0996f49518,четвірка,easy,school,core,
 w_6420d14c18,чизкейк,easy,food,core,
 w_7f5a640a82,Чикаго,medium,cities,core,
@@ -7149,7 +7649,7 @@ w_7275fe1450,читач,easy,people,core,chyt
 w_8a106ce7ac,чіпси,easy,food,core,
 w_28c234d57a,чоботи,easy,clothing,core,choboty
 w_464134f395,човен,easy,transport,core,choven
-w_5fd5cfe1bf,чоловік,easy,family,core,
+w_5fd5cfe1bf,чоловік,easy,family,core,cholovik
 w_8cfa27eecf,чорний чай,medium,drinks,core,black
 w_3ba5f57f12,чорниця,easy,food,core,black
 w_3e5f19afcc,Чорнобаївка,easy,cities,core,
@@ -7164,7 +7664,7 @@ w_2afe1ea16f,шантаж,easy,behavior,reject,
 w_4c8fa34105,Шанхай,easy,cities,core,
 w_175bdcc2e7,шапка,easy,clothing,core,shapka
 w_f4b7a8af60,шаровари,easy,clothing,core,
-w_09fe7e51ca,шарф,easy,clothing,core,
+w_09fe7e51ca,шарф,easy,clothing,core,sharf
 w_ec2db0298c,шаурма,easy,food,core,shaurma
 w_60c5210ccb,шафа,easy,home,core,shafa
 w_11bbe6aad8,Шахед,easy,technology,core,shahed_root
@@ -7209,11 +7709,11 @@ w_a8624ef184,шоу,easy,events,core,shou
 w_ce51cccd3f,шпагат,easy,tools,core,schpaga
 w_cc08beb7e3,шпак,medium,animals,core,
 w_7c10e18423,шпалери,easy,home,core,shpalery
-w_591217f50a,шпаргалка,easy,school,core,
+w_591217f50a,шпаргалка,easy,school,core,shparhalka
 w_7768095f75,шпигун,easy,professions,core,
 w_f8bacb2ab4,шприц,easy,body,core,shpryts
 w_58e1e92ebf,шпроти,easy,food,core,shproty
-w_50cdde586a,шрам,easy,body,core,
+w_50cdde586a,шрам,easy,body,core,shram
 w_eb306cb8a9,штаб,easy,places,core,shtab
 w_265ccd5307,штамп,easy,travel,core,shtamp
 w_c9bbf37233,штанга,easy,sports,core,shtanha
@@ -7227,7 +7727,7 @@ w_dda9b45a9c,штраф,easy,society,reject,
 w_501d381f73,штрихкод,easy,technology,core,
 w_c1cfa266f6,штрудель,medium,food,core,
 w_e165b9b8bb,штукатур,easy,professions,core,
-w_6428229896,шуба,easy,clothing,core,
+w_6428229896,шуба,easy,clothing,core,shuba
 w_a903c2cef9,шуруп,easy,tools,core,schurup
 w_16f20fe988,шуруповерт,easy,tools,core,schurup
 w_12c6e5d507,шухляда,easy,home,core,
@@ -7957,7 +8457,7 @@ w_1e98cb305f,карієс,medium,body,core,
 w_d512c363f7,карнавал,medium,holidays,core,
 w_20ef5893b4,карниз,medium,home,core,
 w_3c0f45f9b1,карта скарбів,medium,games,core,card
-w_8d2473ae3e,картридж,medium,technology,core,
+w_8d2473ae3e,картридж,medium,technology,core,kartrydzh
 w_582aba029f,катамаран,medium,transport,core,
 w_1c26e377e5,катастрофа,medium,events,core,
 w_6fc0b7f634,кафедра,medium,school,core,
@@ -8002,13 +8502,13 @@ w_ddafbef859,колаж,medium,movies,core,
 w_67235df395,колекціонер,medium,people,core,kolekcia
 w_a9d65fc508,колекція,medium,work,core,kolekcia
 w_398d0a647f,колишні,medium,relationships,reject,
-w_d8a6f0d0db,колізей,medium,history,core,
+w_d8a6f0d0db,колізей,medium,history,core,kolizei
 w_fa8551291f,колода карт,medium,games,core,
-w_c3ce34df42,коломийка,medium,music,core,
+w_c3ce34df42,коломийка,medium,music,core,kolomyika
 w_bf6594b6a1,колун,medium,tools,core,
 w_9e2982b4ce,комаха,medium,animals,core,
 w_8a5074cea9,комедія,medium,movies,core,comedy
-w_2999ff1715,комета,medium,science,core,
+w_2999ff1715,комета,medium,science,core,kometa
 w_76e4e5159b,комісія,medium,society,reject,
 w_88ed64bf88,комп'ютер,medium,technology,core,
 w_87ba487f74,компакт-диск,medium,technology,core,
@@ -8171,7 +8671,7 @@ w_9634a71dc3,металошукач,medium,technology,core,
 w_2b4d46e782,метеорит,medium,science,core,
 w_590d9f5e87,метеоролог,medium,professions,core,
 w_909d8260e1,методичка,medium,school,core,
-w_f097ad4c82,мечеть,medium,places,core,
+w_f097ad4c82,мечеть,medium,places,core,mechet
 w_d6129b386f,милиця,medium,body,core,
 w_56c6fa6450,мильна опера,medium,tv,core,opera
 w_15e17f5abd,мильні бульбашки,medium,games,core,
@@ -8438,7 +8938,7 @@ w_6c5912a974,піна колада,medium,drinks,core,
 w_1e0fe71444,пінцет,medium,tools,core,
 w_4d2ecfffac,піньята,medium,games,core,
 w_7cc06c24f6,піпетка,medium,science,core,
-w_50ddff7f12,піст,medium,holidays,core,
+w_50ddff7f12,піст,medium,holidays,core,pist
 w_c3f050c3b9,пішак,medium,games,core,
 w_194bc01ac5,плавець,medium,professions,core,
 w_e5152385dc,плагін,medium,internet,core,
@@ -8532,7 +9032,7 @@ w_3beee81194,прикметник,medium,school,core,
 w_545aa025f9,приліт,medium,events,core,prylit
 w_7c107ca805,применшення,medium,behavior,reject,
 w_cea080ed95,приниження,medium,relationships,reject,
-w_88a614131f,приплив,medium,nature,core,
+w_88a614131f,приплив,medium,nature,core,pryplyv
 w_a0cbff0fe7,природний добір,medium,science,reject,
 w_cedb145e0a,прискіпування,medium,behavior,reject,
 w_6ed9ff78ee,прискорення,medium,science,reject,
@@ -8866,7 +9366,7 @@ w_792ab76b19,сузір'я,medium,science,reject,
 w_9b63f61cd6,сумо,medium,sports,core,
 w_28b5e2e964,суперечка,medium,relationships,reject,
 w_7c02303bc6,супермаркет,medium,places,core,
-w_8e9352aece,супутник,medium,technology,core,
+w_8e9352aece,супутник,medium,technology,core,suputnyk
 w_055bd5ef00,сурикат,medium,animals,core,
 w_09913867bc,суспільство,medium,society,reject,
 w_dc3cb9a7f3,сутичка,medium,relationships,reject,
@@ -9285,7 +9785,7 @@ w_c8b20e4d9f,голограма,hard,technology,core,
 w_2257c9c3f0,Гольфстрім,hard,science,core,
 w_551921ce10,гомеопат,hard,professions,core,
 w_abc153543a,гопники і БТР,elite,people,core,
-w_776820d145,горизонт,hard,nature,core,
+w_776820d145,горизонт,hard,nature,core,horyzont
 w_f17e3a0e76,гра на публіку,hard,behavior,reject,
 w_c9a88c46b9,гравітація,hard,science,core,
 w_3fe1db0b73,градирня,hard,places,core,
@@ -9433,7 +9933,7 @@ w_b6cbf856ef,карбування,hard,actions,core,
 w_8bccd5442f,карма,hard,history,reject,
 w_8785ca70e5,карта Лукашенка,hard,society,core,card
 w_2c59f1c624,касовий збір,hard,movies,core,
-w_316f1b95a3,катакомби,hard,places,core,
+w_316f1b95a3,катакомби,hard,places,core,katakomby
 w_65d4f373e5,катарсис,hard,movies,core,
 w_a5de995fef,каучсерфінг,hard,travel,core,
 w_0677bf9e53,кедр,hard,nature,core,
@@ -9753,7 +10253,7 @@ w_8975c38055,поклажа,hard,travel,core,poklazha
 w_b010fdb9e1,покликання,hard,abstract,reject,
 w_c72069dfc0,покривання,hard,relationships,reject,
 w_106392e212,покрівельник,hard,professions,core,
-w_93c2471f93,Покрова,hard,holidays,core,
+w_93c2471f93,Покрова,hard,holidays,core,pokrova
 w_69f22c349c,полив,hard,actions,core,polyv
 w_f0542c8429,поліглот,hard,people,core,
 w_2a919800b4,політтехнолог,hard,professions,core,
