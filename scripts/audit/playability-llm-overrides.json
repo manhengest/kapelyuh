@@ -3484,5 +3484,33 @@
     "association": 8,
     "pass": true,
     "reason": "llm hard-08"
+  },
+  "помаранчевареволюція": {
+    "alias": 8,
+    "crocodile": 5,
+    "association": 8,
+    "pass": true,
+    "reason": "llm elite-03"
+  },
+  "французькареволюція": {
+    "alias": 8,
+    "crocodile": 6,
+    "association": 8,
+    "pass": true,
+    "reason": "llm elite-03"
+  },
+  "оксамитовареволюція": {
+    "alias": 6,
+    "crocodile": 4,
+    "association": 6,
+    "pass": true,
+    "reason": "llm elite-03"
+  },
+  "ялтинськаконференція": {
+    "alias": 7,
+    "crocodile": 4,
+    "association": 7,
+    "pass": true,
+    "reason": "llm elite-03"
   }
 }
