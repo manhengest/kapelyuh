@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spot-check picker</title>
+  <style>
+    :root {
+      --bg: #0b1018; --surface: #151c28; --surface2: #1c2534; --border: #2a3548;
+      --text: #e8eef7; --muted: #8b98ad; --accent: #6ee0c8; --keep: #4ade80;
+      --remove: #f87171; --warn: #fbbf24; --touch: 44px; --radius: 10px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    .shell { max-width: 760px; margin: 0 auto; padding: 20px 16px 120px; }
+    h1 { font-size: 1.4rem; margin: 0 0 6px; }
+    .sub { color: var(--muted); margin: 0 0 16px; font-size: 0.9rem; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; font-size: 0.8rem; }
+    .btn { border: 1px solid var(--border); background: var(--surface2); color: var(--text); border-radius: var(--radius); padding: 10px 14px; cursor: pointer; min-height: var(--touch); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #041018; font-weight: 700; }
+    .btn.danger { border-color: #7f1d1d; color: var(--remove); }
+    .btn.ghost { background: transparent; }
+    .btn:disabled { opacity: 0.4; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
+    .card.resolved { opacity: 0.6; }
+    .kind { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--accent); margin-bottom: 8px; }
+    .word { font-size: 2rem; font-weight: 800; margin: 0 0 8px; }
+    .meta { color: var(--muted); font-size: 0.85rem; margin: 0 0 12px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .nav-row { display: flex; gap: 8px; margin-bottom: 16px; }
+    .footer-bar { position: fixed; left: 0; right: 0; bottom: 0; background: #0b1018ee; border-top: 1px solid var(--border); padding: 12px 16px; }
+    .footer-inner { max-width: 760px; margin: 0 auto; display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+    .kbd { font-family: ui-monospace, monospace; background: var(--surface2); padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <h1>Spot-check picker</h1>
+      <p class="sub">A accept · R reject · 10% seeded sample. &gt;5% reject flips the whole batch to review.</p>
+      <div class="pills" id="progress"></div>
+      <div class="nav-row">
+        <button class="btn" id="prev" type="button">← Prev</button>
+        <button class="btn" id="next" type="button">Next →</button>
+        <button class="btn ghost" id="undo" type="button">Undo</button>
+      </div>
+    </header>
+    <main id="main"></main>
+  </div>
+  <div class="footer-bar">
+    <div class="footer-inner">
+      <span class="sub" id="footer-status" style="margin:0">Рішення в браузері, поки не завантажиш JSON</span>
+      <button class="btn primary" id="download" type="button">Download decisions</button>
+    </div>
+  </div>
+  <script type="application/json" id="payload">{"generatedAt":"2026-09-12T04:29:41.054Z","batch":"hard-02","pct":100,"totalCore":184,"cards":[{"id":"w_3e78bbdf90","text":"ватна паличка","category":"body","difficulty":"hard"},{"id":"w_c3ed529f39","text":"градусник","category":"body","difficulty":"hard"},{"id":"w_016589cffc","text":"грудна клітка","category":"body","difficulty":"hard"},{"id":"w_998076d5a7","text":"грілка","category":"body","difficulty":"hard"},{"id":"w_a933b86f57","text":"гірчичник","category":"body","difficulty":"hard"},{"id":"w_a3a58c777b","text":"глюкометр","category":"body","difficulty":"hard"},{"id":"w_c99396a8c4","text":"джгут","category":"body","difficulty":"hard"},{"id":"w_830a6c7bcf","text":"еластичний бинт","category":"body","difficulty":"hard"},{"id":"w_c6493e7bf7","text":"зеленка","category":"body","difficulty":"hard"},{"id":"w_8d976e8cc5","text":"зуб мудрості","category":"body","difficulty":"hard"},{"id":"w_863eacb40b","text":"інгалятор","category":"body","difficulty":"hard"},{"id":"w_8a93aae64a","text":"кадик","category":"body","difficulty":"hard"},{"id":"w_2e2a68cf07","text":"крапельниця","category":"body","difficulty":"hard"},{"id":"w_5464b62a4a","text":"лопатка","category":"body","difficulty":"hard"},{"id":"w_9f70029dfc","text":"наколінник","category":"body","difficulty":"hard"},{"id":"w_2971ceecda","text":"небулайзер","category":"body","difficulty":"hard"},{"id":"w_e8f52fca9d","text":"перекис","category":"body","difficulty":"hard"},{"id":"w_ef0bfbc8b5","text":"поперек","category":"body","difficulty":"hard"},{"id":"w_b53f05efa4","text":"тонометр","category":"body","difficulty":"hard"},{"id":"w_c11aeca2af","text":"турнікет","category":"body","difficulty":"hard"},{"id":"w_c96740ec56","text":"Бориспіль","category":"cities","difficulty":"hard"},{"id":"w_f2b73f4f1d","text":"Верона","category":"cities","difficulty":"hard"},{"id":"w_ffbd00c018","text":"Гамбург","category":"cities","difficulty":"hard"},{"id":"w_ad1436f21d","text":"Калуш","category":"cities","difficulty":"hard"},{"id":"w_3afc913a27","text":"Канни","category":"cities","difficulty":"hard"},{"id":"w_6dca9ace18","text":"Кельн","category":"cities","difficulty":"hard"},{"id":"w_1c59ef65f9","text":"Ліверпуль","category":"cities","difficulty":"hard"},{"id":"w_16379f634f","text":"Неаполь","category":"cities","difficulty":"hard"},{"id":"w_d6cea5c52f","text":"Осло","category":"cities","difficulty":"hard"},{"id":"w_d73e7fa689","text":"Піза","category":"cities","difficulty":"hard"},{"id":"w_f7f20162c3","text":"Рейк'явік","category":"cities","difficulty":"hard"},{"id":"w_7bc155f170","text":"Флоренція","category":"cities","difficulty":"hard"},{"id":"w_55e6cccfb4","text":"Ялта","category":"cities","difficulty":"hard"},{"id":"w_1cc8678cb4","text":"боа","category":"clothing","difficulty":"hard"},{"id":"w_d7cc70d681","text":"бутоньєрка","category":"clothing","difficulty":"hard"},{"id":"w_01cc3c7865","text":"кринолін","category":"clothing","difficulty":"hard"},{"id":"w_4c67a7cbb0","text":"лосини","category":"clothing","difficulty":"hard"},{"id":"w_9d9f2c6964","text":"папійонка","category":"clothing","difficulty":"hard"},{"id":"w_71e4096bf7","text":"парео","category":"clothing","difficulty":"hard"},{"id":"w_eca84b0583","text":"підв'язка","category":"clothing","difficulty":"hard"},{"id":"w_1c2db6930f","text":"пілотка","category":"clothing","difficulty":"hard"},{"id":"w_839840f67a","text":"погон","category":"clothing","difficulty":"hard"},{"id":"w_6b5a57aeb0","text":"пуанти","category":"clothing","difficulty":"hard"},{"id":"w_e716245ce7","text":"снуд","category":"clothing","difficulty":"hard"},{"id":"w_335f2ec68a","text":"ситро","category":"drinks","difficulty":"hard"},{"id":"w_dcd53c8de1","text":"лимонад буратіно","category":"drinks","difficulty":"hard"},{"id":"w_69b66008ac","text":"живчик","category":"drinks","difficulty":"hard"},{"id":"w_df68856cbf","text":"бюветна вода","category":"drinks","difficulty":"hard"},{"id":"w_00cea72c2e","text":"вишнівка","category":"drinks","difficulty":"hard"},{"id":"w_8889e01e33","text":"слив'янка","category":"drinks","difficulty":"hard"},{"id":"w_772fd9b777","text":"хріновуха","category":"drinks","difficulty":"hard"},{"id":"w_9070505d96","text":"перцівка","category":"drinks","difficulty":"hard"},{"id":"w_2704a671d8","text":"зубрівка","category":"drinks","difficulty":"hard"},{"id":"w_3ae153dbf9","text":"горіхівка","category":"drinks","difficulty":"hard"},{"id":"w_d524b447f0","text":"медівка","category":"drinks","difficulty":"hard"},{"id":"w_63b1e3f63b","text":"калинівка","category":"drinks","difficulty":"hard"},{"id":"w_f6ac748496","text":"квас хлібний","category":"drinks","difficulty":"hard"},{"id":"w_e127c06ef7","text":"буряковий квас","category":"drinks","difficulty":"hard"},{"id":"w_8c67a2e542","text":"медовий квас","category":"drinks","difficulty":"hard"},{"id":"w_54a107dd96","text":"текіла бум","category":"drinks","difficulty":"hard"},{"id":"w_c7282859d0","text":"домашнє вино","category":"drinks","difficulty":"hard"},{"id":"w_1bbe95eaea","text":"радянське шампанське","category":"drinks","difficulty":"hard"},{"id":"w_a2fa83f65c","text":"рожеве шампанське","category":"drinks","difficulty":"hard"},{"id":"w_7c7e7b59d8","text":"дитяче шампанське","category":"drinks","difficulty":"hard"},{"id":"w_286e752b85","text":"безалкогольне пиво","category":"drinks","difficulty":"hard"},{"id":"w_f8cb4de365","text":"бочкове пиво","category":"drinks","difficulty":"hard"},{"id":"w_cf3cc7e147","text":"кава 3 в 1","category":"drinks","difficulty":"hard"},{"id":"w_b266b19413","text":"кава зі згущенкою","category":"drinks","difficulty":"hard"},{"id":"w_c6d4cdf3e7","text":"кава по-східному","category":"drinks","difficulty":"hard"},{"id":"w_c04e260371","text":"гранатовий сік","category":"drinks","difficulty":"hard"},{"id":"w_f4129dba73","text":"гарбузовий сік","category":"drinks","difficulty":"hard"},{"id":"w_aca9ef96b2","text":"томатний сік з сіллю","category":"drinks","difficulty":"hard"},{"id":"w_cc88d433af","text":"буряковий сік","category":"drinks","difficulty":"hard"},{"id":"w_21d65f040f","text":"топлене молоко","category":"drinks","difficulty":"hard"},{"id":"w_6e3f67f0a2","text":"какао із зефіром","category":"drinks","difficulty":"hard"},{"id":"w_1d438066cb","text":"арахнофобія","category":"emotions","difficulty":"hard"},{"id":"w_c3961a178d","text":"дрижаки","category":"emotions","difficulty":"hard"},{"id":"w_350d49b157","text":"емоційна гойдалка","category":"emotions","difficulty":"hard"},{"id":"w_dcf181acbf","text":"жалоба","category":"emotions","difficulty":"hard"},{"id":"w_7ef457bc24","text":"заціпеніння","category":"emotions","difficulty":"hard"},{"id":"w_6b5686000e","text":"зловтіха","category":"emotions","difficulty":"hard"},{"id":"w_b1810b5d5b","text":"клаустрофобія","category":"emotions","difficulty":"hard"},{"id":"w_9b8a4dc001","text":"комок у горлі","category":"emotions","difficulty":"hard"},{"id":"w_f734d5faee","text":"манія переслідування","category":"emotions","difficulty":"hard"},{"id":"w_1f77535b18","text":"недовіра","category":"emotions","difficulty":"hard"},{"id":"w_66e1244427","text":"нетерплячка","category":"emotions","difficulty":"hard"},{"id":"w_b07b0eae20","text":"нічні жахи","category":"emotions","difficulty":"hard"},{"id":"w_1bf16d08f2","text":"обожнювання","category":"emotions","difficulty":"hard"},{"id":"w_67bdd06434","text":"панічна атака","category":"emotions","difficulty":"hard"},{"id":"w_6b2452d9a1","text":"приголомшення","category":"emotions","difficulty":"hard"},{"id":"w_0da874ce5f","text":"самовдоволення","category":"emotions","difficulty":"hard"},{"id":"w_ff3f1e809e","text":"соціофобія","category":"emotions","difficulty":"hard"},{"id":"w_f146bfc2ce","text":"батько-одинак","category":"family","difficulty":"hard"},{"id":"w_73a08dbdbd","text":"багатодітна мати","category":"family","difficulty":"hard"},{"id":"w_ccaa4a8f9d","text":"єдиначка","category":"family","difficulty":"hard"},{"id":"w_adb9c20f96","text":"зведена сім'я","category":"family","difficulty":"hard"},{"id":"w_21d159f2e7","text":"круглий сирота","category":"family","difficulty":"hard"},{"id":"w_30e16c70b6","text":"мати-одиначка","category":"family","difficulty":"hard"},{"id":"w_1ad54d1dcc","text":"напівсирота","category":"family","difficulty":"hard"},{"id":"w_7b49334d26","text":"падчерка","category":"family","difficulty":"hard"},{"id":"w_e650e61a35","text":"прийомна донька","category":"family","difficulty":"hard"},{"id":"w_123a8d0278","text":"прийомна сім'я","category":"family","difficulty":"hard"},{"id":"w_27fb974344","text":"прийомний син","category":"family","difficulty":"hard"},{"id":"w_e5f63829c2","text":"прийомні батьки","category":"family","difficulty":"hard"},{"id":"w_95eadb511b","text":"п'ятірня","category":"family","difficulty":"hard"},{"id":"w_5f6ccae89a","text":"спадкоємиця","category":"family","difficulty":"hard"},{"id":"w_9830201973","text":"сіамські близнюки","category":"family","difficulty":"hard"},{"id":"w_65ea575320","text":"удочеріння","category":"family","difficulty":"hard"},{"id":"w_879ba84cec","text":"хрещені батьки","category":"family","difficulty":"hard"},{"id":"w_43fcb02925","text":"четверня","category":"family","difficulty":"hard"},{"id":"w_92c5f150ca","text":"вергуни","category":"food","difficulty":"hard"},{"id":"w_57338b767b","text":"кольрабі","category":"food","difficulty":"hard"},{"id":"w_a01357c8ff","text":"маківник","category":"food","difficulty":"hard"},{"id":"w_c1cf1095b5","text":"манти","category":"food","difficulty":"hard"},{"id":"w_4e46b4e1ac","text":"медяник","category":"food","difficulty":"hard"},{"id":"w_b1586437dc","text":"налисники","category":"food","difficulty":"hard"},{"id":"w_cf4aa4a0c2","text":"патисон","category":"food","difficulty":"hard"},{"id":"w_5ffdd27c70","text":"ревень","category":"food","difficulty":"hard"},{"id":"w_3de6c6ca5c","text":"розсольник","category":"food","difficulty":"hard"},{"id":"w_0c8ecd4221","text":"Берлінський мур","category":"history","difficulty":"hard"},{"id":"w_a2c4df8841","text":"Богдан Хмельницький","category":"history","difficulty":"hard"},{"id":"w_238b2cbf3b","text":"Вавилонська вежа","category":"history","difficulty":"hard"},{"id":"w_012d3787a0","text":"Ганнібал","category":"history","difficulty":"hard"},{"id":"w_0e058ca0cb","text":"гільйотина","category":"history","difficulty":"hard"},{"id":"w_54e8a5d178","text":"єгипетські піраміди","category":"history","difficulty":"hard"},{"id":"w_cd2e7bfa1f","text":"катапульта","category":"history","difficulty":"hard"},{"id":"w_f71b17d502","text":"Києво-Печерська лавра","category":"history","difficulty":"hard"},{"id":"w_5994516a8c","text":"Китайський мур","category":"history","difficulty":"hard"},{"id":"w_4e35d08bb3","text":"Клеопатра","category":"history","difficulty":"hard"},{"id":"w_b67a5c755e","text":"княгиня Ольга","category":"history","difficulty":"hard"},{"id":"w_0ad6ff63b0","text":"Колумб","category":"history","difficulty":"hard"},{"id":"w_609c333ccc","text":"кріпак","category":"history","difficulty":"hard"},{"id":"w_2f81a65d43","text":"Наполеон","category":"history","difficulty":"hard"},{"id":"w_5bc2f6dc14","text":"Парфенон","category":"history","difficulty":"hard"},{"id":"w_5cb2ecfa09","text":"Помпеї","category":"history","difficulty":"hard"},{"id":"w_7c3ed4075e","text":"трипільський горщик","category":"history","difficulty":"hard"},{"id":"w_d3e972c032","text":"Тутанхамон","category":"history","difficulty":"hard"},{"id":"w_ee8d3c06a6","text":"хрестоносець","category":"history","difficulty":"hard"},{"id":"w_1745b6792c","text":"Цезар","category":"history","difficulty":"hard"},{"id":"w_bd0936d2eb","text":"Чингісхан","category":"history","difficulty":"hard"},{"id":"w_04c7538c28","text":"рушникосушарка","category":"home","difficulty":"hard"},{"id":"w_d0d7b63681","text":"прихватка","category":"home","difficulty":"hard"},{"id":"w_e1c519d46e","text":"підставка під гаряче","category":"home","difficulty":"hard"},{"id":"w_c93809b5e8","text":"сушарка для посуду","category":"home","difficulty":"hard"},{"id":"w_8371f4d747","text":"настінне бра","category":"home","difficulty":"hard"},{"id":"w_5866ada4e7","text":"трійник","category":"home","difficulty":"hard"},{"id":"w_3e0562341b","text":"вакууматор","category":"home","difficulty":"hard"},{"id":"w_6a5d2c2e08","text":"вафельниця","category":"home","difficulty":"hard"},{"id":"w_e7ab3060fa","text":"соковитискач","category":"home","difficulty":"hard"},{"id":"w_3cda9323b4","text":"м'ясорубка","category":"home","difficulty":"hard"},{"id":"w_104f507b83","text":"часникодавка","category":"home","difficulty":"hard"},{"id":"w_fa2f8c3628","text":"яйцерізка","category":"home","difficulty":"hard"},{"id":"w_c8015ee8d4","text":"форма для льоду","category":"home","difficulty":"hard"},{"id":"w_0c78b483d5","text":"фритюрниця","category":"home","difficulty":"hard"},{"id":"w_d4165e4851","text":"хлібопічка","category":"home","difficulty":"hard"},{"id":"w_86ceee1e53","text":"аерогриль","category":"home","difficulty":"hard"},{"id":"w_f2a83b24bc","text":"кавомашина","category":"home","difficulty":"hard"},{"id":"w_27ee4146e7","text":"вантуз","category":"home","difficulty":"hard"},{"id":"w_1ceca33edc","text":"йоржик","category":"home","difficulty":"hard"},{"id":"w_e25cbf6c61","text":"гігієнічний душ","category":"home","difficulty":"hard"},{"id":"w_800bc0e2fe","text":"шторка для ванни","category":"home","difficulty":"hard"},{"id":"w_b1f69f8031","text":"дверне вічко","category":"home","difficulty":"hard"},{"id":"w_3838d8b079","text":"ламінат","category":"home","difficulty":"hard"},{"id":"w_a3d5072625","text":"відпарювач","category":"home","difficulty":"hard"},{"id":"w_5ab9d964b5","text":"робот-пилосос","category":"home","difficulty":"hard"},{"id":"w_fc7b01b91d","text":"розкладачка","category":"home","difficulty":"hard"},{"id":"w_5396112e8f","text":"крісло-мішок","category":"home","difficulty":"hard"},{"id":"w_c58527c260","text":"газова колонка","category":"home","difficulty":"hard"},{"id":"w_177d954e3a","text":"акцизна марка","category":"society","difficulty":"hard"},{"id":"w_abcb783aa2","text":"виборча кабінка","category":"society","difficulty":"hard"},{"id":"w_718f01cbaa","text":"виборча урна","category":"society","difficulty":"hard"},{"id":"w_00ae26ec6d","text":"військовий квиток","category":"society","difficulty":"hard"},{"id":"w_6ea8cca6dc","text":"гербова печатка","category":"society","difficulty":"hard"},{"id":"w_301ad8c92e","text":"домашній арешт","category":"society","difficulty":"hard"},{"id":"w_35524bd135","text":"електронний браслет","category":"society","difficulty":"hard"},{"id":"w_5f7b62f40e","text":"заповіт","category":"society","difficulty":"hard"},{"id":"w_f5e38e3992","text":"кайданки","category":"society","difficulty":"hard"},{"id":"w_955b6e0cbe","text":"кнопкодав","category":"society","difficulty":"hard"},{"id":"w_58b0df42ed","text":"лава підсудних","category":"society","difficulty":"hard"},{"id":"w_4c47f14618","text":"мантія судді","category":"society","difficulty":"hard"},{"id":"w_9211ccecd2","text":"перепустка","category":"society","difficulty":"hard"},{"id":"w_e87e15f0a1","text":"пікетувальник","category":"society","difficulty":"hard"},{"id":"w_3fe1a971c9","text":"судовий молоток","category":"society","difficulty":"hard"},{"id":"w_6f656e0bda","text":"транспарант","category":"society","difficulty":"hard"}]}</script>
+  <script>
+(function () {
+  const payload = JSON.parse(document.getElementById('payload').textContent);
+  const STORAGE_KEY = 'kapelyuh-spotcheck-' + payload.batch;
+  const cards = payload.cards;
+  const state = { index: 0, items: loadItems(), undo: [] };
+
+  function loadItems() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      return JSON.parse(raw).byId || {};
+    } catch { return {}; }
+  }
+  function persist() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ byId: state.items, exportedAt: new Date().toISOString() }));
+  }
+  function counts() {
+    let accept = 0, reject = 0, unresolved = 0;
+    for (const card of cards) {
+      const item = state.items[card.id];
+      if (!item) unresolved += 1;
+      else if (item.action === 'accept') accept += 1;
+      else if (item.action === 'reject') reject += 1;
+    }
+    return { accept, reject, unresolved };
+  }
+  function decide(card, item) {
+    state.undo.push({ id: card.id, prev: state.items[card.id] ? { ...state.items[card.id] } : null });
+    state.items[card.id] = item;
+    persist();
+    if (state.index < cards.length - 1) state.index += 1;
+    render();
+  }
+  function render() {
+    const c = counts();
+    document.getElementById('progress').innerHTML =
+      '<span class="pill">' + (cards.length ? state.index + 1 : 0) + ' / ' + cards.length + '</span>' +
+      '<span class="pill">accept ' + c.accept + '</span>' +
+      '<span class="pill">reject ' + c.reject + '</span>' +
+      '<span class="pill">open ' + c.unresolved + '</span>' +
+      '<span class="pill">' + payload.batch + '</span>';
+    const main = document.getElementById('main');
+    const card = cards[state.index];
+    if (!card) {
+      main.innerHTML = '<p class="sub">Немає карток у вибірці.</p>';
+    } else {
+      const item = state.items[card.id];
+      main.innerHTML = '<article class="card' + (item ? ' resolved' : '') + '">' +
+        '<div class="kind">Spot-check</div>' +
+        '<p class="word"></p>' +
+        '<p class="meta">' + card.category + ' · ' + card.difficulty + ' · ' + card.id + '</p>' +
+        '<div class="actions">' +
+          '<button class="btn primary" data-act="accept">Accept <span class="kbd">A</span></button>' +
+          '<button class="btn danger" data-act="reject">Reject <span class="kbd">R</span></button>' +
+        '</div></article>';
+      main.querySelector('.word').textContent = card.text;
+      main.querySelectorAll('[data-act]').forEach((btn) => {
+        btn.addEventListener('click', () => decide(card, { id: card.id, action: btn.getAttribute('data-act') }));
+      });
+    }
+    document.getElementById('prev').disabled = state.index <= 0;
+    document.getElementById('next').disabled = !cards.length || state.index >= cards.length - 1;
+    document.getElementById('footer-status').textContent = c.unresolved
+      ? ('Залишилось ' + c.unresolved)
+      : 'Вибірку закрито — завантаж JSON';
+  }
+  document.getElementById('prev').addEventListener('click', () => { if (state.index > 0) { state.index -= 1; render(); } });
+  document.getElementById('next').addEventListener('click', () => {
+    if (state.index < cards.length - 1) { state.index += 1; render(); }
+  });
+  document.getElementById('undo').addEventListener('click', () => {
+    const entry = state.undo.pop();
+    if (!entry) return;
+    if (entry.prev) state.items[entry.id] = entry.prev;
+    else delete state.items[entry.id];
+    persist();
+    render();
+  });
+  document.getElementById('download').addEventListener('click', () => {
+    const items = Object.values(state.items).sort((a, b) => a.id.localeCompare(b.id));
+    const blob = new Blob([JSON.stringify({ batch: payload.batch, items, exportedAt: new Date().toISOString() }, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'spotcheck-decisions.json';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA')) return;
+    const card = cards[state.index];
+    if (!card) return;
+    const key = e.key.toLowerCase();
+    if (key === 'a') { e.preventDefault(); decide(card, { id: card.id, action: 'accept' }); return; }
+    if (key === 'r') { e.preventDefault(); decide(card, { id: card.id, action: 'reject' }); return; }
+    if (key === 'arrowleft' && state.index > 0) { e.preventDefault(); state.index -= 1; render(); }
+    if (key === 'arrowright' && state.index < cards.length - 1) { e.preventDefault(); state.index += 1; render(); }
+  });
+  render();
+})();
+  </script>
+</body>
+</html>

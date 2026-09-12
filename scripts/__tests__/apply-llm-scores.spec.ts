@@ -46,7 +46,7 @@ describe('applyLlmScores', () => {
   });
 
   it('opts abstract-ish LLM passers in via override when the heuristic cannot pass', () => {
-    const proud = word({ text: 'пихатий', category: 'personality' });
+    const proud = word({ text: 'хронопихатий', category: 'personality' });
     const batch: WordBatch = { name: 'hard-01', tier: 'hard', ids: [proud.id] };
     const scores: LlmScore[] = [{ id: proud.id, alias: 7, crocodile: 7, association: 7 }];
     const result = applyLlmScores([proud], batch, scores);
