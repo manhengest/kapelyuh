@@ -4,7 +4,7 @@ import { playTap } from '@infrastructure/audio/sounds';
 import { Text } from '@ui/components/Text';
 
 type HorizontalPickerProps<T extends string | number> = {
-  label: string;
+  label?: string;
   options: T[];
   value: T;
   onChange: (value: T) => void;
@@ -20,7 +20,7 @@ export function HorizontalPicker<T extends string | number>({
 }: HorizontalPickerProps<T>) {
   return (
     <View className="w-full">
-      <Text className="picker-title">{label}</Text>
+      {label ? <Text className="picker-title">{label}</Text> : null}
       <View className="w-full flex-row gap-2">
         {options.map((option) => {
           const selected = option === value;

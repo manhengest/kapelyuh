@@ -24,6 +24,9 @@ import { normalizeTextKey, stableWordId } from './words-id';
 const CORE_WARN_BELOW = 5000;
 const HARD_WARN_BELOW = 500;
 const ELITE_WARN_BELOW = 500;
+export const CATEGORY_FLOOR = 40;
+export const CATEGORY_CAP = 240;
+const TIER_REPORT_DIFFICULTIES: Difficulty[] = ['hard', 'elite'];
 
 export interface ValidateWordsOptions {
   playability?: boolean;
@@ -59,6 +62,9 @@ function isFunctionToken(token: string): boolean {
 }
 
 function eliteTokenAllowed(token: string): boolean {
+  if (/^\d+$/.test(token)) {
+    return true;
+  }
   return letterCount(token) >= 3 || isFunctionToken(token);
 }
 
@@ -85,12 +91,12 @@ export function eliteShapeError(word: CsvWord): string | null {
     return null;
   }
 
-  if (tokens.length < 2 || tokens.length > 4) {
-    return `elite shape (need 2–4 tokens or a 10+ letter word): ${word.text}`;
+  if (tokens.length < 2 || tokens.length > 5) {
+    return `elite shape (need 2–5 tokens or a 10+ letter word): ${word.text}`;
   }
 
-  if (tokens.length === 4 && !tokens.some(isFunctionToken)) {
-    return `elite shape (4 tokens need a function word): ${word.text}`;
+  if (tokens.length === 5 && !tokens.some(isFunctionToken)) {
+    return `elite shape (5 tokens need a function word): ${word.text}`;
   }
 
   const short = tokens.find((token) => !eliteTokenAllowed(token));
@@ -217,7 +223,32 @@ export function validateWords(
     warnings.push(`elite core ${coreByDifficulty.elite ?? 0} < ${ELITE_WARN_BELOW}`);
   }
 
+  warnings.push(...categoryTierWarnings(words));
+
   return { errors, warnings };
+}
+
+export function categoryTierWarnings(words: CsvWord[]): string[] {
+  const warnings: string[] = [];
+  const core = words.filter((word) => word.status === 'core');
+
+  for (const difficulty of TIER_REPORT_DIFFICULTIES) {
+    const rows = core.filter((word) => word.difficulty === difficulty);
+    const byCategory = countBy(rows, (word) => word.category);
+    for (const category of CANONICAL_CATEGORIES) {
+      const count = byCategory[category] ?? 0;
+      if (count < CATEGORY_FLOOR) {
+        warnings.push(
+          `${difficulty} core category "${category}" ${count} < floor ${CATEGORY_FLOOR}`,
+        );
+      }
+      if (count > CATEGORY_CAP) {
+        warnings.push(`${difficulty} core category "${category}" ${count} > cap ${CATEGORY_CAP}`);
+      }
+    }
+  }
+
+  return warnings;
 }
 
 function printValidationReport(words: CsvWord[], errors: string[], warnings: string[]): void {
@@ -255,6 +286,7 @@ function printValidationReport(words: CsvWord[], errors: string[], warnings: str
   ).join('\n');
   console.log(categoryLines);
   console.log('');
+  printTierCategoryReport(core);
   console.log(`ERRORS (${errors.length}):`);
   if (errors.length === 0) {
     console.log('  [none]');
@@ -271,6 +303,20 @@ function printValidationReport(words: CsvWord[], errors: string[], warnings: str
     for (const warning of warnings) {
       console.log(`  ${warning}`);
     }
+  }
+}
+
+function printTierCategoryReport(core: CsvWord[]): void {
+  for (const difficulty of TIER_REPORT_DIFFICULTIES) {
+    const rows = core.filter((word) => word.difficulty === difficulty);
+    const byCategory = countBy(rows, (word) => word.category);
+    console.log(`${difficulty} core by category (floor ${CATEGORY_FLOOR} / cap ${CATEGORY_CAP}):`);
+    for (const category of CANONICAL_CATEGORIES) {
+      const count = byCategory[category] ?? 0;
+      const flag = count < CATEGORY_FLOOR ? '  BELOW' : count > CATEGORY_CAP ? '  OVER' : '';
+      console.log(`  ${pad(category + ':', 16)}${String(count).padStart(4)}${flag}`);
+    }
+    console.log('');
   }
 }
 

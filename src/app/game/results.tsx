@@ -11,9 +11,9 @@ import Animated, {
 
 import { strings } from '@content/strings';
 import { SaveWordsModal } from '@features/game/components/Modals';
+import { customHatWordTexts } from '@features/game/customHatWords';
 import { useGameActions, useGameSelectors, useGameState } from '@features/game/hooks';
 import { playEnd } from '@infrastructure/audio/sounds';
-import { getCustomWords } from '@infrastructure/storage/customWords';
 import { useReducedMotion } from '@shared/hooks/useReducedMotion';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenShell } from '@ui/components/ScreenShell';
@@ -68,15 +68,7 @@ export default function ResultsScreen() {
   const endSoundPlayed = useRef(false);
   const [saveModalVisible, setSaveModalVisible] = useState(false);
 
-  const customHatTexts = useMemo(() => {
-    if (gameState.settings.wordSource !== 'custom') {
-      return [];
-    }
-    const custom = getCustomWords();
-    return (gameState.rounds[0]?.sessionWordIds ?? [])
-      .map((id) => custom[id])
-      .filter((text): text is string => Boolean(text));
-  }, [gameState.rounds, gameState.settings.wordSource]);
+  const customHatTexts = useMemo(() => customHatWordTexts(gameState), [gameState]);
 
   useEffect(() => {
     if (status === 'end_of_match' && !endSoundPlayed.current) {
@@ -229,13 +221,11 @@ export default function ResultsScreen() {
       />
       {saveModalVisible ? (
         <SaveWordsModal
-          texts={customHatTexts}
-          onDecline={() => {
+          onAccept={() => {
             setSaveModalVisible(false);
-            abandonMatch();
-            router.replace('/');
+            router.push('/game/save-words');
           }}
-          onComplete={() => {
+          onDecline={() => {
             setSaveModalVisible(false);
             abandonMatch();
             router.replace('/');

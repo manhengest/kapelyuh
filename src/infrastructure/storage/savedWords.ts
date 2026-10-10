@@ -19,12 +19,29 @@ export type SaveWordsResult = {
   skipped: number;
 };
 
+export type HatWordClassification =
+  | { state: 'new' }
+  | { state: 'saved'; difficulty: Difficulty }
+  | { state: 'bundled' };
+
 function readWords(): SavedWordsMap {
   return getJson<SavedWordsMap>(SAVED_WORDS_KEY) ?? {};
 }
 
 function writeWords(words: SavedWordsMap): void {
   setJson(SAVED_WORDS_KEY, words);
+}
+
+function dedupeKeySet(texts: readonly string[]): Set<string> {
+  return new Set(texts.map((text) => customWordDedupeKey(text)));
+}
+
+function savedWordsByKey(
+  words: SavedWordsMap,
+): Map<string, { id: string; record: SavedWordRecord }> {
+  return new Map(
+    Object.entries(words).map(([id, record]) => [customWordDedupeKey(record.text), { id, record }]),
+  );
 }
 
 /** FNV-1a 32-bit of the Ukrainian dedupe key. */
@@ -54,37 +71,104 @@ export function isSavedWordId(wordId: string | null | undefined): boolean {
   return typeof wordId === 'string' && wordId.startsWith(SAVED_WORD_ID_PREFIX);
 }
 
+export function classifyHatWord(
+  text: string,
+  bundledTexts: readonly string[],
+): HatWordClassification {
+  const key = customWordDedupeKey(text);
+  if (key.length === 0) {
+    return { state: 'new' };
+  }
+
+  if (dedupeKeySet(bundledTexts).has(key)) {
+    return { state: 'bundled' };
+  }
+
+  const saved = savedWordsByKey(readWords()).get(key);
+  if (saved) {
+    return { state: 'saved', difficulty: saved.record.difficulty };
+  }
+
+  return { state: 'new' };
+}
+
 export function saveWords(
-  texts: readonly string[],
-  difficulty: Difficulty,
+  entries: readonly SavedWordRecord[],
   bundledTexts: readonly string[],
 ): SaveWordsResult {
   const words = readWords();
-  const bundledKeys = new Set(bundledTexts.map((text) => customWordDedupeKey(text)));
-  const existingKeys = new Set(Object.values(words).map((word) => customWordDedupeKey(word.text)));
+  const bundledKeys = dedupeKeySet(bundledTexts);
+  const existing = savedWordsByKey(words);
 
   let saved = 0;
   let skipped = 0;
 
-  for (const raw of texts) {
-    const normalized = normalizeCustomWord(raw);
+  for (const entry of entries) {
+    const normalized = normalizeCustomWord(entry.text);
     if (normalized.length === 0) {
       continue;
     }
 
     const key = customWordDedupeKey(normalized);
-    if (bundledKeys.has(key) || existingKeys.has(key)) {
+    if (bundledKeys.has(key) || existing.has(key)) {
       skipped += 1;
       continue;
     }
 
-    words[savedWordId(normalized)] = { text: normalized, difficulty };
-    existingKeys.add(key);
+    const id = savedWordId(normalized);
+    const record = { text: normalized, difficulty: entry.difficulty };
+    words[id] = record;
+    existing.set(key, { id, record });
     saved += 1;
   }
 
   writeWords(words);
   return { saved, skipped };
+}
+
+export type UpdateSavedWordResult = 'updated' | 'empty' | 'duplicate' | 'missing';
+
+export function updateSavedWord(
+  id: string,
+  text: string,
+  difficulty: Difficulty,
+  bundledTexts: readonly string[],
+): UpdateSavedWordResult {
+  const words = readWords();
+  const current = words[id];
+  if (!current) {
+    return 'missing';
+  }
+
+  const normalized = normalizeCustomWord(text);
+  if (normalized.length === 0) {
+    return 'empty';
+  }
+
+  const nextKey = customWordDedupeKey(normalized);
+  if (dedupeKeySet(bundledTexts).has(nextKey)) {
+    return 'duplicate';
+  }
+
+  const currentKey = customWordDedupeKey(current.text);
+  if (nextKey !== currentKey) {
+    const taken = savedWordsByKey(words).get(nextKey);
+    if (taken && taken.id !== id) {
+      return 'duplicate';
+    }
+    delete words[id];
+    words[savedWordId(normalized)] = { text: normalized, difficulty };
+    writeWords(words);
+    return 'updated';
+  }
+
+  if (current.text === normalized && current.difficulty === difficulty) {
+    return 'updated';
+  }
+
+  words[id] = { text: normalized, difficulty };
+  writeWords(words);
+  return 'updated';
 }
 
 export function deleteSavedWord(id: string): void {

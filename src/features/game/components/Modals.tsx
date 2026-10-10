@@ -1,10 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Animated, Modal, Pressable, View } from 'react-native';
 
-import { difficultyLabels, strings } from '@content/strings';
-import type { Difficulty } from '@domain/game/types';
-import { getWordTextMap } from '@infrastructure/db/words.repo';
-import { saveWords } from '@infrastructure/storage/savedWords';
+import { strings } from '@content/strings';
 import { Button } from '@ui/components/Button';
 import { Text } from '@ui/components/Text';
 
@@ -146,93 +143,32 @@ export function ConfirmExitModal({ visible, onConfirm, onCancel }: ConfirmExitMo
   );
 }
 
-const SAVE_WORDS_DIFFICULTIES = ['easy', 'medium', 'hard', 'elite'] as const;
-
 type SaveWordsModalProps = {
-  texts: readonly string[];
+  onAccept: () => void;
   onDecline: () => void;
-  onComplete: () => void;
 };
 
-type SaveWordsStep = 'prompt' | 'difficulty' | 'result';
-
-export function SaveWordsModal({ texts, onDecline, onComplete }: SaveWordsModalProps) {
-  const [step, setStep] = useState<SaveWordsStep>('prompt');
-  const [saved, setSaved] = useState(0);
-  const [skipped, setSkipped] = useState(0);
-  const savingRef = useRef(false);
-
-  const onPickDifficulty = (difficulty: Difficulty) => {
-    if (savingRef.current) {
-      return;
-    }
-    savingRef.current = true;
-    void (async () => {
-      const bundled = await getWordTextMap();
-      const result = saveWords(texts, difficulty, Object.values(bundled));
-      setSaved(result.saved);
-      setSkipped(result.skipped);
-      setStep('result');
-      savingRef.current = false;
-    })();
-  };
-
+export function SaveWordsModal({ onAccept, onDecline }: SaveWordsModalProps) {
   return (
     <Modal visible transparent animationType="fade">
       <View className="flex-1 justify-end bg-black/50">
         <View className="rounded-t-3xl bg-white px-6 pb-10 pt-6">
-          {step === 'prompt' ? (
-            <>
-              <Text className="mb-6 text-center text-2xl font-bold text-black">
-                {strings.results.saveWords.promptTitle}
-              </Text>
-              <View className="gap-3">
-                <Button
-                  textClassName="text-xl"
-                  label={strings.results.saveWords.yes}
-                  onPress={() => setStep('difficulty')}
-                />
-                <Button
-                  textClassName="text-xl"
-                  label={strings.results.saveWords.no}
-                  variant="outline"
-                  onPress={onDecline}
-                />
-              </View>
-            </>
-          ) : null}
-          {step === 'difficulty' ? (
-            <>
-              <Text className="mb-4 text-center text-2xl font-bold text-black">
-                {strings.results.saveWords.difficultyTitle}
-              </Text>
-              <View className="gap-2">
-                {SAVE_WORDS_DIFFICULTIES.map((id) => (
-                  <Button
-                    key={id}
-                    textClassName="text-xl"
-                    label={difficultyLabels[id]}
-                    onPress={() => onPickDifficulty(id)}
-                  />
-                ))}
-              </View>
-            </>
-          ) : null}
-          {step === 'result' ? (
-            <>
-              <Text className="mb-2 text-center text-2xl font-bold text-black">
-                {strings.results.saveWords.result(saved, texts.length)}
-              </Text>
-              {skipped > 0 ? (
-                <Text className="mb-6 text-center text-base text-slate-600">
-                  {strings.results.saveWords.duplicatesRemoved}
-                </Text>
-              ) : (
-                <View className="mb-6" />
-              )}
-              <Button textClassName="text-xl" label={strings.common.done} onPress={onComplete} />
-            </>
-          ) : null}
+          <Text className="mb-6 text-center text-2xl font-bold text-black">
+            {strings.results.saveWords.promptTitle}
+          </Text>
+          <View className="gap-3">
+            <Button
+              textClassName="text-xl"
+              label={strings.results.saveWords.yes}
+              onPress={onAccept}
+            />
+            <Button
+              textClassName="text-xl"
+              label={strings.results.saveWords.no}
+              variant="outline"
+              onPress={onDecline}
+            />
+          </View>
         </View>
       </View>
     </Modal>

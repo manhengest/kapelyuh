@@ -27,7 +27,7 @@ Offline Ukrainian party game (React Native + Expo). Read this before planning or
 - **Offline-first, single device** — no accounts, backend, or network for gameplay.
 - **Ukrainian-only** — no i18n layer. User-facing strings live in `src/content/strings.ts` or as Ukrainian literals in components. Use `Intl` with `'uk-UA'` for dates/numbers.
 - **Pure domain engine** — game logic in `src/domain/` is React-free and side-effect-free.
-- **Reliability over flash** — timer accuracy, autosave, and session resume beat animations.
+- **Reliability over flash** — timer accuracy, autosave, and session resume beat animations. A guess or skip tapped before 0:00 holds expiry until that tap is recorded (`useTimer` `holdExpiry`), and the event is stamped with the tap time.
 - **No ads, no IAP in V1.0** — Pro is deferred to V1.1.
 
 ## Architecture
@@ -76,11 +76,7 @@ nvm use
 | `npm run words:validate` / `validate:words` | CSV schema/dup/category validation; exit 1 on errors                                        |
 | `npm run words:playability`                 | Alias/Крокодил/Асоціація heuristic report → `scripts/audit/playability-report.json`; exit 0 |
 | `npm run words:validate -- --playability`   | Schema + playability gate (min 6/10 per round); exit 1 on failures                          |
-| `npm run words:audit`                       | Read-only audit → `scripts/audit/*`                                                         |
-| `npm run words:conflicts-html`              | Rebuild `scripts/audit/word-conflict-picker.html` from master CSV + audit heuristics        |
-| `npm run words:apply-conflicts`             | Apply `scripts/audit/word-conflict-decisions.json` to master CSV (`status=reject`, `group`) |
-| `npm run words:elite-html`                  | Rebuild `scripts/audit/elite-review-picker.html` for elite/hard review                      |
-| `npm run words:apply-elite`                 | Apply `scripts/audit/elite-review-decisions.json` to master CSV                             |
+| `npm run words:audit`                       | Read-only audit → `scripts/audit/word-audit-report.json`                                    |
 | `npm run words:build` / `build:db`          | Regenerates `assets/data/kapelyukh.db` from master CSV                                      |
 
 CI (`.github/workflows/ci.yml`) runs `validate:words`, `build:db`, typecheck, lint, format, and test on every PR. Run `typecheck` + `lint` + `test` before finishing non-trivial work.
@@ -171,7 +167,7 @@ Import order is enforced: builtin → external → internal, alphabetized, blank
 | `design/`                        | Approved screen reference PNGs                                                 |
 | `.cursor/plans/`                 | Ad-hoc feature plans (not a single roadmap)                                    |
 | `scripts/words-master.csv`       | Word list source for SQLite build (`id,text,difficulty,category,status,group`) |
-| `scripts/audit/`                 | Conflict + elite review decisions; picker HTML is regenerable                  |
+| `scripts/audit/`                 | Playability overrides and generated audit reports                              |
 | `docs/adr/`                      | Architecture decisions (elite as bundled difficulty)                           |
 | `scripts/words.csv`              | Legacy 3-column list, kept for git history                                     |
 | `docs/word-categories.md`        | Canonical 36 English category slugs                                            |
@@ -192,7 +188,7 @@ When docs and code disagree, **code is the source of truth** — update docs if 
 - **Expo Go won't work** — MMKV and Sentry need a Development Build (`eas build --profile development`).
 - **Don't put React in domain** — ESLint will reject it; extract pure functions instead.
 - **Don't add i18n** — permanently out of scope.
-- **Timer logic** — use absolute timestamps and `useAppStatePause`; never interval-only timers.
+- **Timer logic** — use absolute timestamps and `useAppStatePause`; never interval-only timers. A tap already in flight holds `TIMER_EXPIRED` until the action is stored with `now` set to the tap time.
 - **Word DB** — after editing `words-master.csv`, run `npm run words:validate` and `npm run words:build` and commit the regenerated `assets/data/kapelyukh.db`. App boot requires that asset (`SQLiteProvider` + `assetSource`). Word freshness lives in MMKV (`src/infrastructure/storage/wordUsage.ts`), never in the CSV/DB.
 - **Word curation** — before generating, rejecting, or regrouping words, read [`docs/word-curation-playbook.md`](docs/word-curation-playbook.md). It encodes the deletion / difficulty / status / group rules distilled from the manual curation pass.
 - **Styles** — edit `global.css` for shared component classes and `tailwind.config.js` for tokens; use Tailwind utilities in TSX for one-off layout.

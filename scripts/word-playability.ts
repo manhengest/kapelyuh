@@ -1,5 +1,13 @@
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import type { CsvWord } from './words-csv';
 import { normalizeTextKey } from './words-id';
+
+export const LLM_OVERRIDES_PATH = join(
+  process.cwd(),
+  'scripts/audit/playability-llm-overrides.json',
+);
 
 export const PLAYABILITY_MIN = 6;
 export const PLAYABILITY_ELITE_CROCODILE_MIN = 4;
@@ -27,7 +35,18 @@ interface RoundScores {
   association: number;
 }
 
-interface PlayabilityOverride {
+export const ABSTRACTISH_CATEGORIES = new Set([
+  'abstract',
+  'emotions',
+  'personality',
+  'relationships',
+  'behavior',
+  'science',
+  'society',
+  'history',
+]);
+
+export interface PlayabilityOverride {
   alias?: number;
   crocodile?: number;
   association?: number;
@@ -75,17 +94,6 @@ const CATEGORY_BASE: Record<string, RoundScores> = {
 };
 
 const DEFAULT_BASE: RoundScores = { alias: 7, crocodile: 6, association: 7 };
-
-const ABSTRACTISH_CATEGORIES = new Set([
-  'abstract',
-  'emotions',
-  'personality',
-  'relationships',
-  'behavior',
-  'science',
-  'society',
-  'history',
-]);
 
 /**
  * Curator overrides from scripts/audit/playability-calibration.md.
@@ -202,12 +210,33 @@ function applyMorphology(word: CsvWord, scores: RoundScores, reasons: string[]):
   };
 }
 
+let cachedLlmOverrides: Record<string, PlayabilityOverride> | undefined;
+
+export function resetLlmOverrideCache(): void {
+  cachedLlmOverrides = undefined;
+}
+
+export function loadLlmOverrides(): Record<string, PlayabilityOverride> {
+  if (cachedLlmOverrides) {
+    return cachedLlmOverrides;
+  }
+  if (!existsSync(LLM_OVERRIDES_PATH)) {
+    cachedLlmOverrides = {};
+    return cachedLlmOverrides;
+  }
+  cachedLlmOverrides = JSON.parse(readFileSync(LLM_OVERRIDES_PATH, 'utf8')) as Record<
+    string,
+    PlayabilityOverride
+  >;
+  return cachedLlmOverrides;
+}
+
 function applyOverride(
   key: string,
   scores: RoundScores,
   reasons: string[],
 ): { scores: RoundScores; passOverride?: boolean } {
-  const override = OVERRIDES[key];
+  const override = OVERRIDES[key] ?? loadLlmOverrides()[key];
   if (!override) {
     return { scores };
   }

@@ -2,6 +2,8 @@ import { clearJson, getJson, setJson } from './mmkv';
 
 const CUSTOM_WORDS_KEY = 'kapelyukh.customWords.v1';
 
+export const MAX_CUSTOM_WORD_LENGTH = 50;
+
 export type CustomWordsMap = Record<string, string>;
 export type AddCustomWordResult = 'added' | 'duplicate' | 'empty';
 

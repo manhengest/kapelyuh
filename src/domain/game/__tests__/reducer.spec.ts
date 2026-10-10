@@ -53,6 +53,67 @@ describe('domain/game/reducer', () => {
     expect(selectReviewBanner(state)).toBe('time_up');
   });
 
+  it('records a guess tapped before expiry and makes the next word word-for-all', () => {
+    let state = startMatch(['w1', 'w2', 'w3']);
+    const guessedWordId = state.turn?.currentWordId;
+    const nextWordId = state.rounds[0]?.remainingWordIds[0];
+    const endsAt = state.turn?.endsAt;
+    if (!guessedWordId || !nextWordId || endsAt == null) {
+      throw new Error('expected a word in play and a word behind it');
+    }
+
+    const tappedAt = endsAt - 200;
+    state = guessCurrentWord(state, tappedAt);
+
+    expect(state.status).toBe('in_turn');
+    expect(state.turn?.currentWordId).toBe(nextWordId);
+    expect(getCurrentRoundScore(state, 't1')).toBe(1);
+    expect(state.turn?.events).toContainEqual({
+      kind: 'guessed',
+      wordId: guessedWordId,
+      at: tappedAt,
+    });
+
+    state = expireTimer(state, endsAt);
+    expect(state.status).toBe('awaiting_award');
+    expect(getCurrentRoundScore(state, 't1')).toBe(1);
+    expect(state.turn?.events).toContainEqual({
+      kind: 'expired',
+      at: endsAt,
+      pendingWordId: nextWordId,
+    });
+  });
+
+  it('records a skip tapped before expiry and makes the next word word-for-all', () => {
+    let state = startMatch(['w1', 'w2', 'w3']);
+    const skippedWordId = state.turn?.currentWordId;
+    const nextWordId = state.rounds[0]?.remainingWordIds[0];
+    const endsAt = state.turn?.endsAt;
+    if (!skippedWordId || !nextWordId || endsAt == null) {
+      throw new Error('expected a word in play and a word behind it');
+    }
+
+    const tappedAt = endsAt - 200;
+    state = skipCurrentWord(state, tappedAt);
+
+    expect(state.status).toBe('in_turn');
+    expect(state.turn?.currentWordId).toBe(nextWordId);
+    expect(state.rounds[0]?.remainingWordIds.at(-1)).toBe(skippedWordId);
+    expect(state.turn?.events).toContainEqual({
+      kind: 'skipped',
+      wordId: skippedWordId,
+      at: tappedAt,
+    });
+
+    state = expireTimer(state, endsAt);
+    expect(state.status).toBe('awaiting_award');
+    expect(state.turn?.events).toContainEqual({
+      kind: 'expired',
+      at: endsAt,
+      pendingWordId: nextWordId,
+    });
+  });
+
   it('skip-FIFO recycling returns skipped words to the queue tail', () => {
     let state = startMatch(['w1', 'w2', 'w3']);
     const firstWord = state.turn?.currentWordId;

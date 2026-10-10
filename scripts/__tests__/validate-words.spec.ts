@@ -66,21 +66,21 @@ describe('scripts/validate-words', () => {
     expect(errors.filter((error) => error.includes('elite'))).toEqual([]);
   });
 
-  it('rejects elite cards that are too short, too many tokens, or over 32 chars', () => {
+  it('rejects elite cards that are too short, too many tokens, or over 40 chars', () => {
     const tooShort = validateWords([word({ text: 'борщ', difficulty: 'elite' })]);
     expect(tooShort.errors.some((error) => error.includes('elite shape'))).toBe(true);
 
-    const fourContent = validateWords([
-      word({ text: 'один два три чотири', difficulty: 'elite', category: 'abstract' }),
+    const fiveContent = validateWords([
+      word({ text: 'один два три чотири пʼять', difficulty: 'elite', category: 'abstract' }),
     ]);
-    expect(fourContent.errors.some((error) => error.includes('function word'))).toBe(true);
+    expect(fiveContent.errors.some((error) => error.includes('function word'))).toBe(true);
 
-    const fiveTokens = validateWords([
-      word({ text: 'коли рак на горі свисне', difficulty: 'elite', category: 'abstract' }),
+    const sixTokens = validateWords([
+      word({ text: 'коли рак на горі свисне тоді', difficulty: 'elite', category: 'abstract' }),
     ]);
-    expect(fiveTokens.errors.some((error) => error.includes('elite shape'))).toBe(true);
+    expect(sixTokens.errors.some((error) => error.includes('elite shape'))).toBe(true);
 
-    const long = 'а'.repeat(33);
+    const long = 'а'.repeat(41);
     const tooLong = validateWords([word({ text: long, difficulty: 'elite' })]);
     expect(tooLong.errors.some((error) => error.includes('card too long'))).toBe(true);
   });
@@ -91,6 +91,28 @@ describe('scripts/validate-words', () => {
       word({ text: 'зубна щітка', difficulty: 'elite', category: 'home' }),
     ]);
     expect(warnings.some((warning) => errorIncludesSubset(warning))).toBe(true);
+  });
+
+  it('warns when a hard/elite core category is below the floor or over the cap', () => {
+    const { warnings } = validateWords([
+      word({ text: 'трактор', difficulty: 'hard', category: 'transport' }),
+    ]);
+    expect(
+      warnings.some((warning) => warning.includes('hard core category "transport" 1 < floor 40')),
+    ).toBe(true);
+    expect(
+      warnings.some((warning) => warning.includes('hard core category "cities" 0 < floor 40')),
+    ).toBe(true);
+
+    const overCap = Array.from({ length: 241 }, (_, index) =>
+      word({ text: `звір${index}`, difficulty: 'hard', category: 'animals' }),
+    );
+    const cap = validateWords(overCap);
+    expect(
+      cap.warnings.some((warning) =>
+        warning.includes('hard core category "animals" 241 > cap 240'),
+      ),
+    ).toBe(true);
   });
 });
 

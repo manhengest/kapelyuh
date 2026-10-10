@@ -48,7 +48,7 @@ export const VALID_DIFFICULTIES = new Set<Difficulty>(['easy', 'medium', 'hard',
 export const VALID_STATUSES = new Set<WordStatus>(['core', 'pack', 'review', 'reject']);
 
 export const MAX_CARD_LENGTH = 28;
-export const MAX_ELITE_CARD_LENGTH = 32;
+export const MAX_ELITE_CARD_LENGTH = 40;
 
 /** Closed list of Ukrainian function words allowed as short elite tokens. */
 export const ELITE_FUNCTION_WORDS = new Set([
@@ -60,12 +60,17 @@ export const ELITE_FUNCTION_WORDS = new Set([
   'в',
   'і',
   'й',
+  'ми',
   'та',
   'до',
+  'для',
   'від',
   'по',
   'за',
   'про',
+  'через',
+  'що',
+  'де',
   'як',
   'не',
   'ні',

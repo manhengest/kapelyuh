@@ -8,6 +8,10 @@ Offline Ukrainian party game: one device, 2–N teams, one shared hat of words p
 The remaining words still to be guessed in the current round.
 _Avoid_: deck, pile, queue, bag
 
+**Word for all**:
+The word on the card when the timer runs out; any team can claim it. A tap made before 0:00 always counts, even if its animation finishes later.
+_Avoid_: bonus word, last word
+
 **Word source**:
 How a match's session words are obtained: the bundled set or a custom hat.
 _Avoid_: pack (for this choice), mode, word set type
@@ -21,7 +25,7 @@ Session words typed by the players before the first round. They exist only for t
 _Avoid_: custom pack, user pack, private pack
 
 **Saved words**:
-Custom-hat words the players chose to keep after a match. They join the bundled set at a chosen difficulty and live on the device.
+Custom-hat words the players chose to keep after a match. Each saved word has its own difficulty. They join the bundled set and live on the device.
 _Avoid_: custom pack, user pack, private pack, player words
 
 **Session words**:
@@ -37,7 +41,7 @@ How hard the bundled hat is: easy, medium, hard, or elite.
 _Avoid_: pack, Pro, level pack
 
 **Elite**:
-The hardest bundled difficulty. The setup label is «Еліта». Cards are mostly recognizable Ukrainian phrases that fit elite shape.
+The hardest bundled difficulty. The setup label is «Еліта». Cards are phrase-shaped: idioms, set names, and specific multi-word descriptors whose difficulty comes from reproducing the exact wording. Hard cards are difficult because of knowledge (jargon, rare single words).
 _Avoid_: pack, Pro, expert, елітний. The bundled card «еліта» (`people`, medium) is unrelated.
 
 ### Recap
