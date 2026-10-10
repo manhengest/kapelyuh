@@ -62,6 +62,9 @@ function isFunctionToken(token: string): boolean {
 }
 
 function eliteTokenAllowed(token: string): boolean {
+  if (/^\d+$/.test(token)) {
+    return true;
+  }
   return letterCount(token) >= 3 || isFunctionToken(token);
 }
 
@@ -88,12 +91,12 @@ export function eliteShapeError(word: CsvWord): string | null {
     return null;
   }
 
-  if (tokens.length < 2 || tokens.length > 4) {
-    return `elite shape (need 2–4 tokens or a 10+ letter word): ${word.text}`;
+  if (tokens.length < 2 || tokens.length > 5) {
+    return `elite shape (need 2–5 tokens or a 10+ letter word): ${word.text}`;
   }
 
-  if (tokens.length === 4 && !tokens.some(isFunctionToken)) {
-    return `elite shape (4 tokens need a function word): ${word.text}`;
+  if (tokens.length === 5 && !tokens.some(isFunctionToken)) {
+    return `elite shape (5 tokens need a function word): ${word.text}`;
   }
 
   const short = tokens.find((token) => !eliteTokenAllowed(token));

@@ -2,6 +2,8 @@ export type RoundType = 'elias' | 'crocodile' | 'association';
 
 export type Difficulty = 'easy' | 'medium' | 'hard' | 'elite';
 
+export const DIFFICULTY_ORDER: Difficulty[] = ['easy', 'medium', 'hard', 'elite'];
+
 export type WordSource = 'bundled' | 'custom';
 
 export type GameStatus =

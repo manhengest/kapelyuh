@@ -2,6 +2,7 @@ import type { ReactElement } from 'react';
 import { Pressable, Switch, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
+import { playTap } from '@infrastructure/audio/sounds';
 import { Text } from '@ui/components/Text';
 
 const TRACK_OFF = '#D9D2CE';
@@ -36,7 +37,17 @@ export function SettingsToggleRow({
         accessibilityState={{ checked: value }}
         accessibilityLabel={label}
         accessibilityHint={description}
-        onPress={() => onValueChange(!value)}
+        onPress={() => {
+          const next = !value;
+          // Apply sound on before playTap so enabling sound still gives feedback.
+          if (glyph === 'sound' && next) {
+            onValueChange(next);
+            playTap();
+            return;
+          }
+          playTap();
+          onValueChange(next);
+        }}
         className="settings-row active:bg-pickerSurface/80"
       >
         {glyph ? (
@@ -100,7 +111,10 @@ export function SettingsNavRow({
         accessibilityRole="button"
         accessibilityLabel={label}
         accessibilityHint={description}
-        onPress={onPress}
+        onPress={() => {
+          playTap();
+          onPress();
+        }}
         className="settings-row active:bg-pickerSurface/80"
       >
         <View className="min-w-0 flex-1">

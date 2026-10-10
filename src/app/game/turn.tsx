@@ -35,19 +35,20 @@ export default function TurnScreen() {
   const roundIndex = useGameState().currentRoundIndex;
   const { currentTeam, currentRound } = useGameSelectors();
   const { dispatch, abandonMatch } = useGameActions();
-  const { remainingMs, pause, resume, pauseModalVisible, setPauseModalVisible } = useTimer();
+  const [awardSelection, setAwardSelection] = useState<string | null | undefined>(undefined);
+  const [awardModalVisible, setAwardModalVisible] = useState(false);
+  const [actionBusy, setActionBusy] = useState(false);
+  const { remainingMs, pause, resume, pauseModalVisible, setPauseModalVisible } = useTimer({
+    holdExpiry: actionBusy,
+  });
   const palette = getRoundPalette(currentRound?.type);
   const roundMeta = getRoundMeta(currentRound?.type);
   const { wordTexts } = useWordTextMap();
   const queueWordIds = currentRound?.remainingWordIds ?? [];
   const guessedWordIds = currentRound?.guessedWordIds ?? [];
 
-  const [awardSelection, setAwardSelection] = useState<string | null | undefined>(undefined);
-  const [awardModalVisible, setAwardModalVisible] = useState(false);
-  const [actionBusy, setActionBusy] = useState(false);
-
   const wordCardStackRef = useRef<WordCardStackHandle>(null);
-  const pendingActionRef = useRef<WordCardAction | null>(null);
+  const pendingActionRef = useRef<{ action: WordCardAction; tappedAt: number } | null>(null);
 
   const isAwaitingAward = status === 'awaiting_award';
   const teamName = currentTeam?.name ?? '—';
@@ -62,32 +63,35 @@ export default function TurnScreen() {
   );
 
   const commitPendingAction = useCallback(
-    (action: WordCardAction) => {
+    (action: WordCardAction, tappedAt: number) => {
       const currentStatus = useGameStore.getState().state.status;
       if (currentStatus !== 'in_turn') {
         return;
       }
-      dispatch({ type: action === 'guess' ? 'GUESS_WORD' : 'SKIP_WORD' });
+      dispatch({ type: action === 'guess' ? 'GUESS_WORD' : 'SKIP_WORD', now: tappedAt });
     },
     [dispatch],
   );
 
   const flushPendingAction = useCallback(() => {
-    const action = pendingActionRef.current;
-    if (!action) {
+    const pending = pendingActionRef.current;
+    if (!pending) {
       return;
     }
 
     pendingActionRef.current = null;
-    commitPendingAction(action);
+    commitPendingAction(pending.action, pending.tappedAt);
     wordCardStackRef.current?.resetExit();
     setActionBusy(false);
   }, [commitPendingAction]);
 
   const onExitComplete = useCallback(
     (action: WordCardAction) => {
+      const tappedAt = pendingActionRef.current?.tappedAt;
       pendingActionRef.current = null;
-      commitPendingAction(action);
+      if (tappedAt != null) {
+        commitPendingAction(action, tappedAt);
+      }
       setActionBusy(false);
     },
     [commitPendingAction],
@@ -107,7 +111,7 @@ export default function TurnScreen() {
         playSkip();
       }
 
-      pendingActionRef.current = action;
+      pendingActionRef.current = { action, tappedAt: Date.now() };
       const started = wordCardStackRef.current?.startExit(action);
       if (started) {
         setActionBusy(true);

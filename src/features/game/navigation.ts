@@ -6,6 +6,11 @@ import type { GameStatus } from '@domain/game/types';
 import { STATUS_ROUTE, useGameState } from './hooks';
 import { useGameStore } from './store';
 
+/** Screens that stay inside a status without replacing the status route. */
+const STATUS_ROUTE_ALIASES: Partial<Record<GameStatus, readonly string[]>> = {
+  end_of_match: ['/game/save-words'],
+};
+
 export function useHydrateGameStore() {
   const hydrate = useGameStore((store) => store.hydrate);
   const hydrated = useGameStore((store) => store.hydrated);
@@ -23,8 +28,10 @@ export function useGameRouteSync() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const target = STATUS_ROUTE[state.status as GameStatus];
-    if (!target || pathname === target) {
+    const status = state.status as GameStatus;
+    const target = STATUS_ROUTE[status];
+    const staysOnStatus = STATUS_ROUTE_ALIASES[status]?.some((route) => route === pathname);
+    if (!target || pathname === target || staysOnStatus) {
       return;
     }
 

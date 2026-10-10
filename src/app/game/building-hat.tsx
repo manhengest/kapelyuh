@@ -12,7 +12,11 @@ import { strings } from '@content/strings';
 import { useGameActions, useGameState } from '@features/game/hooks';
 import { playTap } from '@infrastructure/audio/sounds';
 import { triggerHaptic } from '@infrastructure/haptics';
-import { addCustomWord, getCustomWordIds } from '@infrastructure/storage/customWords';
+import {
+  addCustomWord,
+  getCustomWordIds,
+  MAX_CUSTOM_WORD_LENGTH,
+} from '@infrastructure/storage/customWords';
 import { ScreenFooter } from '@ui/components/ScreenFooter';
 import { ScreenHeader } from '@ui/components/ScreenHeader';
 import { ScreenShell } from '@ui/components/ScreenShell';
@@ -22,7 +26,6 @@ import { TextInput } from '@ui/components/TextInput';
 const hatIcon = require('@assets/images/icons/landing/hat.png');
 
 const EARLY_FINISH_MIN = 30;
-const MAX_WORD_LENGTH = 24;
 
 export default function BuildingHatScreen() {
   const { settings } = useGameState();
@@ -132,7 +135,7 @@ export default function BuildingHatScreen() {
                     }}
                     onSubmitEditing={onAdd}
                     placeholder={strings.buildingHat.placeholder}
-                    maxLength={MAX_WORD_LENGTH}
+                    maxLength={MAX_CUSTOM_WORD_LENGTH}
                     returnKeyType="done"
                     blurOnSubmit={false}
                     autoFocus

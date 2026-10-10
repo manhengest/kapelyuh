@@ -1,5 +1,5 @@
 import { useKeepAwake } from 'expo-keep-awake';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { AccessibilityInfo } from 'react-native';
 
 import { computeTurnScore, deriveWordOutcome } from '@domain/game/scoring';
@@ -108,7 +108,7 @@ export function useTurnNetScore() {
   return computeTurnScore(turn.events, state.settings.skipPenalty);
 }
 
-export function useTimer() {
+export function useTimer({ holdExpiry = false }: { holdExpiry?: boolean } = {}) {
   const status = useGameStore((store) => store.state.status);
   const turn = useGameStore((store) => store.state.turn);
   const dispatch = useGameStore((store) => store.dispatch);
@@ -117,6 +117,11 @@ export function useTimer() {
 
   const [liveRemainingMs, setLiveRemainingMs] = useState(0);
   const expiredRef = useRef(false);
+  const holdExpiryRef = useRef(holdExpiry);
+  // Sync before the next timer tick without restarting the interval (a restart would still see the old hold).
+  useLayoutEffect(() => {
+    holdExpiryRef.current = holdExpiry;
+  }, [holdExpiry]);
   const haptic10Ref = useRef(false);
   const haptic3Ref = useRef(false);
   const soundTimerEndRef = useRef(false);
@@ -156,7 +161,7 @@ export function useTimer() {
         soundTimerEndRef.current = true;
         playTimerEnd();
       }
-      if (remaining === 0 && !expiredRef.current) {
+      if (remaining === 0 && !expiredRef.current && !holdExpiryRef.current) {
         expiredRef.current = true;
         void triggerHaptic('heavy');
         dispatch({ type: 'TIMER_EXPIRED' });
